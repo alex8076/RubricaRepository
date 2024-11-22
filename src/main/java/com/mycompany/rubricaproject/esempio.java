@@ -10,5 +10,5 @@ package com.mycompany.rubricaproject;
  * @author scarf
  */
 public class esempio {
-    
+    private int a;
 }
