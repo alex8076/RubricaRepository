@@ -5,7 +5,7 @@ package com.mycompany.rubricaproject;
  * @brief la classe si occupa di gestire la lista contatti
  */
 
-public class Rubrica {
+public class Rubrica implements FileHandler {
 
     private Set<Contatto> contatti;
 
@@ -16,5 +16,11 @@ public class Rubrica {
     public void aggingiContatto(Contatto c) {}
 
     public void rimuoviContatto(Contatto c) {}
+
+    @Override
+    public void esportaRubrica(String filename) {}
+
+    @Override
+    public Rubrica importaRubrica(String filename) {}
 
 }
