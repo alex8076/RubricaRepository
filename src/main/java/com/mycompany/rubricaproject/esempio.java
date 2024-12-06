@@ -11,4 +11,5 @@ package com.mycompany.rubricaproject;
  */
 public class esempio {
     private int a;
+    // commento di prova
 }
