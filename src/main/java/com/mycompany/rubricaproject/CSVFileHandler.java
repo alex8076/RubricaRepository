@@ -1,3 +1,5 @@
+package com.mycompany.rubricaproject;
+
 public class CSVFileHandler implements FileHandler {
 
     @Override

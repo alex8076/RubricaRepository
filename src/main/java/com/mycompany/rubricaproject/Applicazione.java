@@ -1,3 +1,5 @@
+package com.mycompany.rubricaproject;
+
 /**
  * @file Applicazione.java
  * @brief La classe si occupa di gestire la funzione princioale main

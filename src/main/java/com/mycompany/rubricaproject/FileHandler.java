@@ -1,3 +1,5 @@
+package com.mycompany.rubricaproject;
+
 /**
  * @file FileHandler.java
  * @brief l'interfaccia specifica i metodi per gestire l'importazione/esportazione di contatti da/su file esterno

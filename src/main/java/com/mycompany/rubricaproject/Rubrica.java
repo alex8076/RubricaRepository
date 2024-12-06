@@ -1,3 +1,5 @@
+package com.mycompany.rubricaproject;
+
 /**
  * @file Rubrica.java
  * @brief la classe si occupa di gestire la lista contatti
