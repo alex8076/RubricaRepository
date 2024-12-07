@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.rubricaproject;
+/*package com.mycompany.rubricaproject;
 
 import java.util.Set;
 
@@ -11,6 +11,8 @@ import java.util.Set;
  *
  * @author alessandro
  */
+
+/*
 public class Contatto {
     
     private String nome;
@@ -83,4 +85,4 @@ public class Contatto {
             
             
             
-}
+}*/
