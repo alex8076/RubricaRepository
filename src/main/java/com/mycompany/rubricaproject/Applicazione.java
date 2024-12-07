@@ -1,3 +1,11 @@
+/**
+ * @file Applicazione.java
+ * @brief La classe si occupa di gestire la funzione principale main e la funzione start
+ * @see Application
+ * 
+ * @date 2024-12-7
+ */
+
 package com.mycompany.rubricaproject;
 
 import javafx.application.Application;
@@ -7,10 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-/**
- * @file Applicazione.java
- * @brief La classe si occupa di gestire la funzione princioale main
- */
 public class Applicazione extends Application {
      @Override
     public void start(Stage primaryStage) {
