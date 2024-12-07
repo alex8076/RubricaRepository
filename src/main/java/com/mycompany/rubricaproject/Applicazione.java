@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 public class Applicazione extends Application {
      @Override
     public void start(Stage primaryStage) {
-        // un bottone
+  
         Button btn = new Button("Cliccami!");
         btn.setOnAction(e -> System.out.println("Hai cliccato il pulsante!"));
 
