@@ -21,7 +21,7 @@ import java.util.Set;
  * @date 2024-12-07
  */
 
-
+//commento di prova
 public class Contatto implements Comparable<Contatto> {
     
     private String nome;
