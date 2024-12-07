@@ -19,7 +19,7 @@ public class Contatto {
     private Set<String> indirizziMail;
     
     
-    
+    // commento di prova
     public Contatto(String nome, String cognome){
         
     }
