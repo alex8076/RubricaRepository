@@ -51,6 +51,8 @@ public class Rubrica {
      *
      * 
      * @post Se il contatto non era già presente, viene aggiunto alla rubrica.
+     * 
+     * @throws ContattoDuplicatoException Se si prova ad aggiungere un contatto già presente
      */
     public void aggiungiContatto(Contatto c) {
         
