@@ -22,6 +22,7 @@ import java.util.Set;
  */
 
 //commento di prova
+//commento 2
 public class Contatto implements Comparable<Contatto> {
     
     private String nome;
