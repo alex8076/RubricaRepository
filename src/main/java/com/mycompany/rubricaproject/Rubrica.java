@@ -1,11 +1,11 @@
-package com.mycompany.rubricaproject;
+/*package com.mycompany.rubricaproject;
 
 /**
  * @file Rubrica.java
  * @brief la classe si occupa di gestire la lista contatti
  */
 
-public class Rubrica implements FileHandler {
+/*public class Rubrica implements FileHandler {
 
     private Set<Contatto> contatti;
 
@@ -23,4 +23,4 @@ public class Rubrica implements FileHandler {
     @Override
     public Rubrica importaRubrica(String filename) {}
 
-}
+}*/
