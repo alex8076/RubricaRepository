@@ -1,3 +1,7 @@
+package com.mycompany.rubricaproject;
+
+import java.util.Set;
+
 /**
  *
  * @file Contatto.java
@@ -11,10 +15,6 @@
  * @version 1.0
  * @date 2024-12-07
  */
-
-package com.mycompany.rubricaproject;
-
-import java.util.Set;
 
 public class Contatto implements Comparable<Contatto> {
     
