@@ -20,7 +20,7 @@ public class CSVFileHandler implements FileHandler {
      * @post il file in cui sono esportati i dati deve essere in formato CSV
      */
     @Override
-    void esportaRubrica(String fileName) {
+    public void esportaRubrica(String fileName) {
     
     }
     
@@ -30,8 +30,13 @@ public class CSVFileHandler implements FileHandler {
      * @return la rubrica contenente i dati letti dal file
      * 
      * @pre il file deve essere in formato CSV
+     * 
+     * @throws FileNonTrovatoException Se il file non viene trovato
+     * @throws FormatoFileNonValidoException Se il file non è in formato CSV
      */
     @Override
-    Rubrica importaRubrica(String fileName);
+    public Rubrica importaRubrica(String fileName) {
+        
+    }
     
 }

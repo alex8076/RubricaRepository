@@ -28,12 +28,11 @@ public class Contatto implements Comparable<Contatto> {
      * @brief Costruttore della classe Contatto.
      * 
      * 
-     * @post Un'istanza valida della classe Contatto è creata.
+     * @post Un'istanza valida della classe Contatto è creata, se i dati passati sono validi.
+     * @see isValido()
      * 
      * @param[in] nome Nome del contatto.
      * @param[in] cognome Cognome del contatto.
-     * 
-     * 
      * 
      */
     public Contatto(String nome, String cognome){
@@ -54,10 +53,12 @@ public class Contatto implements Comparable<Contatto> {
     /**
      * @brief Imposta il nome del contatto.
      * 
-     * @param[in] nome Nuovo nome del contatto. 
+     * @param[in] nome Nuovo nome del contatto, ammesso che l'utente aggiornato risulti valido.
+     * @see isValido()
      * 
      * 
      * @post Il nome del contatto è aggiornato.
+     * 
      */
     public void setNome(String nome){
         
@@ -78,7 +79,10 @@ public class Contatto implements Comparable<Contatto> {
      * @param[in] cognome Nuovo cognome del contatto. 
      * 
      * 
-     * @post Il cognome del contatto è aggiornato.
+     * @post Il cognome del contatto è aggiornato, ammesso che l'utente aggiornato risulti valido.
+     * @see isValido()
+     * 
+     * @throws UtenteNonValidoException se nomer è nullo e si setta cognome nullo
      */
      public void setCognome(String cognome){
         
@@ -90,6 +94,8 @@ public class Contatto implements Comparable<Contatto> {
      * Un contatto è considerato valido se ha almeno un nome o un cognome.
      * 
      * @return `true` se il contatto è valido, altrimenti `false`.
+     * 
+     * @throws UtenteNonValidoException Se l'utente ha nulli contemporaneamente sia nome che cognome
      */
      public boolean isValido(){
          

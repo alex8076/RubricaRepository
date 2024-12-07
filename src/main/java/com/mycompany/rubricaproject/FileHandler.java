@@ -31,6 +31,8 @@ public interface FileHandler {
      * 
      * @pre l'utente ha a diposizione un file da importare
      * @post l'utente riceve una notifica di completamento dell'operazione
+     * 
+     * @throws FileNonTrovatoException Se il file non viene trovato
      */
     Rubrica importaRubrica(String fileName);
 }
