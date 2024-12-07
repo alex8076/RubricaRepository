@@ -1,7 +1,3 @@
-package com.mycompany.rubricaproject;
-
-import java.util.Set;
-
 /**
  *
  * @file Contatto.java
@@ -15,6 +11,13 @@ import java.util.Set;
  * @version 1.0
  * @date 2024-12-07
  */
+
+
+package com.mycompany.rubricaproject;
+
+import java.util.Set;
+
+
 
 public class Contatto implements Comparable<Contatto> {
     
@@ -87,7 +90,72 @@ public class Contatto implements Comparable<Contatto> {
      public void setCognome(String cognome){
         
     }
+    
      
+     
+     public Set<String> getNumeriDiTelefono(){
+         
+     }
+     
+     
+     
+     /**
+     * @brief Aggiunge un numero di telefono al contatto.
+     * 
+     * Consente di aggiungere un nuovo numero di telefono alla lista esistente,
+     *          rispettando il limite massimo di tre numeri.
+     * 
+     * @param[in] numero Numero di telefono da aggiungere.
+     * 
+     * 
+     * @post Il contatto avrà un nuovo numero di telefono
+     */
+     public void aggiungiNumero (String numero) {
+         
+     }
+     
+     /**
+     * @brief Modifica un numero di telefono del contatto.
+     * 
+     * Sostituisce un numero esistente con uno nuovo.
+     * 
+     * @param[in] numero Nuovo numero di telefono.
+     * 
+     * 
+     * @post Il numero di telefono selezionato è stato aggiornato.
+     */
+     public void modificaNumero (String numero){
+         
+     }
+     
+     
+     
+     
+      /**
+     * @brief Rimuove un numero di telefono dal contatto.
+     * 
+     * @param[in] numero Numero di telefono da rimuovere.
+     * 
+     * 
+     * @post La lista dei numeri di telefono è aggiornata.
+     */
+     public void rimuoviNumero (String numero){
+         
+     }
+     
+     
+     /**
+     * @brief Verifica se un numero di telefono è valido.
+     * 
+     * @param[in] numero Numero di telefono da verificare.
+     * @return `true` se il numero è valido, altrimenti `false`.
+     */
+     public boolean isNumeroValido (String numero){
+         
+     }
+     
+     
+      
      /**
      * @brief Verifica se il contatto è valido.
      * 
@@ -100,6 +168,80 @@ public class Contatto implements Comparable<Contatto> {
      public boolean isValido(){
          
      }
+     
+     
+      /**
+     * @brief Restituisce l'insieme degli indirizzi email associati al contatto.
+     * 
+     * @invariant Il set restituito non contiene più di 3 indirizzi email.
+     * 
+     * @return Un insieme di indirizzi email.
+     */
+     public Set<String> getIndirizziMail (){
+         
+     }
+     
+     
+      /**
+     * @brief Aggiunge un indirizzo email al contatto.
+     * 
+     * Consente di aggiungere un nuovo indirizzo email alla lista esistente,
+     *          rispettando il limite massimo di tre indirizzi.
+     * 
+     * @param[in] mail Indirizzo email da aggiungere.
+     * 
+     * 
+     * @post La lista degli indirizzi email è aggiornata.
+     */
+     public void aggiungiMail (String mail){
+         
+     }
+     
+     
+     
+     /**
+     * @brief Modifica un indirizzo email del contatto.
+     * 
+     * Sostituisce un indirizzo esistente con uno nuovo.
+     * 
+     * @param[in] mail Nuovo indirizzo email.
+     * 
+     * 
+     * @post L'indirizzo email specificato è stato aggiornato.
+     */
+     public void modificaMail(String mail){
+         
+     }
+     
+     
+     /**
+     * @brief Rimuove un indirizzo email dal contatto.
+     * 
+     * @param[in] mail Indirizzo email da rimuovere.
+     * 
+     * 
+     * @post La lista degli indirizzi email è aggiornata.
+     */
+     
+     public void rimuoviMail (String mail){
+         
+     }
+     
+      /**
+     * @brief Verifica se un indirizzo email è valido.
+     * 
+     * @param[in] mail Indirizzo email da verificare.
+     * @return `true` se l'indirizzo è valido, altrimenti `false`.
+     */
+     public boolean isMailValido(String mail){
+         
+     }
+     
+     
+     
+     
+     
+     
      
      /**
      * @brief Genera il codice hash del contatto.
