@@ -1,6 +1,7 @@
 /**
  * @file MailNonCorrettaException.java
  * @brief Eccezione non controllata che emerge qualora la mail inserita non sia correttamente formattata
+ * @see RuntimeException
  * @author gae
  * @date 2024-12-7
  */

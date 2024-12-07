@@ -1,6 +1,7 @@
 /**
  * @file FormatoFileNonValidoException.java
  * @brief Eccezione non controllata che emerge qualora il formato di un file non sia valido
+ * @see RuntimeException
  * @author gae
  * @date 2024-12-7
  */

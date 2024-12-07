@@ -1,6 +1,7 @@
 /**
  * @file NumeroNonCorrettoException.java
  * @brief Eccezione non controllata che emerge qualora un numero inserito non sia correttamente formattato
+ * @see RuntimeException
  * @author gae
  * @date 2024-12-7
  */

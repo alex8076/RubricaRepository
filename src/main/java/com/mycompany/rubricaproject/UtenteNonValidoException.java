@@ -1,6 +1,7 @@
 /**
  * @file UtenteNonValidoException.java
  * @brief Eccezione non controllata che emerge qualora un utente inserito non sia valido (ossia non abbia almeno un nome o un cognome)
+ * @see RuntimeException
  * @author gae
  * @date 2024-12-7
  */

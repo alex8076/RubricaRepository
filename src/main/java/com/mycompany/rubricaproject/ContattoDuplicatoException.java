@@ -1,6 +1,7 @@
 /**
  * @file ContattoDuplicatoException.java
  * @brief Eccezione non controllata che emerge qualora vi siano contatti duplicati
+ * @see RuntimeException
  * @author gae
  * @date 2024-12-7
  */

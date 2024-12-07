@@ -1,6 +1,7 @@
 /**
  * @file FileNonTrovatoException.java
  * @brief Eccezione non controllata che emerge qualora un file non sia stato trovato
+ * @see RuntimeException
  * @author gae
  * @date 2024-12-7
  */

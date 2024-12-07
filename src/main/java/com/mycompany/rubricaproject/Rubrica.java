@@ -45,8 +45,9 @@ public class Rubrica {
      
     /**
      * @brief Aggiunge un contatto alla rubrica.
+     * @see Contatto
      * 
-     * @param[in] c il contatto da aggiungere.. 
+     * @param[in] c il contatto da aggiungere. 
      *
      * 
      * @post Se il contatto non era già presente, viene aggiunto alla rubrica.
@@ -57,6 +58,7 @@ public class Rubrica {
     
     /**
      * @brief Rimuove un contatto dalla rubrica.
+     * @see Contatto
      * 
      * @param[in] c il contatto da rimuovere.
      * @post Se il contatto era presente, viene rimosso dalla rubrica.
@@ -68,13 +70,13 @@ public class Rubrica {
     
     /**
      * @brief Cerca e restituisce i contatti della rubrica che hanno nome o cognome uguale al parametro "ricercaStr".
-     * 
+     * @see Contatto
      * 
      * @return un oggetto `Set` contenente i contatti che corrispondono al criterio di ricerca.
      *         Se nessun contatto soddisfa il criterio, restituisce un insieme vuoto.
      * @pre Il contatto che l'utente desidera cercare è presente nella rubrica.
      * @post Viene mostrata la lista di contatti corrispondente alla sottostringa inserita.
-     * @invariant Lista contatti.
+     * @invariant contatti.
      */
     public Set<Contatto> CercaContatti(String ricercaStr){
         
