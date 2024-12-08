@@ -151,7 +151,7 @@ public class Contatto implements Comparable<Contatto> {
      * @return `true` se il numero è valido, altrimenti `false`.
      * @throws NumeroNonCorrettoException Se il numero passato non è correttamente formattato
      */
-     public boolean isNumeroValido (String numero){
+     private boolean isNumeroValido (String numero){
          
      }
      
@@ -235,7 +235,7 @@ public class Contatto implements Comparable<Contatto> {
      * @return `true` se l'indirizzo è valido, altrimenti `false`.
      * @throws MailNonCorrettaException Se il la mail passata non è correttamente formattata
      */
-     public boolean isMailValido(String mail){
+     private boolean isMailValida(String mail){
          
      }
      
