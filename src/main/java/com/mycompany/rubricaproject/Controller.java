@@ -11,12 +11,32 @@
 package com.mycompany.rubricaproject;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 
 public class Controller implements Initializable {
 
+    private Rubrica rubrica;
+    private Map<Contatto, HBox> mappaContatti;
+    
+    private Button addBtn;
+    private TextField tfNome;
+    private TextField tfCognome;
+    private VBox contactContainer;
+    private TextField tfTelefono1;
+    private TextField tfTelefono2;
+    private TextField tfTelefono3;
+    private TextField tfEmail1;
+    private TextField tfEmail2;
+    private TextField tfEmail3;
+    
     /**
      * @brief Inizializza il controller.
      * 
@@ -32,6 +52,21 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-    }    
+    }   
+    
+    /**
+     * 
+     * @see Contatto
+     * @see Rubrica
+     */
+    private void handleAdd(ActionEvent e) {}
+    
+    private void aggiornaContatti() {}
+    
+    private HBox creaSchedaContatto(Contatto contatto) {}
+    
+    private void modificaContatto(Contatto contatto) {}
+    
+    private void ripulisciCampi() {}
     
 }

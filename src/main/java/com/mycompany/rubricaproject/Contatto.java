@@ -149,6 +149,7 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @param[in] numero Numero di telefono da verificare.
      * @return `true` se il numero è valido, altrimenti `false`.
+     * @throws NumeroNonCorrettoException Se il numero passato non è correttamente formattato
      */
      public boolean isNumeroValido (String numero){
          
@@ -232,6 +233,7 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @param[in] mail Indirizzo email da verificare.
      * @return `true` se l'indirizzo è valido, altrimenti `false`.
+     * @throws MailNonCorrettaException Se il la mail passata non è correttamente formattata
      */
      public boolean isMailValido(String mail){
          
