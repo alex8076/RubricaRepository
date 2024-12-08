@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['filenontrovatoexception_0',['FileNonTrovatoException',['../classcom_1_1mycompany_1_1rubricaproject_1_1_file_non_trovato_exception.html#af8cf924c298c0f798766f2bbde63deae',1,'com.mycompany.rubricaproject.FileNonTrovatoException.FileNonTrovatoException()'],['../classcom_1_1mycompany_1_1rubricaproject_1_1_file_non_trovato_exception.html#a95a1e3108e57206f9d8fd9266a07d669',1,'com.mycompany.rubricaproject.FileNonTrovatoException.FileNonTrovatoException(String msg)']]],
+  ['formatofilenonvalidoexception_1',['FormatoFileNonValidoException',['../classcom_1_1mycompany_1_1rubricaproject_1_1_formato_file_non_valido_exception.html#aa3b1b31059627ffa72a42368f0106061',1,'com.mycompany.rubricaproject.FormatoFileNonValidoException.FormatoFileNonValidoException()'],['../classcom_1_1mycompany_1_1rubricaproject_1_1_formato_file_non_valido_exception.html#a3123d19284349cd4639906d4fa138645',1,'com.mycompany.rubricaproject.FormatoFileNonValidoException.FormatoFileNonValidoException(String msg)']]]
+];
