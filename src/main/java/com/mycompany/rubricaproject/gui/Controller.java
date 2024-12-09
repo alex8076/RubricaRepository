@@ -8,8 +8,10 @@
  * @date 2024-12-07
  * @author Giovanni Caldarelli
  */
-package com.mycompany.rubricaproject;
+package com.mycompany.rubricaproject.gui;
 
+import com.mycompany.rubricaproject.core.Contatto;
+import com.mycompany.rubricaproject.core.Rubrica;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;

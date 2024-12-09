@@ -13,7 +13,7 @@
  */
 
 
-package com.mycompany.rubricaproject;
+package com.mycompany.rubricaproject.core;
 
 import java.util.Set;
 

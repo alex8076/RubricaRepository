@@ -9,7 +9,9 @@
  * @author gae
  * @date 2024-12-7
  */
-package com.mycompany.rubricaproject;
+package com.mycompany.rubricaproject.io;
+
+import com.mycompany.rubricaproject.core.Rubrica;
 
 public class CSVFileHandler implements FileHandler {
     

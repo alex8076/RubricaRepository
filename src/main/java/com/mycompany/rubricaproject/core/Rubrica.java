@@ -10,7 +10,7 @@
  * @date 2024-12-07
  * @author Giovanni Caldarelli
  */
-package com.mycompany.rubricaproject;
+package com.mycompany.rubricaproject.core;
 
 import java.util.HashSet;
 import java.util.Set;

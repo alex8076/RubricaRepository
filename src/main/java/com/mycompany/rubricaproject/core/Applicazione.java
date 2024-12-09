@@ -6,7 +6,7 @@
  * @date 2024-12-7
  */
 
-package com.mycompany.rubricaproject;
+package com.mycompany.rubricaproject.core;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
