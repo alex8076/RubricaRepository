@@ -364,6 +364,7 @@ public class Controller implements Initializable {
      */
     @FXML
     private void handleCancel(ActionEvent event) {
+        // ripulisco i campi input
         ripulisciCampi();
     }
     
