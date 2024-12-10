@@ -12,6 +12,9 @@ package com.mycompany.rubricaproject.gui;
 
 import com.mycompany.rubricaproject.core.Contatto;
 import com.mycompany.rubricaproject.core.Rubrica;
+import com.mycompany.rubricaproject.io.CSVFileHandler;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,19 +23,26 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 
 public class Controller implements Initializable {
 
-    // creiamo un'istanza di rubrica in modo da poter invocare i metodi che ci consentano di gestirla e modificarla
+    // Creo un'istanza di rubrica in modo da poter invocare i metodi che ci consentano di gestirla e modificarla
     private Rubrica rubrica;
-    // mappiamo ogni contatto con la relativa scheda contatto ad esso asscociata
+    // Creo un'istanza di CSVFileHandler per accedere ai metodi necessari all'I/O su file CSV esterno
+    private CSVFileHandler fh;
+    // Mappo ogni contatto con la relativa scheda contatto ad esso asscociata
     private Map<Contatto, VBox> mappaContatti;
     
     @FXML
@@ -442,12 +452,124 @@ public class Controller implements Initializable {
         });
     }
 
+    /**
+     * @brief Permette di importare in rubrica i contenuti di un file esterno
+     * 
+     * Viene mostrata una finestra di dialogo che consenta di caricare un file prelevandolo dalla propria directory
+     * 
+     * @param event L'evento associato al click del pulsante
+     * 
+     * (?) @pre Il file da importare esiste ed è correttamente formattato
+     * @post Il contenuto del file viene caricato in rubrica
+     * @post Viene mostrata una notifica alla fine dell'operazione
+     * 
+     * @see CSVFileHandler
+     */
     @FXML
     private void handleImport(ActionEvent event) {
+        // Mostro una finestra di dialogo per permettere all'utente di selezionare il file
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleziona un file CSV");
+        // Specifico che l'utente può selezionare unicamente file .csv
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("File CSV", "*csv"));
+        // Ottengo il file selezionato
+        Stage primaryStage = (Stage) importaBtn.getScene().getWindow();
+        File fileSelezionato = fileChooser.showOpenDialog(primaryStage);
+        
+        // Controllo che il file sia stato selezionato
+        if (fileSelezionato != null) {
+            // Ottengo il path del file
+            String filePath = fileSelezionato.getAbsolutePath();
+            try {
+                // Invoco la funzione di importazione da CSVFileHandler passando il path del file
+                fh.importaRubrica(filePath);
+                // Aggiorno la view
+                aggiornaContatti();
+                // Mostro una notifica di completamento
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Importazione completata con successo");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            } catch (IOException ex) {
+                // Gestisco il caso in cui sorga un'eccezione
+                System.err.println("Importazione fallita: " + ex.getMessage());
+                // Mostro una notifica di fallimento
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Importazione fallita");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
+        } else {
+            // Gestisco il caso in cui non venga selezionato alcun file, annullando l'operazione
+            System.out.println("Nessun file selezionato");
+            // Mostro una notifica di fallimento
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Importazione fallita");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+        }
+
     }
 
+    /**
+     * @brief Permette di esportare i dati presenti in rubrica su un file CSV esterno
+     * 
+     * Viene mostrata una finestra di dialogo che consente di selezionare la directory/file in cui salvare i dati
+     * 
+     * @param event L'evento associato al clic del pulsante
+     * 
+     * @pre La rubrica contiene dati da esportare
+     * @post I dati presenti in ribrica vengono salavti su file CSV prensente nella directory specificata
+     * @post Viene mostrata una notifica alla fine dell'operazione
+     * 
+     * @see CSVFileHandler
+     */
     @FXML
     private void handleExport(ActionEvent event) {
+        // Mostro all'utente una finestra di dialogo per permettere all'utente di selezionare un file
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Esporta Rubrica");
+        // Specifico che l'utene può selezionare unicamente file .csv
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("File CSV", "*.csv"));
+        // Ottengo il file selezionato
+        Stage primaryStage = (Stage) esportaBtn.getScene().getWindow();
+        File fileDaSalvare = fileChooser.showSaveDialog(primaryStage);
+        
+        // Controllo che il file sia stato selezionato
+        if (fileDaSalvare != null) {
+            // Ottengo il path del file
+            String filePath = fileDaSalvare.getAbsolutePath();
+            // Nel caso non sia presente, aggiungo l'estensione .csv al path del file
+            if(!filePath.endsWith(".csv")) {
+                filePath += ".csv";
+            }
+            
+            try {
+                // Invoco la funzione di esportazione di CSVFilehandler passando il path del file
+                fh.esportaRubrica(filePath);
+                // Mostro una notifica di completamento dell'operazione
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Esportazione completata con successo");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            } catch (IOException ex) {
+                // Gestisco il caso in cui sorga un'eccezione
+                System.err.println("Errore nell'esportazione: " + ex.getMessage());
+                // Mostro una notifica di fallimento
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Esportazione fallita");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
+        } else {
+            // Gestisco il caso in cui l'esportazione fallisca, annullando l'operazione
+            System.out.println("Esportazione annullata");
+            // Mostro una notifica di fallimento
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Esportazione fallita");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+        }
     }
     
 }
