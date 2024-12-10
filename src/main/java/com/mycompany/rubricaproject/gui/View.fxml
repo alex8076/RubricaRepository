@@ -11,13 +11,41 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.rubricaproject.gui.Controller">
    <children>
-      <HBox fx:id="dashboard" alignment="CENTER" layoutY="540.0" prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: lightgray;">
+      <HBox fx:id="dashboard" alignment="CENTER" layoutY="540.0" prefHeight="60.0" prefWidth="800.0" spacing="40.0" style="-fx-background-color: lightgrey;">
          <children>
             <Button fx:id="newContactBtn" mnemonicParsing="false" onAction="#onNewContact" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 12px;" text="+" textAlignment="CENTER">
                <font>
                   <Font name="Roboto Black" size="16.0" />
                </font>
             </Button>
+            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="426.0" spacing="10.0">
+               <children>
+                  <TextField fx:id="tfSearch" prefHeight="26.0" prefWidth="267.0" promptText="Inserisci un nome..." style="-fx-background-radius: 10px;">
+                     <font>
+                        <Font name="Roboto" size="16.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#handleSearch" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Cerca">
+                     <font>
+                        <Font name="Roboto Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="importaBtn" mnemonicParsing="false" onAction="#handleImport" prefHeight="31.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Importa">
+                     <font>
+                        <Font name="Roboto Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="esportaBtn" mnemonicParsing="false" onAction="#handleExport" prefHeight="31.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Esporta">
+                     <font>
+                        <Font name="Roboto Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
          </children></HBox>
       <HBox alignment="CENTER" prefHeight="540.0" prefWidth="800.0">
          <children>

@@ -63,6 +63,14 @@ public class Controller implements Initializable {
     private HBox dashboard;
     @FXML
     private Button newContactBtn;
+    @FXML
+    private TextField tfSearch;
+    @FXML
+    private Button searchBtn;
+    @FXML
+    private Button importaBtn;
+    @FXML
+    private Button esportaBtn;
     
     /**
      * @brief Inizializza il controller.
@@ -396,6 +404,50 @@ public class Controller implements Initializable {
     private void onNewContact(ActionEvent event) {
         boolean isVisible = inputPane.isVisible();
         inputPane.setVisible(!isVisible);
+    }
+
+    /**
+     * @brief Mostra nella view unicamente i contatti il cui nome/cognome contiene la stringa inserita nel campo di ricerca
+     * 
+     * @param event L'evento associato al click del pulsante
+     * 
+     * @pre è stata fornita una stringa come parametro di ricerca
+     * @post sono mostrate solo le card dei contatti corrispondenti alla ricerca
+     * 
+     * @see Contatto
+     * @see Rubrica
+     * 
+     */
+    @FXML
+    private void handleSearch(ActionEvent event) {
+        // Ripulisco la view
+        contactContainer.getChildren().clear();
+        for (Contatto contatto: rubrica.getContatti()) {
+            if (contatto.getNome().contains(tfSearch.getText()) || contatto.getCognome().contains(tfSearch.getText())) {
+                // Creo una card per ogni contatto che rispetti i criteri di ricerca
+                VBox card = creaSchedaContatto(contatto);
+                // Mostro nella view ogni nuova card creata
+                contactContainer.getChildren().add(card);
+            }
+        }
+        
+        // Creo e aggiungo alla view un pulsante da premere qualora si sia completata la ricerca
+        Button okBtn = new Button("Ok");
+        contactContainer.getChildren().add(okBtn);
+        
+        // Associo al pulsante la relativa azione
+        okBtn.setOnAction(e -> {
+            // Aggiorno la view, tornando a mostrare tutti i contatti
+            aggiornaContatti();
+        });
+    }
+
+    @FXML
+    private void handleImport(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleExport(ActionEvent event) {
     }
     
 }
