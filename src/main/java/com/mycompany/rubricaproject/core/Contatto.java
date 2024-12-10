@@ -32,6 +32,7 @@ public class Contatto implements Comparable<Contatto> {
     
     
     
+    
     /**
      * @brief Costruttore della classe Contatto.
      * 
@@ -56,6 +57,7 @@ public class Contatto implements Comparable<Contatto> {
     
     
     
+    
     /**
      * @brief Restituisce il nome del contatto.
      * 
@@ -64,6 +66,7 @@ public class Contatto implements Comparable<Contatto> {
     public String getNome(){
         return nome;
     }
+    
     
     
     
@@ -86,6 +89,7 @@ public class Contatto implements Comparable<Contatto> {
     
     
     
+    
     /**
      * @brief Restituisce il cognome del contatto.
      * 
@@ -94,6 +98,9 @@ public class Contatto implements Comparable<Contatto> {
     public String getCognome(){
         return cognome;
     }
+    
+    
+    
     
     /**
      * @brief Imposta il cognome del contatto.
@@ -115,9 +122,16 @@ public class Contatto implements Comparable<Contatto> {
     
      
      
+     
+    /**
+    * @brief Restituisce i numeri di telefono associati al contatto.
+    * 
+    * @return Un set contenente i numeri di telefono del contatto.
+    */
      public Set<String> getNumeriTelefono(){
         return numeriTelefono;
      }
+     
      
      
      
@@ -143,6 +157,7 @@ public class Contatto implements Comparable<Contatto> {
         if (!numeriTelefono.add(numero)) //HO DEI DUBBI
             throw new IllegalArgumentException("Il numero di telefono è già presente.");
      }
+     
      
      
      
@@ -192,6 +207,7 @@ public class Contatto implements Comparable<Contatto> {
      
     
      
+    
      /**
      * @brief Verifica se un numero di telefono è valido.
      * 
@@ -219,6 +235,7 @@ public class Contatto implements Comparable<Contatto> {
      
      
       
+    
      /**
      * @brief Verifica se il contatto è valido.
      * 
@@ -234,6 +251,7 @@ public class Contatto implements Comparable<Contatto> {
      
      
      
+     
       /**
      * @brief Restituisce l'insieme degli indirizzi email associati al contatto.
      * 
@@ -244,6 +262,7 @@ public class Contatto implements Comparable<Contatto> {
      public Set<String> getIndirizziMail (){
         return indirizziMail;
      }
+     
      
      
      
@@ -264,10 +283,11 @@ public class Contatto implements Comparable<Contatto> {
 
         
         if (!isMailValida(mail))
-            throw new MailNonCorrettaException("L'indirizzo email non è valido.")
+            throw new MailNonCorrettaException("L'indirizzo email non è valido.");
             
         indirizziMail.add(mail);
      }
+     
      
      
      
@@ -295,6 +315,7 @@ public class Contatto implements Comparable<Contatto> {
      
      
      
+     
      /**
      * @brief Rimuove un indirizzo email dal contatto.
      * 
@@ -313,6 +334,7 @@ public class Contatto implements Comparable<Contatto> {
      
      
      
+     
       /**
      * @brief Verifica se un indirizzo email è valido.
      * 
@@ -323,6 +345,7 @@ public class Contatto implements Comparable<Contatto> {
      private boolean isMailValida(String mail){
           return mail != null && mail.contains("@") && mail.contains(".");
      }
+     
      
      
      
@@ -362,6 +385,7 @@ public class Contatto implements Comparable<Contatto> {
     }
     
      
+    
      
      /**
      * @brief Verifica se questo contatto è uguale a un altro oggetto.
