@@ -13,22 +13,27 @@
 package com.mycompany.rubricaproject.io;
 
 import com.mycompany.rubricaproject.core.Rubrica;
+import com.mycompany.rubricaproject.eccezioni.FileNonTrovatoException;
+import com.mycompany.rubricaproject.eccezioni.FormatoFileNonValidoException;
+import java.io.IOException;
 
 public interface FileHandler {
     
     /**
+     * @param fileName
+     * @throws java.io.IOException
      * @brief Esporta i dati di una ribrica su un file esterno
-     * @param[in] fileName Il nome del file su cui esportare la rubrica
      * 
      * @pre la rubrica contiene almeno un contatto
      * @pre la directory specificata in fileName esiste ed è accessibile
      * @post l'utente riceve una notifica di completamento dell'operazione
      */
-    void esportaRubrica(String fileName);
+    void esportaRubrica(String fileName) throws IOException;
     
     /**
+     * @param fileName
+     * @throws java.io.IOException
      * @brief Importa i dati da un file esterno su una rubrica
-     * @param[in] fileName Il nome del file da cui importare la rubrica
      * @return Una rubrica contenente i dati letti dal file esterno
      * 
      * @pre l'utente ha a diposizione un file da importare
@@ -36,5 +41,5 @@ public interface FileHandler {
      * 
      * @throws FileNonTrovatoException Se il file non viene trovato
      */
-    Rubrica importaRubrica(String fileName);
+    Rubrica importaRubrica(String fileName) throws FileNonTrovatoException, FormatoFileNonValidoException, IOException;
 }
