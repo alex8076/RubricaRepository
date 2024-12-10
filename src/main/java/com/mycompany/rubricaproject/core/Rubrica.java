@@ -12,6 +12,7 @@
  */
 package com.mycompany.rubricaproject.core;
 
+import com.mycompany.rubricaproject.eccezioni.ContattoDuplicatoException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,6 +40,7 @@ public class Rubrica {
      * @return La lista dei contatti.
      */
      public Set<Contatto> getContatti() {
+         return new HashSet<>(this.contatti);
         
     }
      
@@ -54,7 +56,9 @@ public class Rubrica {
      * 
      * @throws ContattoDuplicatoException Se si prova ad aggiungere un contatto già presente
      */
-    public void aggiungiContatto(Contatto c) {
+    public void aggiungiContatto(Contatto c) throws ContattoDuplicatoException{
+        if(!contatti.add(c)){
+        throw new ContattoDuplicatoException ("Contatto già presente in rubrica:"+c);}
         
     }
     
@@ -66,6 +70,7 @@ public class Rubrica {
      * @post Se il contatto era presente, viene rimosso dalla rubrica.
      */
     public void rimuoviContatto(Contatto c) {
+        contatti.remove(c);
         
     }
     
@@ -81,7 +86,13 @@ public class Rubrica {
      * @invariant contatti.
      */
     public Set<Contatto> CercaContatti(String ricercaStr){
-        
+        Set<Contatto> risultati= new HashSet<>();
+        for (Contatto c: contatti){
+            if(c.getNome().contains(ricercaStr)|| c.getCognome().contains(ricercaStr)){
+                risultati.add(c);
+            }
+        }
+        return risultati;
     }
     
 }
