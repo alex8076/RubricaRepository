@@ -23,6 +23,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -56,6 +57,12 @@ public class Controller implements Initializable {
     private Button cancelBtn;
     @FXML
     private VBox contactContainer;
+    @FXML
+    private VBox inputPane;
+    @FXML
+    private HBox dashboard;
+    @FXML
+    private Button newContactBtn;
     
     /**
      * @brief Inizializza il controller.
@@ -75,6 +82,7 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         rubrica = new Rubrica();
         this.mappaContatti = new HashMap<>();
+        inputPane.setVisible(false);
     }   
     
     /**
@@ -91,6 +99,7 @@ public class Controller implements Initializable {
      * @post viene aggiunto un nuovo contatto alla rubrica
      * @post la view viene aggiornata
      * @post i campi di input vengono ripuliti
+     * @post Il pannello per l'inserimento di un nuovo utente viene nascosto
      * 
      * @see ripulisciCampi()
      * @see aggiornaContatti()
@@ -119,6 +128,8 @@ public class Controller implements Initializable {
         aggiornaContatti();
         // ripulisco i campi di input
         ripulisciCampi();
+        // nascondo il pannello per l'inserimento di un nuovo contatto
+        inputPane.setVisible(false);
     }
     
     
@@ -359,13 +370,32 @@ public class Controller implements Initializable {
      * @param event L'evento associato al click del pulsante
      * 
      * @post I campi di input vengono ripuliti
+     * @post Il pannello per l'inserimento di un nuovo utente viene nascosto
      * 
      * @see ripulisciCampi()
      */
     @FXML
     private void handleCancel(ActionEvent event) {
-        // ripulisco i campi input
+        // Ripulisco i campi input
         ripulisciCampi();
+        // Nascondo il pannello per l'inserimento di un nuovo utente 
+        inputPane.setVisible(false);
+    }
+
+    /**
+     * @brief Mostra il pannello contenente i campi di input per l'aggiunta di un nuovo contatto qualora venisse premuto l'apposito tasto nella dashboard
+     * 
+     * Se il pulsante viene premuto e il pannello di aggiunta utente è nascosto, quest'ultimo viene mostrato.
+     * Se invece il pulsante viene premuto e il pannello è già visibile, questo viene nascoto.
+     * 
+     * @param event L'evento associato al click del pulsante
+     * 
+     * @post Il pannello per l'inserimento di un nuovo utente compare/scompare
+     */
+    @FXML
+    private void onNewContact(ActionEvent event) {
+        boolean isVisible = inputPane.isVisible();
+        inputPane.setVisible(!isVisible);
     }
     
 }
