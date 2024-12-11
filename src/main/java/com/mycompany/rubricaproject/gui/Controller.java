@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -101,6 +102,18 @@ public class Controller implements Initializable {
         rubrica = new Rubrica();
         this.mappaContatti = new HashMap<>();
         inputPane.setVisible(false);
+        
+        // Adatto la larghezza del pannello che mostra i contatti inseriti in base 
+        // al fatto che il pannello di inserimento di un nuovo contatto sia visibile o meno
+        contactContainer.maxWidthProperty().bind(
+                Bindings.createDoubleBinding(
+                        () -> inputPane.isVisible() ?
+                                  contactContainer.getScene().getWidth() - inputPane.getPrefWidth()
+                                : contactContainer.getScene().getWidth(), 
+                        inputPane.visibleProperty(),
+                        contactContainer.getScene().widthProperty()
+            )
+        );
     }   
     
     /**
