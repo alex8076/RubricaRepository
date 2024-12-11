@@ -18,6 +18,7 @@ package com.mycompany.rubricaproject.core;
 import com.mycompany.rubricaproject.eccezioni.MailNonCorrettaException;
 import com.mycompany.rubricaproject.eccezioni.NumeroNonCorrettoException;
 import com.mycompany.rubricaproject.eccezioni.UtenteNonValidoException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -27,7 +28,7 @@ public class Contatto implements Comparable<Contatto> {
     
     private String nome;
     private String cognome;
-    private Set<String> numeriTelefono;
+    private Set<String> numeriTelefono; //indecisione sul fatto di usare una list
     private Set<String> indirizziMail;
     
     
@@ -150,11 +151,8 @@ public class Contatto implements Comparable<Contatto> {
        
         if (numero == null || !isNumeroValido(numero)) 
             throw new NumeroNonCorrettoException("Il numero di telefono non è valido.");
-
-        if (numeriTelefono.size() >= 3) //HO DEI DUBBI
-            throw new IllegalArgumentException("Il contatto può avere al massimo 3 numeri di telefono.");
     
-        if (!numeriTelefono.add(numero)) //HO DEI DUBBI
+        if (!numeriTelefono.add(numero))
             throw new IllegalArgumentException("Il numero di telefono è già presente.");
      }
      
@@ -200,8 +198,7 @@ public class Contatto implements Comparable<Contatto> {
         if (!numeriTelefono.contains(numero)) 
             throw new IllegalArgumentException("Il numero da rimuovere non è presente."); 
         
-    
-    
+        
         numeriTelefono.remove(numero);
      }
      
@@ -278,10 +275,6 @@ public class Contatto implements Comparable<Contatto> {
      * @post La lista degli indirizzi email è aggiornata.
      */
      public void aggiungiMail (String mail){
-        if (indirizziMail.size() >= 3)
-            throw new IllegalArgumentException("Non è possibile aggiungere più di 3 indirizzi email."); 
-
-        
         if (!isMailValida(mail))
             throw new MailNonCorrettaException("L'indirizzo email non è valido.");
             
@@ -356,11 +349,12 @@ public class Contatto implements Comparable<Contatto> {
      */
      @Override
     public int hashCode(){
-        int code = cognome == null ? 0 : cognome.hashCode();
+        /*int code = cognome == null ? 0 : cognome.hashCode();
         code = 31 * code + (nome == null ? 0 : nome.hashCode());
         code = 31 * code + numeriTelefono.hashCode();
         code = 31 * code + indirizziMail.hashCode();
-        return code; 
+        return code; */
+        return Objects.hash(numeriTelefono, indirizziMail);
      }
     
      
@@ -399,13 +393,16 @@ public class Contatto implements Comparable<Contatto> {
          if(this==obj) return true;
          if(this.getClass()!=obj.getClass()) return false;
          Contatto c = (Contatto) obj;
+        
+         for(String numero : this.numeriTelefono)
+             if(c.numeriTelefono.contains(numero))
+                 return true;
          
-         if (!nome.equals(c.nome)) return false;
-         if (!cognome.equals(c.cognome)) return false;
-
-    
-         if (!numeriTelefono.equals(c.numeriTelefono)) return false;
-         return indirizziMail.equals(c.indirizziMail);
+         for(String mail : this.indirizziMail)
+             if(c.indirizziMail.contains(mail))
+                 return true;
+     
+         return false;
 
      }         
 }
