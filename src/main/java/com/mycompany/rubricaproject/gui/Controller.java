@@ -12,6 +12,7 @@ package com.mycompany.rubricaproject.gui;
 
 import com.mycompany.rubricaproject.core.Contatto;
 import com.mycompany.rubricaproject.core.Rubrica;
+import com.mycompany.rubricaproject.eccezioni.ContattoDuplicatoException;
 import com.mycompany.rubricaproject.eccezioni.MailNonCorrettaException;
 import com.mycompany.rubricaproject.eccezioni.NumeroNonCorrettoException;
 import com.mycompany.rubricaproject.eccezioni.UtenteNonValidoException;
@@ -180,7 +181,14 @@ public class Controller implements Initializable {
             }
 
             // aggiungo il contatto alla rubrica
-            rubrica.aggiungiContatto(nuovoContatto);
+            try {
+                rubrica.aggiungiContatto(nuovoContatto);
+            } catch (ContattoDuplicatoException ex) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Un contatto con questi dati è già presente");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
             //aggiorno la view dopo aver inserito il nuovo contatto
             aggiornaContatti();
             // ripulisco i campi di input
