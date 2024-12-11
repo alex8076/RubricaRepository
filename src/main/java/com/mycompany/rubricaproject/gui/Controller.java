@@ -228,7 +228,7 @@ public class Controller implements Initializable {
         v2.setSpacing(10);
         int cont;
         cont = 0;
-        for (String numeroTelefono : contatto.getNumeriDiTelefono()) {
+        for (String numeroTelefono : contatto.getNumeriTelefono()) {
             cont++;
             Label numeroLabel = new Label("Numero di Telefono " + cont + ": " + numeroTelefono);
             v2.getChildren().add(numeroLabel);
@@ -311,7 +311,7 @@ public class Controller implements Initializable {
         VBox v2 = new VBox();
         v2.setAlignment(Pos.CENTER);
         v2.setSpacing(10);
-        String[] numeriTelefonoArray = contatto.getNumeriDiTelefono().toArray(new String[0]);
+        String[] numeriTelefonoArray = contatto.getNumeriTelefono().toArray(new String[0]);
         TextField tfEditNumero1 = new TextField(numeriTelefonoArray[0] != null ? numeriTelefonoArray[0] : "");
         TextField tfEditNumero2 = new TextField(numeriTelefonoArray[1] != null ? numeriTelefonoArray[1] : "");
         TextField tfEditNumero3 = new TextField(numeriTelefonoArray[2] != null ? numeriTelefonoArray[2] : "");
@@ -342,14 +342,14 @@ public class Controller implements Initializable {
             contatto.setCognome(tfEditCognome.getText());
             
             // Aggiorno i dati inerenti ai numero di telefono
-            contatto.modificaNumero(tfEditNumero1.getText());
-            contatto.modificaNumero(tfEditNumero2.getText());
-            contatto.modificaNumero(tfEditNumero3.getText());
+            contatto.modificaNumero(tfEditNumero1.getText(), contatto.getNumeriTelefono().toArray(new String[3])[0]);
+            contatto.modificaNumero(tfEditNumero2.getText(), contatto.getNumeriTelefono().toArray(new String[3])[1]);
+            contatto.modificaNumero(tfEditNumero3.getText(), contatto.getNumeriTelefono().toArray(new String[3])[2]);
             
             // Aggiorno i dati inerenti agli indirizzi email
-            contatto.modificaMail(tfEditEmail1.getText());
-            contatto.modificaMail(tfEditEmail2.getText());
-            contatto.modificaMail(tfEditEmail3.getText());
+            contatto.modificaMail(tfEditEmail1.getText(), contatto.getIndirizziMail().toArray(new String[3])[0]);
+            contatto.modificaMail(tfEditEmail2.getText(), contatto.getIndirizziMail().toArray(new String[3])[1]);
+            contatto.modificaMail(tfEditEmail3.getText(), contatto.getIndirizziMail().toArray(new String[3])[2]);
             
             // Aggiorno la view
             aggiornaContatti();
