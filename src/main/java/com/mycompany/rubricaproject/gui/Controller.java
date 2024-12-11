@@ -396,7 +396,7 @@ public class Controller implements Initializable {
     /**
      * @brief Gestisce il caso in cui l'utente scelga di annullare l'aggiunta di un nuovo vontatto
      * 
-     * @param event L'evento associato al click del pulsante
+     * @param[in] event L'evento associato al click del pulsante
      * 
      * @post I campi di input vengono ripuliti
      * @post Il pannello per l'inserimento di un nuovo utente viene nascosto
@@ -417,7 +417,7 @@ public class Controller implements Initializable {
      * Se il pulsante viene premuto e il pannello di aggiunta utente è nascosto, quest'ultimo viene mostrato.
      * Se invece il pulsante viene premuto e il pannello è già visibile, questo viene nascoto.
      * 
-     * @param event L'evento associato al click del pulsante
+     * @param[in] event L'evento associato al click del pulsante
      * 
      * @post Il pannello per l'inserimento di un nuovo utente compare/scompare
      */
@@ -430,7 +430,7 @@ public class Controller implements Initializable {
     /**
      * @brief Mostra nella view unicamente i contatti il cui nome/cognome contiene la stringa inserita nel campo di ricerca
      * 
-     * @param event L'evento associato al click del pulsante
+     * @param[in] event L'evento associato al click del pulsante
      * 
      * @pre è stata fornita una stringa come parametro di ricerca
      * @post sono mostrate solo le card dei contatti corrispondenti alla ricerca
@@ -468,7 +468,7 @@ public class Controller implements Initializable {
      * 
      * Viene mostrata una finestra di dialogo che consenta di caricare un file prelevandolo dalla propria directory
      * 
-     * @param event L'evento associato al click del pulsante
+     * @param[in] event L'evento associato al click del pulsante
      * 
      * (?) @pre Il file da importare esiste ed è correttamente formattato
      * @post Il contenuto del file viene caricato in rubrica
@@ -527,7 +527,7 @@ public class Controller implements Initializable {
      * 
      * Viene mostrata una finestra di dialogo che consente di selezionare la directory/file in cui salvare i dati
      * 
-     * @param event L'evento associato al clic del pulsante
+     * @param[in] event L'evento associato al clic del pulsante
      * 
      * @pre La rubrica contiene dati da esportare
      * @post I dati presenti in ribrica vengono salavti su file CSV prensente nella directory specificata
