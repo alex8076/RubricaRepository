@@ -11,6 +11,8 @@
 package com.mycompany.rubricaproject.gui;
 
 import com.mycompany.rubricaproject.core.Contatto;
+import com.mycompany.rubricaproject.core.Contatto;
+import com.mycompany.rubricaproject.core.Rubrica;
 import com.mycompany.rubricaproject.core.Rubrica;
 import com.mycompany.rubricaproject.eccezioni.ContattoDuplicatoException;
 import com.mycompany.rubricaproject.eccezioni.MailNonCorrettaException;
