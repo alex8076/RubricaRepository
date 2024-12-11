@@ -15,7 +15,11 @@
 
 package com.mycompany.rubricaproject.core;
 
+import com.mycompany.rubricaproject.eccezioni.MailNonCorrettaException;
+import com.mycompany.rubricaproject.eccezioni.NumeroNonCorrettoException;
+import com.mycompany.rubricaproject.eccezioni.UtenteNonValidoException;
 import java.util.Set;
+import java.util.TreeSet;
 
 
 
@@ -25,6 +29,8 @@ public class Contatto implements Comparable<Contatto> {
     private String cognome;
     private Set<String> numeriTelefono;
     private Set<String> indirizziMail;
+    
+    
     
     
     /**
@@ -39,8 +45,17 @@ public class Contatto implements Comparable<Contatto> {
      * 
      */
     public Contatto(String nome, String cognome){
+       if (!isValido(nome, cognome)) 
+            throw new UtenteNonValidoException("Deve essere presente almeno un nome o un cognome");
         
+        
+        this.nome=nome;
+        this.cognome=cognome;
+        this.numeriTelefono= new TreeSet<>();
+        this.indirizziMail= new TreeSet<>();
     }
+    
+    
     
     
     /**
@@ -49,8 +64,10 @@ public class Contatto implements Comparable<Contatto> {
      * @return Nome del contatto.
      */
     public String getNome(){
-        
+        return nome;
     }
+    
+    
     
     
     /**
@@ -64,8 +81,14 @@ public class Contatto implements Comparable<Contatto> {
      * 
      */
     public void setNome(String nome){
+        if (!isValido(nome, this.cognome)) 
+            throw new UtenteNonValidoException("Se il nome è vuoto, il cognome deve essere presente");
         
+        this.nome=nome;
     }
+    
+    
+    
     
     /**
      * @brief Restituisce il cognome del contatto.
@@ -73,8 +96,11 @@ public class Contatto implements Comparable<Contatto> {
      * @return Cognome del contatto.
      */
     public String getCognome(){
-        
+        return cognome;
     }
+    
+    
+    
     
     /**
      * @brief Imposta il cognome del contatto.
@@ -85,17 +111,27 @@ public class Contatto implements Comparable<Contatto> {
      * @post Il cognome del contatto è aggiornato, ammesso che l'utente aggiornato risulti valido.
      * @see isValido()
      * 
-     * @throws UtenteNonValidoException se nomer è nullo e si setta cognome nullo
+     * @throws UtenteNonValidoException se nome è nullo e si setta cognome nullo
      */
      public void setCognome(String cognome){
+        if (!isValido(this.nome, cognome)) 
+            throw new UtenteNonValidoException("Se il cognome è vuoto, il nome deve essere presente");
         
+        this.cognome=cognome;
     }
     
      
      
-     public Set<String> getNumeriDiTelefono(){
-         
+     
+    /**
+    * @brief Restituisce i numeri di telefono associati al contatto.
+    * 
+    * @return Un set contenente i numeri di telefono del contatto.
+    */
+     public Set<String> getNumeriTelefono(){
+        return numeriTelefono;
      }
+     
      
      
      
@@ -111,8 +147,19 @@ public class Contatto implements Comparable<Contatto> {
      * @post Il contatto avrà un nuovo numero di telefono
      */
      public void aggiungiNumero (String numero) {
-         
+       
+        if (numero == null || !isNumeroValido(numero)) 
+            throw new NumeroNonCorrettoException("Il numero di telefono non è valido.");
+
+        if (numeriTelefono.size() >= 3) //HO DEI DUBBI
+            throw new IllegalArgumentException("Il contatto può avere al massimo 3 numeri di telefono.");
+    
+        if (!numeriTelefono.add(numero)) //HO DEI DUBBI
+            throw new IllegalArgumentException("Il numero di telefono è già presente.");
      }
+     
+     
+     
      
      /**
      * @brief Modifica un numero di telefono del contatto.
@@ -124,9 +171,18 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @post Il numero di telefono selezionato è stato aggiornato.
      */
-     public void modificaNumero (String numero){
-         
-     }
+    public void modificaNumero (String numeroNuovo, String numeroVecchio){
+        if (!isNumeroValido(numeroNuovo)) 
+            throw new NumeroNonCorrettoException("Il numero di telefono non è valido");
+        
+
+    
+        if (!numeriTelefono.contains(numeroVecchio))
+            throw new IllegalArgumentException("Il numero di telefono da sostituire non è stato trovato"); 
+        
+        numeriTelefono.remove(numeroVecchio);
+        numeriTelefono.add(numeroNuovo);
+    }
      
      
      
@@ -139,11 +195,19 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @post La lista dei numeri di telefono è aggiornata.
      */
-     public void rimuoviNumero (String numero){
+    public void rimuoviNumero (String numero){
          
+        if (!numeriTelefono.contains(numero)) 
+            throw new IllegalArgumentException("Il numero da rimuovere non è presente."); 
+        
+    
+    
+        numeriTelefono.remove(numero);
      }
      
+    
      
+    
      /**
      * @brief Verifica se un numero di telefono è valido.
      * 
@@ -151,12 +215,27 @@ public class Contatto implements Comparable<Contatto> {
      * @return `true` se il numero è valido, altrimenti `false`.
      * @throws NumeroNonCorrettoException Se il numero passato non è correttamente formattato
      */
-     private boolean isNumeroValido (String numero){
-         
-     }
+    private boolean isNumeroValido (String numero){
+        if (numero == null || numero.isEmpty()) 
+            throw new NumeroNonCorrettoException("Il numero non può essere nullo o vuoto.");
+        
+        
+        for (int i = 0; i < numero.length(); i++) {
+            if (!Character.isDigit(numero.charAt(i))) 
+                throw new NumeroNonCorrettoException("Il numero deve contenere solo cifre.");
+        }
+
+        
+        if (numero.length() != 10) 
+            throw new NumeroNonCorrettoException("Il numero deve contenere esattamente 10 cifre.");
+        
+
+        return true; 
+    }
      
      
       
+    
      /**
      * @brief Verifica se il contatto è valido.
      * 
@@ -166,9 +245,11 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @throws UtenteNonValidoException Se l'utente ha nulli contemporaneamente sia nome che cognome
      */
-     public boolean isValido(){
-         
+     public boolean isValido(String nome, String cognome){
+         return (nome != null && !nome.isEmpty()) || (cognome != null && !cognome.isEmpty());
      }
+     
+     
      
      
       /**
@@ -179,8 +260,10 @@ public class Contatto implements Comparable<Contatto> {
      * @return Un insieme di indirizzi email.
      */
      public Set<String> getIndirizziMail (){
-         
+        return indirizziMail;
      }
+     
+     
      
      
       /**
@@ -195,8 +278,16 @@ public class Contatto implements Comparable<Contatto> {
      * @post La lista degli indirizzi email è aggiornata.
      */
      public void aggiungiMail (String mail){
-         
+        if (indirizziMail.size() >= 3)
+            throw new IllegalArgumentException("Non è possibile aggiungere più di 3 indirizzi email."); 
+
+        
+        if (!isMailValida(mail))
+            throw new MailNonCorrettaException("L'indirizzo email non è valido.");
+            
+        indirizziMail.add(mail);
      }
+     
      
      
      
@@ -210,9 +301,19 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @post L'indirizzo email specificato è stato aggiornato.
      */
-     public void modificaMail(String mail){
-         
+     public void modificaMail(String mailVecchia, String mailNuova){
+        if (!isMailValida(mailNuova)) 
+            throw new MailNonCorrettaException("La nuova email non è valida.");
+        
+        if (!indirizziMail.contains(mailVecchia)) 
+            throw new IllegalArgumentException("La vecchia email non è presente.");
+        
+        
+        indirizziMail.remove(mailVecchia);
+        indirizziMail.add(mailNuova);
      }
+     
+     
      
      
      /**
@@ -225,8 +326,14 @@ public class Contatto implements Comparable<Contatto> {
      */
      
      public void rimuoviMail (String mail){
-         
+        if (!indirizziMail.contains(mail)) 
+            throw new IllegalArgumentException("L'indirizzo email non è presente.");
+       
+        indirizziMail.remove(mail);
      }
+     
+     
+     
      
       /**
      * @brief Verifica se un indirizzo email è valido.
@@ -236,11 +343,8 @@ public class Contatto implements Comparable<Contatto> {
      * @throws MailNonCorrettaException Se il la mail passata non è correttamente formattata
      */
      private boolean isMailValida(String mail){
-         
+          return mail != null && mail.contains("@") && mail.contains(".");
      }
-     
-     
-     
      
      
      
@@ -251,10 +355,17 @@ public class Contatto implements Comparable<Contatto> {
      * @return Codice hash calcolato.
      */
      @Override
-     public int hashCode(){
-         
+    public int hashCode(){
+        int code = cognome == null ? 0 : cognome.hashCode();
+        code = 31 * code + (nome == null ? 0 : nome.hashCode());
+        code = 31 * code + numeriTelefono.hashCode();
+        code = 31 * code + indirizziMail.hashCode();
+        return code; 
      }
     
+     
+     
+     
     /**
      * @brief Confronta questo contatto con un altro.
      * 
@@ -263,10 +374,19 @@ public class Contatto implements Comparable<Contatto> {
      *         minore, uguale o maggiore dell'altro contatto.
      */
      @Override
-     public int compareTo(Contatto o){
+     public int compareTo(Contatto c){
          
-     }
+        int tmp = this.cognome.compareTo(c.cognome);
+        if (tmp != 0) {
+        return tmp;
+        }
     
+        return this.nome.compareTo(c.nome);
+    }
+    
+     
+    
+     
      /**
      * @brief Verifica se questo contatto è uguale a un altro oggetto.
      * 
@@ -275,23 +395,17 @@ public class Contatto implements Comparable<Contatto> {
      */
      @Override
      public boolean equals(Object obj){
+         if(obj==null) return false;
+         if(this==obj) return true;
+         if(this.getClass()!=obj.getClass()) return false;
+         Contatto c = (Contatto) obj;
          
-     }
+         if (!nome.equals(c.nome)) return false;
+         if (!cognome.equals(c.cognome)) return false;
 
-     
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+    
+         if (!numeriTelefono.equals(c.numeriTelefono)) return false;
+         return indirizziMail.equals(c.indirizziMail);
+
+     }         
 }
