@@ -107,7 +107,7 @@ public class Controller implements Initializable {
         
         // Adatto la larghezza del pannello che mostra i contatti inseriti in base 
         // al fatto che il pannello di inserimento di un nuovo contatto sia visibile o meno
-        contactContainer.maxWidthProperty().bind(
+        /*contactContainer.maxWidthProperty().bind(
                 Bindings.createDoubleBinding(
                         () -> inputPane.isVisible() ?
                                   contactContainer.getScene().getWidth() - inputPane.getPrefWidth()
@@ -115,7 +115,7 @@ public class Controller implements Initializable {
                         inputPane.visibleProperty(),
                         contactContainer.getScene().widthProperty()
             )
-        );
+        );*/
     }   
     
     /**
@@ -136,6 +136,7 @@ public class Controller implements Initializable {
      * 
      * @see ripulisciCampi()
      * @see aggiornaContatti()
+     * @see mostraAlert()
      * @see Contatto
      * @see Rubrica
      * 
@@ -152,15 +153,9 @@ public class Controller implements Initializable {
                 nuovoContatto.aggiungiNumero(tfTelefono2.getText());
                 nuovoContatto.aggiungiNumero(tfTelefono3.getText());
             } catch (NumeroNonCorrettoException ex) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Controllare che i numeri inseriti siano validi");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Controllare che i numeri inseriti siano validi");;
             } catch (IllegalArgumentException ex) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Un numero di telefono è già presente");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Un numero di telefono è già presente");
             }
 
             // aggiungo nei dati del contatto gli eventuali indirizzi email inseriti
@@ -169,25 +164,16 @@ public class Controller implements Initializable {
                 nuovoContatto.aggiungiMail(tfEmail2.getText());
                 nuovoContatto.aggiungiMail(tfEmail3.getText());
             } catch (MailNonCorrettaException ex) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Controllare che le mail inserite siano valide");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Controllare che le mail inserite siano valide");
             } catch (IllegalArgumentException ex) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Una mail è già presente");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Una mail è già presente");
             }
 
             // aggiungo il contatto alla rubrica
             try {
                 rubrica.aggiungiContatto(nuovoContatto);
             } catch (ContattoDuplicatoException ex) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Un contatto con questi dati è già presente");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Un contatto con questi dati è già presente");
             }
             //aggiorno la view dopo aver inserito il nuovo contatto
             aggiornaContatti();
@@ -198,10 +184,7 @@ public class Controller implements Initializable {
         } catch (UtenteNonValidoException ex) {
             // Gestisco il caso in cui i dati inseriti non siano validi
             // mostrando un messaggio di errore all'utente
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Inserire almeno un nome o un cognome");
-            alert.setHeaderText(null);
-            alert.showAndWait();
+            mostraAlert("Inserire almeno un nome o un cognome");
         }
                 
     }
@@ -328,6 +311,7 @@ public class Controller implements Initializable {
       * @post Il contatto è stato aggiornato con i nuovi dati.
       * 
       * @see aggiornaContatti()
+      * @see mostraAlert()
       * @see Contatto
       */
     private void modificaContatto(Contatto contatto) {
@@ -385,10 +369,7 @@ public class Controller implements Initializable {
                 contatto.setNome(tfEditNome.getText());
                 contatto.setCognome(tfEditCognome.getText());
             } catch(UtenteNonValidoException ex) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Inserire almeno un nome o un cognome");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Inserire almeno un nome o un cognome");
             }
             
             // Aggiorno i dati inerenti ai numero di telefono
@@ -415,10 +396,7 @@ public class Controller implements Initializable {
                     contatto.rimuoviNumero(contatto.getNumeriTelefono().toArray(new String[3])[2]);
                 }
             } catch (NumeroNonCorrettoException ex) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("I numeri devono essere correttamente formattati");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("I numeri devono essere correttamente formattati");
             }
             
             // Aggiorno i dati inerenti agli indirizzi email
@@ -445,10 +423,7 @@ public class Controller implements Initializable {
                     contatto.rimuoviMail(contatto.getIndirizziMail().toArray(new String[3])[2]);
                 }
             } catch (MailNonCorrettaException ex) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Le mail devono essere correttamente formattate");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Le mail devono essere correttamente formattate");
             }
             
             // Aggiorno la view
@@ -576,6 +551,7 @@ public class Controller implements Initializable {
      * @post Il contenuto del file viene caricato in rubrica
      * @post Viene mostrata una notifica alla fine dell'operazione
      * 
+     * @see mostraAlert()
      * @see CSVFileHandler
      */
     @FXML
@@ -599,27 +575,18 @@ public class Controller implements Initializable {
                 // Aggiorno la view
                 aggiornaContatti();
                 // Mostro una notifica di completamento
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Importazione completata con successo");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Importazione completata con successo");
             } catch (IOException ex) {
                 // Gestisco il caso in cui sorga un'eccezione
                 System.err.println("Importazione fallita: " + ex.getMessage());
                 // Mostro una notifica di fallimento
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Importazione fallita");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Importazione fallita");
             }
         } else {
             // Gestisco il caso in cui non venga selezionato alcun file, annullando l'operazione
             System.out.println("Nessun file selezionato");
             // Mostro una notifica di fallimento
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Importazione fallita");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+            mostraAlert("Importazione fallita");
         }
 
     }
@@ -635,6 +602,7 @@ public class Controller implements Initializable {
      * @post I dati presenti in ribrica vengono salavti su file CSV prensente nella directory specificata
      * @post Viene mostrata una notifica alla fine dell'operazione
      * 
+     * @see mostraAlert()
      * @see CSVFileHandler
      */
     @FXML
@@ -661,28 +629,34 @@ public class Controller implements Initializable {
                 // Invoco la funzione di esportazione di CSVFilehandler passando il path del file
                 fh.esportaRubrica(filePath);
                 // Mostro una notifica di completamento dell'operazione
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Esportazione completata con successo");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Esportazione completata con successo");
             } catch (IOException ex) {
                 // Gestisco il caso in cui sorga un'eccezione
                 System.err.println("Errore nell'esportazione: " + ex.getMessage());
                 // Mostro una notifica di fallimento
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Esportazione fallita");
-                alert.setHeaderText(null);
-                alert.showAndWait();
+                mostraAlert("Esportazione fallita");
             }
         } else {
             // Gestisco il caso in cui l'esportazione fallisca, annullando l'operazione
             System.out.println("Esportazione annullata");
             // Mostro una notifica di fallimento
+            mostraAlert("Esportazione fallita");
+        }
+    }
+    
+    /**
+     * @brief mostra all'utente una finestra di alert per notificare un evento
+     * 
+     * @post la GUI mostra un alert contenente un messaggio
+     * 
+     * @param msg Il mossaggio da mostrare nell'alert
+     */
+    private void mostraAlert(String msg) {
             Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Esportazione fallita");
+            alert.setTitle("ATTENZIONE");
+            alert.setContentText(msg);
             alert.setHeaderText(null);
             alert.showAndWait();
-        }
     }
     
 }
