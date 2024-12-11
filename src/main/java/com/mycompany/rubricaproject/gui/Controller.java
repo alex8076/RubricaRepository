@@ -12,6 +12,9 @@ package com.mycompany.rubricaproject.gui;
 
 import com.mycompany.rubricaproject.core.Contatto;
 import com.mycompany.rubricaproject.core.Rubrica;
+import com.mycompany.rubricaproject.eccezioni.MailNonCorrettaException;
+import com.mycompany.rubricaproject.eccezioni.NumeroNonCorrettoException;
+import com.mycompany.rubricaproject.eccezioni.UtenteNonValidoException;
 import com.mycompany.rubricaproject.io.CSVFileHandler;
 import java.io.File;
 import java.io.IOException;
@@ -138,27 +141,61 @@ public class Controller implements Initializable {
      */
     @FXML
     private void handleAdd(ActionEvent e) {
-        // creo un nuovo contatto
-        Contatto nuovoContatto = new Contatto(tfNome.getText(), tfCognome.getText());
+        try {
+            // creo un nuovo contatto
+            Contatto nuovoContatto = new Contatto(tfNome.getText(), tfCognome.getText());
         
-        // aggiungo nei dati del contatto gli eventuali numeri di telefono inseriti
-        nuovoContatto.aggiungiNumero(tfTelefono1.getText());
-        nuovoContatto.aggiungiNumero(tfTelefono2.getText());
-        nuovoContatto.aggiungiNumero(tfTelefono3.getText());
-        
-        // aggiungo nei dati del contatto gli eventuali indirizzi email inseriti
-        nuovoContatto.aggiungiMail(tfEmail1.getText());
-        nuovoContatto.aggiungiMail(tfEmail2.getText());
-        nuovoContatto.aggiungiMail(tfEmail3.getText());
-        
-        // aggiungo il contatto alla rubrica
-        rubrica.aggiungiContatto(nuovoContatto);
-        //aggiorno la view dopo aver inserito il nuovo contatto
-        aggiornaContatti();
-        // ripulisco i campi di input
-        ripulisciCampi();
-        // nascondo il pannello per l'inserimento di un nuovo contatto
-        inputPane.setVisible(false);
+            // aggiungo nei dati del contatto gli eventuali numeri di telefono inseriti
+            try {
+                nuovoContatto.aggiungiNumero(tfTelefono1.getText());
+                nuovoContatto.aggiungiNumero(tfTelefono2.getText());
+                nuovoContatto.aggiungiNumero(tfTelefono3.getText());
+            } catch (NumeroNonCorrettoException ex) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Controllare che i numeri inseriti siano validi");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            } catch (IllegalArgumentException ex) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Un numero di telefono è già presente");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
+
+            // aggiungo nei dati del contatto gli eventuali indirizzi email inseriti
+            try {
+                nuovoContatto.aggiungiMail(tfEmail1.getText());
+                nuovoContatto.aggiungiMail(tfEmail2.getText());
+                nuovoContatto.aggiungiMail(tfEmail3.getText());
+            } catch (MailNonCorrettaException ex) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Controllare che le mail inserite siano valide");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            } catch (IllegalArgumentException ex) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Una mail è già presente");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
+
+            // aggiungo il contatto alla rubrica
+            rubrica.aggiungiContatto(nuovoContatto);
+            //aggiorno la view dopo aver inserito il nuovo contatto
+            aggiornaContatti();
+            // ripulisco i campi di input
+            ripulisciCampi();
+            // nascondo il pannello per l'inserimento di un nuovo contatto
+            inputPane.setVisible(false);
+        } catch (UtenteNonValidoException ex) {
+            // Gestisco il caso in cui i dati inseriti non siano validi
+            // mostrando un messaggio di errore all'utente
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Inserire almeno un nome o un cognome");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+        }
+                
     }
     
     
@@ -336,18 +373,75 @@ public class Controller implements Initializable {
         // Collego il pulsante di salvataggio delle modifiche alla relativa azione
         saveEditBtn.setOnAction(e -> {
             // Aggiorno i dati inerenti a Nome e Cognome
-            contatto.setNome(tfEditNome.getText());
-            contatto.setCognome(tfEditCognome.getText());
+            try {
+                contatto.setNome(tfEditNome.getText());
+                contatto.setCognome(tfEditCognome.getText());
+            } catch(UtenteNonValidoException ex) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Inserire almeno un nome o un cognome");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
             
             // Aggiorno i dati inerenti ai numero di telefono
-            contatto.modificaNumero(tfEditNumero1.getText(), contatto.getNumeriTelefono().toArray(new String[3])[0]);
-            contatto.modificaNumero(tfEditNumero2.getText(), contatto.getNumeriTelefono().toArray(new String[3])[1]);
-            contatto.modificaNumero(tfEditNumero3.getText(), contatto.getNumeriTelefono().toArray(new String[3])[2]);
+            try {
+                if (!tfEditNumero1.getText().isEmpty())  {
+                    // se il nuovo numero aggiornato non è vuoto, questo va a sostituire il numero vecchio
+                    contatto.modificaNumero(tfEditNumero1.getText(), contatto.getNumeriTelefono().toArray(new String[3])[0]); 
+                } else { 
+                    // se il nuovo numero è vuoto, allora si va semplicemente ad eliminare il numero vecchio
+                    contatto.rimuoviNumero(contatto.getNumeriTelefono().toArray(new String[3])[0]); 
+                }
+                if (!tfEditNumero2.getText().isEmpty()) {
+                    // se il nuovo numero aggiornato non è vuoto, questo va a sostituire il numero vecchio 
+                    contatto.modificaNumero(tfEditNumero2.getText(), contatto.getNumeriTelefono().toArray(new String[3])[1]);
+                } else {
+                    // se il nuovo numero è vuoto, allora si va semplicemente ad eliminare il numero vecchio
+                    contatto.rimuoviNumero(contatto.getNumeriTelefono().toArray(new String[3])[1]);
+                }
+                if (!tfEditNumero3.getText().isEmpty()) {
+                    // se il nuovo numero aggiornato non è vuoto, questo va a sostituire il numero vecchio 
+                    contatto.modificaNumero(tfEditNumero3.getText(), contatto.getNumeriTelefono().toArray(new String[3])[2]);
+                } else {
+                    // se il nuovo numero è vuoto, allora si va semplicemente ad eliminare il numero vecchio
+                    contatto.rimuoviNumero(contatto.getNumeriTelefono().toArray(new String[3])[2]);
+                }
+            } catch (NumeroNonCorrettoException ex) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("I numeri devono essere correttamente formattati");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
             
             // Aggiorno i dati inerenti agli indirizzi email
-            contatto.modificaMail(tfEditEmail1.getText(), contatto.getIndirizziMail().toArray(new String[3])[0]);
-            contatto.modificaMail(tfEditEmail2.getText(), contatto.getIndirizziMail().toArray(new String[3])[1]);
-            contatto.modificaMail(tfEditEmail3.getText(), contatto.getIndirizziMail().toArray(new String[3])[2]);
+            try {
+                if (!tfEditEmail1.getText().isEmpty()) {
+                    // se la nuova mail aggiornata non è vuota, questa va a sostituire la mail vecchia
+                    contatto.modificaMail(tfEditEmail1.getText(), contatto.getIndirizziMail().toArray(new String[3])[0]);
+                } else {
+                    // se la nuova mail è vuota, allora si va semplicemente ad eliminare la mail vecchia
+                    contatto.rimuoviMail(contatto.getIndirizziMail().toArray(new String[3])[0]);
+                }
+                if (!tfEditEmail2.getText().isEmpty()) {
+                    // se la nuova mail aggiornata non è vuota, questa va a sostituire la mail vecchia
+                    contatto.modificaMail(tfEditEmail2.getText(), contatto.getIndirizziMail().toArray(new String[3])[1]);
+                } else {
+                    // se la nuova mail è vuota, allora si va semplicemente ad eliminare la mail vecchia
+                    contatto.rimuoviMail(contatto.getIndirizziMail().toArray(new String[3])[1]);
+                }
+                if (!tfEditEmail3.getText().isEmpty()) {
+                    // se la nuova mail aggiornata non è vuota, questa va a sostituire la mail vecchia
+                    contatto.modificaMail(tfEditEmail3.getText(), contatto.getIndirizziMail().toArray(new String[3])[2]);
+                } else {
+                    // se la nuova mail è vuota, allora si va semplicemente ad eliminare la mail vecchia
+                    contatto.rimuoviMail(contatto.getIndirizziMail().toArray(new String[3])[2]);
+                }
+            } catch (MailNonCorrettaException ex) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Le mail devono essere correttamente formattate");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
             
             // Aggiorno la view
             aggiornaContatti();
