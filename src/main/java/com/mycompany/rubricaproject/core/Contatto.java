@@ -242,7 +242,7 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @throws UtenteNonValidoException Se l'utente ha nulli contemporaneamente sia nome che cognome
      */
-     public boolean isValido(String nome, String cognome){
+     private boolean isValido(String nome, String cognome){
          return (nome != null && !nome.isEmpty()) || (cognome != null && !cognome.isEmpty());
      }
      

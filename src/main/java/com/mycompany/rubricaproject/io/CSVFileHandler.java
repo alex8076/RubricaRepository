@@ -42,7 +42,7 @@ public class CSVFileHandler implements FileHandler {
             for (Contatto contatto : rubrica.getContatti()) {
                 pw.print(contatto.getNome() + ";");
                 pw.print(contatto.getCognome() + ";");
-                pw.print(String.join(",", contatto.getNumeriDiTelefono()) + ";");
+                pw.print(String.join(",", contatto.getNumeriTelefono()) + ";");
                 pw.println(String.join(",", contatto.getIndirizziMail()));
             }
             System.out.println("Rubrica esportata correttamente in formato CSV: " + fileName);
