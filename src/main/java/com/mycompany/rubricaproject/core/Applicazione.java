@@ -28,6 +28,9 @@ public class Applicazione extends Application {
         Scene scene = new Scene(root);
 
         primaryStage.setTitle("Rubrica");
+        
+        primaryStage.setResizable(false);
+        
         primaryStage.setScene(scene);
         primaryStage.show();
         

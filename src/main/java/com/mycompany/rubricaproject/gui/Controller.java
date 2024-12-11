@@ -25,11 +25,15 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -37,7 +41,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -110,17 +117,8 @@ public class Controller implements Initializable {
         // Nascondo il pannello di inserimento dalla view
         inputPane.setTranslateX(-283);
         
-        // Adatto la larghezza del pannello che mostra i contatti inseriti in base 
-        // al fatto che il pannello di inserimento di un nuovo contatto sia visibile o meno
-        /*contactContainer.maxWidthProperty().bind(
-                Bindings.createDoubleBinding(
-                        () -> inputPane.isVisible() ?
-                                  contactContainer.getScene().getWidth() - inputPane.getPrefWidth()
-                                : contactContainer.getScene().getWidth(), 
-                        inputPane.visibleProperty(),
-                        contactContainer.getScene().widthProperty()
-            )
-        );*/
+        contactContainer.setPrefWidth(800);
+        contactContainer.setLayoutX(0);
     }   
     
     /**
@@ -189,6 +187,14 @@ public class Controller implements Initializable {
             transition.setFromX(0);
             transition.setToX(-283);
             transition.play();
+            Timeline timeline = new Timeline(
+                new KeyFrame(
+                    Duration.millis(500),
+                    new KeyValue(contactContainer.prefWidthProperty(), 800),
+                    new KeyValue(contactContainer.layoutXProperty(), 0)
+                )
+            );
+            timeline.play();
         } catch (UtenteNonValidoException ex) {
             // Gestisco il caso in cui i dati inseriti non siano validi
             // mostrando un messaggio di errore all'utente
@@ -245,16 +251,18 @@ public class Controller implements Initializable {
     private VBox creaSchedaContatto(Contatto contatto) {
         // Creo e configuro una nuova card
         VBox card = new VBox();
-        card.setSpacing(10);
+        card.setSpacing(20);
         card.setAlignment(Pos.CENTER);
+        card.setPadding(new Insets(20));
+        card.setStyle("-fx-background-color: #EAEDED; -fx-background-radius: 10px;");
         
         // Raggruppo le informazioni inerenti a Nome e Cognome
         VBox v1 = new VBox();
         v1.setAlignment(Pos.CENTER);
         v1.setSpacing(10);
-        Label nomeLabel = new Label("Nome: " + contatto.getNome());
-        Label cognomeLabel = new Label("Cognome: " + contatto.getCognome());
-        v1.getChildren().addAll(nomeLabel, cognomeLabel);
+        Label cognomeNomeLabel = new Label(contatto.getCognome() + " " + contatto.getNome());
+        cognomeNomeLabel.setFont(new Font("Arial bold", 16));
+        v1.getChildren().add(cognomeNomeLabel);
         
         // Raggruppo le informazioni inerenti ai numeri di telefono
         VBox v2 = new VBox();
@@ -265,6 +273,7 @@ public class Controller implements Initializable {
         for (String numeroTelefono : contatto.getNumeriTelefono()) {
             cont++;
             Label numeroLabel = new Label("Numero di Telefono " + cont + ": " + numeroTelefono);
+            numeroLabel.setFont(new Font("Arial", 14));
             v2.getChildren().add(numeroLabel);
         }
         
@@ -276,6 +285,7 @@ public class Controller implements Initializable {
         for (String indirizzoEmail : contatto.getIndirizziMail()) {
             cont++;
             Label emailLabel = new Label("Indirizzo email " + cont + ": " + indirizzoEmail);
+            emailLabel.setFont(new Font("Arial", 14));
             v3.getChildren().add(emailLabel);
         }
         
@@ -284,7 +294,11 @@ public class Controller implements Initializable {
         h1.setAlignment(Pos.CENTER);
         h1.setSpacing(10);
         Button editBtn = new Button("Modifica");
+        editBtn.setFont(new Font("Arial bold", 14));
+        editBtn.setStyle("-fx-background-color: white;");
         Button removeBtn = new Button("Elimina");
+        removeBtn.setFont(new Font("Arial bold", 14));
+        removeBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
         h1.getChildren().addAll(removeBtn, editBtn);
         
         // Collego al pulsante di modifica la relativa azione
@@ -327,6 +341,8 @@ public class Controller implements Initializable {
         VBox editCard = new VBox();
         editCard.setAlignment(Pos.CENTER);
         editCard.setSpacing(10);
+        editCard.setPadding(new Insets(20));
+        editCard.setStyle("-fx-background-color: #EAEDED; -fx-background-radius: 10px;");
         
         // Inserisco i campi modificabili inerenti a Nome e Cognome
         VBox v1 = new VBox();
@@ -367,7 +383,11 @@ public class Controller implements Initializable {
         h3.setAlignment(Pos.CENTER);
         h3.setSpacing(10);
         Button saveEditBtn = new Button("Salva");
+        saveEditBtn.setFont(new Font("Arial bold", 14));
+        saveEditBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
         Button cancelEditBtn = new Button("Annulla");
+        cancelEditBtn.setFont(new Font("Arial bold", 14));
+        cancelEditBtn.setStyle("-fx-background-color: #28B463; -fx-text-fill: white;");
         h3.getChildren().addAll(cancelEditBtn, saveEditBtn);
         
         // Collego il pulsante di salvataggio delle modifiche alla relativa azione
@@ -497,6 +517,14 @@ public class Controller implements Initializable {
         transition.setFromX(0);
         transition.setToX(-283);
         transition.play();
+        Timeline timeline = new Timeline(
+            new KeyFrame(
+                Duration.millis(500),
+                new KeyValue(contactContainer.prefWidthProperty(), 800),
+                new KeyValue(contactContainer.layoutXProperty(), 0)
+            )
+        );
+        timeline.play();
     }
 
     /**
@@ -514,13 +542,33 @@ public class Controller implements Initializable {
         // Creo la transizione
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), inputPane);
         if (inputPane.getTranslateX() == -283) {
+            // Il pannello di inserimento compare
             transition.setFromX(-283);
             transition.setToX(0);
             transition.play();
+            //contactContainer.setPrefWidth(523);
+            //contactContainer.setLayoutX(283);
+            Timeline timeline = new Timeline(
+                new KeyFrame(
+                    Duration.millis(500),
+                    new KeyValue(contactContainer.prefWidthProperty(), 523),
+                    new KeyValue(contactContainer.layoutXProperty(), 283)
+                )
+            );
+            timeline.play();
         } else {
+            // Il pannello di inserimento scompare
             transition.setFromX(0);
             transition.setToX(-283);
             transition.play();
+            Timeline timeline = new Timeline(
+                new KeyFrame(
+                    Duration.millis(500),
+                    new KeyValue(contactContainer.prefWidthProperty(), 800),
+                    new KeyValue(contactContainer.layoutXProperty(), 0)
+                )
+            );
+            timeline.play();
         }
     }
 

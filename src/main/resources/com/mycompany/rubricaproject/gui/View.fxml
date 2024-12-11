@@ -15,7 +15,7 @@
          <children>
             <Button fx:id="newContactBtn" mnemonicParsing="false" onAction="#onNewContact" style="-fx-background-color: white; -fx-text-fill: black;" text="+" textAlignment="CENTER">
                <font>
-                  <Font name="Arial" size="16.0" />
+                  <Font name="Arial Bold" size="14.0" />
                </font>
             </Button>
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="426.0" spacing="10.0">
@@ -36,108 +36,108 @@
                <children>
                   <Button fx:id="importaBtn" mnemonicParsing="false" onAction="#handleImport" prefHeight="31.0" prefWidth="88.0" style="-fx-background-color: white;" text="Importa">
                      <font>
-                        <Font name="Arial" size="16.0" />
+                        <Font name="Arial Bold" size="14.0" />
                      </font>
                   </Button>
                   <Button fx:id="esportaBtn" mnemonicParsing="false" onAction="#handleExport" prefHeight="31.0" prefWidth="88.0" style="-fx-background-color: white;" text="Esporta">
                      <font>
-                        <Font name="Arial" size="16.0" />
+                        <Font name="Arial Bold" size="14.0" />
                      </font>
                   </Button>
                </children>
             </HBox>
          </children></HBox>
-      <HBox alignment="CENTER" prefHeight="540.0" prefWidth="800.0">
+      <VBox fx:id="inputPane" alignment="CENTER" prefHeight="540.0" prefWidth="283.0" style="-fx-background-color: #eaeded;">
          <children>
-            <VBox fx:id="inputPane" alignment="CENTER" prefHeight="540.0" prefWidth="283.0" translateX="-283.0">
+            <Label text="Crea un nuovo contatto">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+            </Label>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="271.0" spacing="20.0">
                <children>
-                  <Label text="Crea un nuovo contatto">
+                  <TextField fx:id="tfNome" prefHeight="26.0" prefWidth="200.0" promptText="Nome">
                      <font>
-                        <Font name="Arial Bold" size="18.0" />
+                        <Font name="Arial" size="14.0" />
                      </font>
-                  </Label>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="271.0" spacing="20.0">
-                     <children>
-                        <TextField fx:id="tfNome" prefHeight="26.0" prefWidth="200.0" promptText="Nome">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="tfCognome" prefHeight="26.0" prefWidth="200.0" promptText="Cognome">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="271.0" spacing="20.0">
-                     <children>
-                        <TextField fx:id="tfTelefono1" prefHeight="26.0" prefWidth="200.0" promptText="Numero di Telefono 1">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="tfTelefono2" prefHeight="26.0" prefWidth="200.0" promptText="Numero di Telefono 2">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="tfTelefono3" prefHeight="26.0" prefWidth="200.0" promptText="Numero di Telefono 3">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="271.0" spacing="20.0">
-                     <children>
-                        <TextField fx:id="tfEmail1" prefHeight="26.0" prefWidth="200.0" promptText="Email 1">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="tfEmail2" prefHeight="26.0" prefWidth="200.0" promptText="Email 2">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="tfEmail3" prefHeight="26.0" prefWidth="200.0" promptText="Email 3">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                  </VBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
-                     <children>
-                        <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Annulla">
-                           <font>
-                              <Font name="Arial Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="addBtn" mnemonicParsing="false" onAction="#handleAdd" style="-fx-background-color: #28b463; -fx-text-fill: white;" text="Aggiungi">
-                           <font>
-                              <Font name="Arial Bold" size="14.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </HBox>
+                  </TextField>
+                  <TextField fx:id="tfCognome" prefHeight="26.0" prefWidth="200.0" promptText="Cognome">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </TextField>
                </children>
                <padding>
-                  <Insets bottom="30.0" top="30.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
             </VBox>
-            <VBox fx:id="contactContainer" alignment="TOP_CENTER" prefHeight="616.0" prefWidth="523.0" />
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="271.0" spacing="20.0">
+               <children>
+                  <TextField fx:id="tfTelefono1" prefHeight="26.0" prefWidth="200.0" promptText="Numero di Telefono 1">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="tfTelefono2" prefHeight="26.0" prefWidth="200.0" promptText="Numero di Telefono 2">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="tfTelefono3" prefHeight="26.0" prefWidth="200.0" promptText="Numero di Telefono 3">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </TextField>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="271.0" spacing="20.0">
+               <children>
+                  <TextField fx:id="tfEmail1" prefHeight="26.0" prefWidth="200.0" promptText="Email 1">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="tfEmail2" prefHeight="26.0" prefWidth="200.0" promptText="Email 2">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="tfEmail3" prefHeight="26.0" prefWidth="200.0" promptText="Email 3">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </TextField>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+               <children>
+                  <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Annulla">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="addBtn" mnemonicParsing="false" onAction="#handleAdd" style="-fx-background-color: #28b463; -fx-text-fill: white;" text="Aggiungi">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
          </children>
-      </HBox>
+         <padding>
+            <Insets bottom="30.0" top="30.0" />
+         </padding>
+      </VBox>
+      <VBox fx:id="contactContainer" alignment="TOP_CENTER" layoutX="283.0" prefHeight="540.0" prefWidth="523.0" spacing="20.0">
+         <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+         </padding>
+      </VBox>
    </children>
 </Pane>
