@@ -4,7 +4,7 @@
  *
  * La classe gestisce un insieme di contatti, fornendo metodi per aggiungere, 
  * rimuovere e ottenere tutti i contatti presenti. Ogni contatto è unico.
- * Utilizza un HashSet per garantire l'unicità dei contatti.
+ * Utilizza un TreeSet per garantire l'unicità dei contatti.
  *
  * @version 1.0
  * @date 2024-12-07
@@ -13,7 +13,7 @@
 package com.mycompany.rubricaproject.core;
 
 import com.mycompany.rubricaproject.eccezioni.ContattoDuplicatoException;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 
@@ -30,7 +30,7 @@ public class Rubrica {
      * 
      */
      public Rubrica() {
-         this.contatti=new HashSet<>();
+         this.contatti=new TreeSet<>();
      }
      
      
@@ -40,7 +40,7 @@ public class Rubrica {
      * @return La lista dei contatti.
      */
      public Set<Contatto> getContatti() {
-         return new HashSet<>(this.contatti);
+         return contatti;
         
     }
      
@@ -56,7 +56,7 @@ public class Rubrica {
      * 
      * @throws ContattoDuplicatoException Se si prova ad aggiungere un contatto già presente
      */
-    public void aggiungiContatto(Contatto c) throws ContattoDuplicatoException{
+    public void aggiungiContatto(Contatto c) {
         if(!contatti.add(c)){
         throw new ContattoDuplicatoException ("Contatto già presente in rubrica:"+c);}
         
@@ -70,6 +70,8 @@ public class Rubrica {
      * @post Se il contatto era presente, viene rimosso dalla rubrica.
      */
     public void rimuoviContatto(Contatto c) {
+         if (!contatti.contains(contatti)) 
+            throw new IllegalArgumentException("Il contatto da rimuovere non è presente."); 
         contatti.remove(c);
         
     }
@@ -86,7 +88,7 @@ public class Rubrica {
      * @invariant contatti.
      */
     public Set<Contatto> CercaContatti(String ricercaStr){
-        Set<Contatto> risultati= new HashSet<>();
+        Set<Contatto> risultati= new TreeSet<>();
         for (Contatto c: contatti){
             if(c.getNome().contains(ricercaStr)|| c.getCognome().contains(ricercaStr)){
                 risultati.add(c);
