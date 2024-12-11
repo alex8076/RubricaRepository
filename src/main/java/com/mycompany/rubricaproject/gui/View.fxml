@@ -9,39 +9,39 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.rubricaproject.gui.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.rubricaproject.gui.Controller">
    <children>
       <HBox fx:id="dashboard" alignment="CENTER" layoutY="540.0" prefHeight="60.0" prefWidth="800.0" spacing="40.0" style="-fx-background-color: lightgrey;">
          <children>
-            <Button fx:id="newContactBtn" mnemonicParsing="false" onAction="#onNewContact" style="-fx-background-color: white; -fx-text-fill: black; -fx-background-radius: 12px;" text="+" textAlignment="CENTER">
+            <Button fx:id="newContactBtn" mnemonicParsing="false" onAction="#onNewContact" style="-fx-background-color: white; -fx-text-fill: black;" text="+" textAlignment="CENTER">
                <font>
-                  <Font name="Roboto Black" size="16.0" />
+                  <Font name="Arial" size="16.0" />
                </font>
             </Button>
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="426.0" spacing="10.0">
                <children>
-                  <TextField fx:id="tfSearch" prefHeight="26.0" prefWidth="267.0" promptText="Inserisci un nome..." style="-fx-background-radius: 10px;">
+                  <TextField fx:id="tfSearch" prefHeight="26.0" prefWidth="267.0" promptText="Inserisci un nome...">
                      <font>
-                        <Font name="Roboto" size="16.0" />
+                        <Font name="Arial" size="16.0" />
                      </font>
                   </TextField>
-                  <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#handleSearch" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Cerca">
+                  <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#handleSearch" style="-fx-background-color: white;" text="Cerca">
                      <font>
-                        <Font name="Roboto Bold" size="14.0" />
+                        <Font name="Arial Bold" size="14.0" />
                      </font>
                   </Button>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Button fx:id="importaBtn" mnemonicParsing="false" onAction="#handleImport" prefHeight="31.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Importa">
+                  <Button fx:id="importaBtn" mnemonicParsing="false" onAction="#handleImport" prefHeight="31.0" prefWidth="88.0" style="-fx-background-color: white;" text="Importa">
                      <font>
-                        <Font name="Roboto Bold" size="16.0" />
+                        <Font name="Arial" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="esportaBtn" mnemonicParsing="false" onAction="#handleExport" prefHeight="31.0" prefWidth="88.0" style="-fx-background-color: white; -fx-background-radius: 10px;" text="Esporta">
+                  <Button fx:id="esportaBtn" mnemonicParsing="false" onAction="#handleExport" prefHeight="31.0" prefWidth="88.0" style="-fx-background-color: white;" text="Esporta">
                      <font>
-                        <Font name="Roboto Bold" size="16.0" />
+                        <Font name="Arial" size="16.0" />
                      </font>
                   </Button>
                </children>
@@ -53,19 +53,19 @@
                <children>
                   <Label text="Crea un nuovo contatto">
                      <font>
-                        <Font name="Roboto Bold" size="18.0" />
+                        <Font name="Arial Bold" size="18.0" />
                      </font>
                   </Label>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="271.0" spacing="20.0">
                      <children>
                         <TextField fx:id="tfNome" prefHeight="26.0" prefWidth="200.0" promptText="Nome">
                            <font>
-                              <Font name="Roboto" size="14.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                         </TextField>
                         <TextField fx:id="tfCognome" prefHeight="26.0" prefWidth="200.0" promptText="Cognome">
                            <font>
-                              <Font name="Roboto" size="14.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                         </TextField>
                      </children>
@@ -77,17 +77,17 @@
                      <children>
                         <TextField fx:id="tfTelefono1" prefHeight="26.0" prefWidth="200.0" promptText="Numero di Telefono 1">
                            <font>
-                              <Font name="Roboto" size="14.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                         </TextField>
                         <TextField fx:id="tfTelefono2" prefHeight="26.0" prefWidth="200.0" promptText="Numero di Telefono 2">
                            <font>
-                              <Font name="Roboto" size="14.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                         </TextField>
                         <TextField fx:id="tfTelefono3" prefHeight="26.0" prefWidth="200.0" promptText="Numero di Telefono 3">
                            <font>
-                              <Font name="Roboto" size="14.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                         </TextField>
                      </children>
@@ -99,17 +99,17 @@
                      <children>
                         <TextField fx:id="tfEmail1" prefHeight="26.0" prefWidth="200.0" promptText="Email 1">
                            <font>
-                              <Font name="Roboto" size="14.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                         </TextField>
                         <TextField fx:id="tfEmail2" prefHeight="26.0" prefWidth="200.0" promptText="Email 2">
                            <font>
-                              <Font name="Roboto" size="14.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                         </TextField>
                         <TextField fx:id="tfEmail3" prefHeight="26.0" prefWidth="200.0" promptText="Email 3">
                            <font>
-                              <Font name="Roboto" size="14.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                         </TextField>
                      </children>
@@ -121,12 +121,12 @@
                      <children>
                         <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Annulla">
                            <font>
-                              <Font name="Roboto Bold" size="14.0" />
+                              <Font name="Arial Bold" size="14.0" />
                            </font>
                         </Button>
                         <Button fx:id="addBtn" mnemonicParsing="false" onAction="#handleAdd" style="-fx-background-color: #28b463; -fx-text-fill: white;" text="Aggiungi">
                            <font>
-                              <Font name="Roboto Bold" size="14.0" />
+                              <Font name="Arial Bold" size="14.0" />
                            </font>
                         </Button>
                      </children>

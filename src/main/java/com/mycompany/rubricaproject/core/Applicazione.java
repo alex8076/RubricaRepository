@@ -23,7 +23,7 @@ public class Applicazione extends Application {
     public void start(Stage primaryStage) throws Exception {
         
        // Collego la classe Applicazone alla View
-       Parent root = FXMLLoader.load(getClass().getResource("rubricaproject/gui/View.fxml"));
+       Parent root = FXMLLoader.load(getClass().getResource("../gui/View.fxml"));
                
         Scene scene = new Scene(root);
 
