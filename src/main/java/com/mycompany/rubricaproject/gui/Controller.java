@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +40,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 
 public class Controller implements Initializable {
@@ -105,7 +107,8 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         rubrica = new Rubrica();
         this.mappaContatti = new HashMap<>();
-        inputPane.setVisible(false);
+        // Nascondo il pannello di inserimento dalla view
+        inputPane.setTranslateX(-283);
         
         // Adatto la larghezza del pannello che mostra i contatti inseriti in base 
         // al fatto che il pannello di inserimento di un nuovo contatto sia visibile o meno
@@ -182,7 +185,10 @@ public class Controller implements Initializable {
             // ripulisco i campi di input
             ripulisciCampi();
             // nascondo il pannello per l'inserimento di un nuovo contatto
-            inputPane.setVisible(false);
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), inputPane);
+            transition.setFromX(0);
+            transition.setToX(-283);
+            transition.play();
         } catch (UtenteNonValidoException ex) {
             // Gestisco il caso in cui i dati inseriti non siano validi
             // mostrando un messaggio di errore all'utente
@@ -487,7 +493,10 @@ public class Controller implements Initializable {
         // Ripulisco i campi input
         ripulisciCampi();
         // Nascondo il pannello per l'inserimento di un nuovo utente 
-        inputPane.setVisible(false);
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), inputPane);
+        transition.setFromX(0);
+        transition.setToX(-283);
+        transition.play();
     }
 
     /**
@@ -502,8 +511,17 @@ public class Controller implements Initializable {
      */
     @FXML
     private void onNewContact(ActionEvent event) {
-        boolean isVisible = inputPane.isVisible();
-        inputPane.setVisible(!isVisible);
+        // Creo la transizione
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), inputPane);
+        if (inputPane.getTranslateX() == -283) {
+            transition.setFromX(-283);
+            transition.setToX(0);
+            transition.play();
+        } else {
+            transition.setFromX(0);
+            transition.setToX(-283);
+            transition.play();
+        }
     }
 
     /**

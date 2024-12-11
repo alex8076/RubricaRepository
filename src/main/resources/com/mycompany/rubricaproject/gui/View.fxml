@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.rubricaproject.gui.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.rubricaproject.gui.Controller">
    <children>
       <HBox fx:id="dashboard" alignment="CENTER" layoutY="540.0" prefHeight="60.0" prefWidth="800.0" spacing="40.0" style="-fx-background-color: lightgrey;">
          <children>
@@ -49,7 +49,7 @@
          </children></HBox>
       <HBox alignment="CENTER" prefHeight="540.0" prefWidth="800.0">
          <children>
-            <VBox fx:id="inputPane" alignment="CENTER" prefHeight="540.0" prefWidth="283.0">
+            <VBox fx:id="inputPane" alignment="CENTER" prefHeight="540.0" prefWidth="283.0" translateX="-283.0">
                <children>
                   <Label text="Crea un nuovo contatto">
                      <font>
