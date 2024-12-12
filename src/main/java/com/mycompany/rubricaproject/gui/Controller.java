@@ -16,6 +16,7 @@ import com.mycompany.rubricaproject.eccezioni.ContattoDuplicatoException;
 import com.mycompany.rubricaproject.eccezioni.MailNonCorrettaException;
 import com.mycompany.rubricaproject.eccezioni.NumeroNonCorrettoException;
 import com.mycompany.rubricaproject.eccezioni.UtenteNonValidoException;
+import com.mycompany.rubricaproject.eccezioni.*;
 import com.mycompany.rubricaproject.io.CSVFileHandler;
 import java.io.File;
 import java.io.IOException;
@@ -657,42 +658,66 @@ public class Controller implements Initializable {
      * @see mostraAlert()
      * @see CSVFileHandler
      */
-    @FXML
-    private void handleImport(ActionEvent event) {
-        // Mostro una finestra di dialogo per permettere all'utente di selezionare il file
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Seleziona un file CSV");
-        // Specifico che l'utente può selezionare unicamente file .csv
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("File CSV", "*csv"));
-        // Ottengo il file selezionato
-        Stage primaryStage = (Stage) importaBtn.getScene().getWindow();
-        File fileSelezionato = fileChooser.showOpenDialog(primaryStage);
-        
-        // Controllo che il file sia stato selezionato
-        if (fileSelezionato != null) {
-            // Ottengo il path del file
-            String filePath = fileSelezionato.getAbsolutePath();
-            try {
-                // Invoco la funzione di importazione da CSVFileHandler passando il path del file
-                fh.importaRubrica(filePath);
+   @FXML
+private void handleImport(ActionEvent event) {
+    // Mostro una finestra di dialogo per permettere all'utente di selezionare il file
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Seleziona un file CSV");
+    // Specifico che l'utente può selezionare unicamente file .csv
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("File CSV", "*.csv"));
+
+    // Ottengo il file selezionato
+    Stage primaryStage = (Stage) importaBtn.getScene().getWindow();
+    File fileSelezionato = fileChooser.showOpenDialog(primaryStage);
+
+    // Controllo che il file sia stato selezionato
+    if (fileSelezionato != null) {
+        // Ottengo il path del file
+        String filePath = fileSelezionato.getAbsolutePath();
+        try {
+            // Invoco la funzione di importazione da CSVFileHandler passando il path del file
+            Rubrica rubricaImportata = fh.importaRubrica(filePath); // `fh` è l'istanza di CSVFileHandler
+
+            // Controllo se la rubrica importata contiene contatti
+            if (rubricaImportata != null && !rubricaImportata.getContatti().isEmpty()) {
+                // Aggiorno la rubrica principale con i contatti importati
+                rubrica.setContatti(rubricaImportata.getContatti());
+
                 // Aggiorno la view
                 aggiornaContatti();
+
                 // Mostro una notifica di completamento
                 mostraAlert("Importazione completata con successo");
-            } catch (IOException ex) {
-                // Gestisco il caso in cui sorga un'eccezione
-                System.err.println("Importazione fallita: " + ex.getMessage());
-                // Mostro una notifica di fallimento
-                mostraAlert("Importazione fallita");
+            } else {
+                // La rubrica importata è vuota
+                mostraAlert("Il file selezionato non contiene contatti validi.");
             }
-        } else {
-            // Gestisco il caso in cui non venga selezionato alcun file, annullando l'operazione
-            System.out.println("Nessun file selezionato");
-            // Mostro una notifica di fallimento
-            mostraAlert("Importazione fallita");
+        } catch (FileNonTrovatoException e) {
+            // Gestisco il caso in cui il file non venga trovato
+            System.err.println("File non trovato: " + e.getMessage());
+            mostraAlert("File non trovato.");
+        } catch (FormatoFileNonValidoException e) {
+            // Gestisco il caso in cui il file abbia un formato non valido
+            System.err.println("Formato del file non valido: " + e.getMessage());
+            mostraAlert("Formato del file non valido.");
+        } catch (IOException e) {
+            // Gestisco il caso in cui sorga un'eccezione durante la lettura
+            System.err.println("Errore durante l'importazione: " + e.getMessage());
+            mostraAlert("Errore durante l'importazione.");
+        } catch (Exception e) {
+            // Gestione di eventuali eccezioni non previste
+            System.err.println("Errore generico: " + e.getMessage());
+            e.printStackTrace();
+            mostraAlert("Errore imprevisto durante l'importazione.");
         }
-
+    } else {
+        // Gestisco il caso in cui non venga selezionato alcun file, annullando l'operazione
+        System.out.println("Nessun file selezionato");
+        mostraAlert("Importazione annullata.");
     }
+}
+
+
 
     /**
      * @brief Permette di esportare i dati presenti in rubrica su un file CSV esterno

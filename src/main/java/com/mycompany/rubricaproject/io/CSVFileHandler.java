@@ -16,6 +16,7 @@ import com.mycompany.rubricaproject.core.Rubrica;
 import java.io.*;
 import java.util.*;
 import com.mycompany.rubricaproject.eccezioni.*;
+import java.util.stream.Collectors;
 
 public class CSVFileHandler implements FileHandler {
 
@@ -36,25 +37,43 @@ public class CSVFileHandler implements FileHandler {
      * 
      * @post Il file risultante conterrà i contatti formattati in righe CSV.
      */
-    @Override
-    public void esportaRubrica(String fileName) throws IOException {
-        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
-            // Scrittura dell'intestazione
-            pw.println("NOME; COGNOME; NUMERI DI TELEFONO; INDIRIZZI MAIL");
+   @Override
+public void esportaRubrica(String fileName) throws IOException {
+    try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
+        // Scrittura dell'intestazione
+        pw.println("NOME;COGNOME;NUMERI DI TELEFONO;INDIRIZZI MAIL");
 
-            // Iterazione sui contatti della rubrica
-            for (Contatto contatto : rubrica.getContatti()) {
-                pw.print(contatto.getNome() + ";");
-                pw.print(contatto.getCognome() + ";");
-                pw.print(String.join(",", contatto.getNumeriTelefono()) + ";");
-                pw.println(String.join(",", contatto.getIndirizziMail()));
-            }
-            System.out.println("Rubrica esportata correttamente in formato CSV: " + fileName);
-        } catch (IOException e) {
-            System.err.println("Errore durante l'esportazione: " + e.getMessage());
-            throw e;
+        // Iterazione sui contatti della rubrica
+        for (Contatto contatto : rubrica.getContatti()) {
+            String nome = contatto.getNome() != null ? contatto.getNome() : "";
+            String cognome = contatto.getCognome() != null ? contatto.getCognome() : "";
+
+            String numeriTelefono = contatto.getNumeriTelefono() != null
+                    ? Arrays.stream(contatto.getNumeriTelefono())
+                        .filter(numero -> numero != null && !numero.equals("null"))
+                        .collect(Collectors.joining(","))
+                    : "";
+
+            String indirizziMail = contatto.getIndirizziMail() != null
+                    ? Arrays.stream(contatto.getIndirizziMail())
+                        .filter(mail -> mail != null && !mail.equals("null"))
+                        .collect(Collectors.joining(","))
+                    : "";
+
+            pw.print(nome + ";");
+            pw.print(cognome + ";");
+            pw.print(numeriTelefono + ";");
+            pw.println(indirizziMail);
         }
+        System.out.println("Rubrica esportata correttamente in formato CSV: " + fileName);
+    } catch (IOException e) {
+        System.err.println("Errore durante l'esportazione: " + e.getMessage());
+        throw e;
     }
+}
+
+
+
 
     /**
      * Importa i contatti da un file CSV in una nuova rubrica.
@@ -66,52 +85,95 @@ public class CSVFileHandler implements FileHandler {
      * 
      * @pre Il file deve avere un formato CSV valido con intestazioni corrette.
      */
-    @Override
-    public Rubrica importaRubrica(String fileName) throws FileNonTrovatoException, FormatoFileNonValidoException, IOException {
-        Rubrica rubr = new Rubrica();
+@Override
+public Rubrica importaRubrica(String fileName) throws FileNonTrovatoException, FormatoFileNonValidoException, IOException {
+    Rubrica rubr = new Rubrica();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            // Verifica l'intestazione
-            String header = br.readLine();
-            if (header == null || !header.equals("Nome;Cognome;NumeriTelefono;IndirizziMail")) {
-                throw new FormatoFileNonValidoException("Formato CSV non valido: intestazione non corretta.");
-            }
+    try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        // Leggi l'intestazione del file
+        String header = br.readLine();
+        System.out.println("Intestazione trovata: " + header);
 
-            // Lettura delle righe dei contatti
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] fields = line.split(";");
-                if (fields.length < 2) {
-                    throw new FormatoFileNonValidoException("Formato CSV non valido: riga incompleta.");
-                }
-
-                String nome = fields[0];
-                String cognome = fields[1];
-                Set<String> numeriTelefono = fields.length > 2 && !fields[2].isEmpty()
-                        ? new HashSet<>(Arrays.asList(fields[2].split(","))) : new HashSet<>();
-                Set<String> indirizziMail = fields.length > 3 && !fields[3].isEmpty()
-                        ? new HashSet<>(Arrays.asList(fields[3].split(","))) : new HashSet<>();
-
-                Contatto contatto = new Contatto(nome, cognome);
-                int numeroIndex = 0;
-                for (String numero : numeriTelefono) {
-                    contatto.aggiungiNumero(numero, numeroIndex++);
-                }
-                int mailIndex = 0;
-                for (String mail : indirizziMail) {
-                    contatto.aggiungiMail(mail, mailIndex++);
-                }
-
-                rubr.aggiungiContatto(contatto);
-            }
-
-            System.out.println("Rubrica importata correttamente da file CSV: " + fileName);
-        } catch (FileNotFoundException e) {
-            throw new FileNonTrovatoException("File non trovato: " + fileName);
-        } catch (IOException e) {
-            throw e;
+        // Verifica che l'intestazione sia valida
+        if (header == null || !isHeaderValid(header)) {
+            throw new FormatoFileNonValidoException("Formato CSV non valido: intestazione non corretta.");
         }
 
-        return rubr;
+        // Lettura delle righe dei contatti
+        String line;
+        while ((line = br.readLine()) != null) {
+            System.out.println("Riga letta: " + line); // Debug: mostra la riga letta
+            String[] fields = line.split(";");
+            if (fields.length < 2) {
+                System.out.println("Riga ignorata (incompleta): " + line);
+                continue;
+            }
+
+            String nome = fields[0].trim();
+            String cognome = fields[1].trim();
+
+            Set<String> numeriTelefono = fields.length > 2 && !fields[2].isEmpty()
+                    ? new HashSet<>(Arrays.asList(fields[2].split(",")))
+                    : new HashSet<>();
+
+            Set<String> indirizziMail = fields.length > 3 && !fields[3].isEmpty()
+                    ? new HashSet<>(Arrays.asList(fields[3].split(",")))
+                    : new HashSet<>();
+
+            numeriTelefono.removeIf(numero -> numero == null || numero.equalsIgnoreCase("null") || numero.trim().isEmpty());
+            indirizziMail.removeIf(mail -> mail == null || mail.equalsIgnoreCase("null") || mail.trim().isEmpty());
+
+            Contatto contatto = new Contatto(nome, cognome);
+
+            int numeroIndex = 0;
+            for (String numero : numeriTelefono) {
+                contatto.aggiungiNumero(numero, numeroIndex++);
+            }
+
+            int mailIndex = 0;
+            for (String mail : indirizziMail) {
+                contatto.aggiungiMail(mail, mailIndex++);
+            }
+
+            rubr.aggiungiContatto(contatto);
+            System.out.println("Contatto aggiunto: " + contatto); // Debug: mostra il contatto aggiunto
+        }
+
+        System.out.println("Rubrica importata correttamente da file CSV: " + fileName);
+    } catch (FileNotFoundException e) {
+        throw new FileNonTrovatoException("File non trovato: " + fileName);
+    } catch (IOException e) {
+        throw e;
     }
+    
+    System.out.println("Contatti importati nella rubrica:");
+for (Contatto contatto : rubr.getContatti()) {
+    System.out.println(contatto); // Stampa ogni contatto importato
+}
+    return rubr;
+}
+
+/**
+ * Valida l'intestazione del file CSV.
+ * Controlla che contenga tutte le parole chiave richieste, ignorando ordine, spazi e maiuscole/minuscole.
+ *
+ * @param header Intestazione trovata nel file CSV.
+ * @return true se valida, false altrimenti.
+ */
+private boolean isHeaderValid(String header) {
+    // Parole chiave attese nell'intestazione
+    String[] expectedKeywords = {"NOME", "COGNOME", "NUMERI DI TELEFONO", "INDIRIZZI MAIL"};
+
+    // Normalizza l'intestazione: rimuove spazi extra e converte in minuscolo
+    String normalizedHeader = header.replaceAll("\\s+", "").toLowerCase();
+
+    // Verifica che tutte le parole chiave attese siano presenti
+    for (String keyword : expectedKeywords) {
+        if (!normalizedHeader.contains(keyword.replaceAll("\\s+", "").toLowerCase())) {
+            return false;
+        }
+    }
+
+    return true;
+}
 }

@@ -46,6 +46,18 @@ public class Rubrica {
      
      
     /**
+     * @brief Aggiorna l'insieme dei contatti nella rubrica con un nuovo insieme.
+     *
+     * @param contatti L'insieme dei contatti da impostare.
+     *                 Sostituisce completamente i contatti esistenti nella rubrica.
+     * @pre Il parametro contatti non deve essere null.
+     * @post L'insieme dei contatti nella rubrica sarà uguale al parametro passato.
+     */
+       public void setContatti(Set<Contatto> contatti) {
+        this.contatti = contatti;
+    }
+     
+    /**
      * @brief Aggiunge un contatto alla rubrica.
      * @see Contatto
      * 
