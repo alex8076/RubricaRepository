@@ -11,8 +11,6 @@
 package com.mycompany.rubricaproject.gui;
 
 import com.mycompany.rubricaproject.core.Contatto;
-import com.mycompany.rubricaproject.core.Contatto;
-import com.mycompany.rubricaproject.core.Rubrica;
 import com.mycompany.rubricaproject.core.Rubrica;
 import com.mycompany.rubricaproject.eccezioni.ContattoDuplicatoException;
 import com.mycompany.rubricaproject.eccezioni.MailNonCorrettaException;
@@ -29,7 +27,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -42,8 +39,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -156,60 +151,62 @@ public class Controller implements Initializable {
             // aggiungo nei dati del contatto gli eventuali numeri di telefono inseriti
             try {
                 if (!tfTelefono1.getText().isEmpty())
-                    nuovoContatto.aggiungiNumero(tfTelefono1.getText());
+                    nuovoContatto.aggiungiNumero(tfTelefono1.getText(), 0);
                 if (!tfTelefono2.getText().isEmpty())
-                    nuovoContatto.aggiungiNumero(tfTelefono2.getText());
+                    nuovoContatto.aggiungiNumero(tfTelefono2.getText(), 1);
                 if (!tfTelefono3.getText().isEmpty())
-                    nuovoContatto.aggiungiNumero(tfTelefono3.getText());
+                    nuovoContatto.aggiungiNumero(tfTelefono3.getText(), 2);
+            
+                 // aggiungo nei dati del contatto gli eventuali indirizzi email inseriti
+                try {
+                     if (!tfEmail1.getText().isEmpty())
+                         nuovoContatto.aggiungiMail(tfEmail1.getText(), 0);
+                     if (!tfEmail2.getText().isEmpty())
+                         nuovoContatto.aggiungiMail(tfEmail2.getText(), 1);
+                     if (!tfEmail3.getText().isEmpty())
+                         nuovoContatto.aggiungiMail(tfEmail3.getText(), 2);  
+                     
+                     // aggiungo il contatto alla rubrica
+                    try {
+                        rubrica.aggiungiContatto(nuovoContatto);
+
+                        //aggiorno la view dopo aver inserito il nuovo contatto
+                        aggiornaContatti();
+                        // ripulisco i campi di input
+                        ripulisciCampi();
+                        // nascondo il pannello per l'inserimento di un nuovo contatto
+                        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), inputPane);
+                        transition.setFromX(0);
+                        transition.setToX(-283);
+                        transition.play();
+                        Timeline timeline = new Timeline(
+                            new KeyFrame(
+                                Duration.millis(500),
+                                new KeyValue(scrollPane.prefWidthProperty(), 800),
+                                new KeyValue(scrollPane.layoutXProperty(), 0)
+                            )
+                        );
+                        timeline.play();
+                    } catch (ContattoDuplicatoException ex) {
+                        mostraAlert("Un contatto con questi dati è già presente");
+                    } 
+                     
+                } catch (MailNonCorrettaException ex) {
+                     // catturo l'eccezione nel caso in cui le mail non siano correttamente formattate
+                     mostraAlert("Controllare che le mail inserite siano valide");
+                 } catch (IllegalArgumentException ex) {
+                     // catturo l'eccezione nel caso in cui unq delle mail sia già presente in rubrica
+                     mostraAlert("Hai inserito più volte una stessa mail");
+                 }
+            
             } catch (NumeroNonCorrettoException ex) {
                 // catturo l'eccezione nel caso in cui i numeri non siano correttamente formattati
                 mostraAlert("Controllare che i numeri inseriti siano validi");;
             } catch (IllegalArgumentException ex) {
                 // catturo l'eccezione nel caso in cui uno dei numeri sia già presente in rubrica
-                mostraAlert("Un numero di telefono è già presente");
+                mostraAlert("Hai inserito più volte uno stesso numero di telefono");
             }
-
-            // aggiungo nei dati del contatto gli eventuali indirizzi email inseriti
-            try {
-                if (!tfEmail1.getText().isEmpty())
-                    nuovoContatto.aggiungiMail(tfEmail1.getText());
-                if (!tfEmail2.getText().isEmpty())
-                    nuovoContatto.aggiungiMail(tfEmail2.getText());
-                if (!tfEmail3.getText().isEmpty())
-                    nuovoContatto.aggiungiMail(tfEmail3.getText());
-            } catch (MailNonCorrettaException ex) {
-                // catturo l'eccezione nel caso in cui le mail non siano correttamente formattate
-                mostraAlert("Controllare che le mail inserite siano valide");
-            } catch (IllegalArgumentException ex) {
-                // catturo l'eccezione nel caso in cui unq delle mail sia già presente in rubrica
-                mostraAlert("Una mail è già presente");
-            }
-
-            // ??????????????? ATTENZIONE: SERVE DAVVERO ???????????????
-            // aggiungo il contatto alla rubrica
-            try {
-                rubrica.aggiungiContatto(nuovoContatto);
-            } catch (ContattoDuplicatoException ex) {
-                mostraAlert("Un contatto con questi dati è già presente");
-            }
-            
-            //aggiorno la view dopo aver inserito il nuovo contatto
-            aggiornaContatti();
-            // ripulisco i campi di input
-            ripulisciCampi();
-            // nascondo il pannello per l'inserimento di un nuovo contatto
-            TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), inputPane);
-            transition.setFromX(0);
-            transition.setToX(-283);
-            transition.play();
-            Timeline timeline = new Timeline(
-                new KeyFrame(
-                    Duration.millis(500),
-                    new KeyValue(scrollPane.prefWidthProperty(), 800),
-                    new KeyValue(scrollPane.layoutXProperty(), 0)
-                )
-            );
-            timeline.play();
+    
         } catch (UtenteNonValidoException ex) {
             // Gestisco il caso in cui i dati inseriti non siano validi
             // mostrando un messaggio di errore all'utente
@@ -287,9 +284,11 @@ public class Controller implements Initializable {
         cont = 0;
         for (String numeroTelefono : contatto.getNumeriTelefono()) {
             cont++;
-            Label numeroLabel = new Label("Numero di Telefono " + cont + ": " + numeroTelefono);
-            numeroLabel.setFont(new Font("Arial", 14));
-            v2.getChildren().add(numeroLabel);
+            if (numeroTelefono != null) {
+                Label numeroLabel = new Label("Numero di Telefono " + cont + ": " + numeroTelefono);
+                numeroLabel.setFont(new Font("Arial", 14));
+                v2.getChildren().add(numeroLabel);
+            }
         }
         
         // Raggruppo le informazioni inerenti agli indirizzi email
@@ -299,9 +298,11 @@ public class Controller implements Initializable {
         cont = 0;
         for (String indirizzoEmail : contatto.getIndirizziMail()) {
             cont++;
-            Label emailLabel = new Label("Indirizzo email " + cont + ": " + indirizzoEmail);
-            emailLabel.setFont(new Font("Arial", 14));
-            v3.getChildren().add(emailLabel);
+            if (indirizzoEmail != null) {
+                Label emailLabel = new Label("Indirizzo email " + cont + ": " + indirizzoEmail);
+                emailLabel.setFont(new Font("Arial", 14));
+                v3.getChildren().add(emailLabel);
+            }
         }
         
         // Creo e raggruppo i 2 pulsanti per eliminare e modificare un contatto
@@ -310,10 +311,10 @@ public class Controller implements Initializable {
         h1.setSpacing(10);
         Button editBtn = new Button("Modifica");
         editBtn.setFont(new Font("Arial bold", 14));
-        editBtn.setStyle("-fx-background-color: white;");
+        editBtn.setStyle("-fx-background-color: white; -fx-cursor: hand;");
         Button removeBtn = new Button("Elimina");
         removeBtn.setFont(new Font("Arial bold", 14));
-        removeBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
+        removeBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-cursor: hand;");
         h1.getChildren().addAll(removeBtn, editBtn);
         
         // Collego al pulsante di modifica la relativa azione
@@ -377,20 +378,18 @@ public class Controller implements Initializable {
         VBox v2 = new VBox();
         v2.setAlignment(Pos.CENTER);
         v2.setSpacing(10);
-        String[] numeriTelefonoArray = contatto.getNumeriTelefono().toArray(new String[3]);
-        TextField tfEditNumero1 = new TextField(numeriTelefonoArray[0] != null ? numeriTelefonoArray[0] : "");
-        TextField tfEditNumero2 = new TextField(numeriTelefonoArray[1] != null ? numeriTelefonoArray[1] : "");
-        TextField tfEditNumero3 = new TextField(numeriTelefonoArray[2] != null ? numeriTelefonoArray[2] : "");
+        TextField tfEditNumero1 = new TextField(contatto.getNumeriTelefono()[0] != null ? contatto.getNumeriTelefono()[0] : "");
+        TextField tfEditNumero2 = new TextField(contatto.getNumeriTelefono()[1] != null ? contatto.getNumeriTelefono()[1] : "");
+        TextField tfEditNumero3 = new TextField(contatto.getNumeriTelefono()[2] != null ? contatto.getNumeriTelefono()[2] : "");
         v2.getChildren().addAll(new Label("Numero di Telefono:"), tfEditNumero1, tfEditNumero2, tfEditNumero3);
         
         // Inserisco i campi modificabili inerenti agli indirizzi email
         VBox v3 = new VBox();
         v3.setAlignment(Pos.CENTER);
         v3.setSpacing(10);
-        String[] indirizziEmailArray = contatto.getIndirizziMail().toArray(new String[0]);
-        TextField tfEditEmail1 = new TextField(indirizziEmailArray[0] != null ? indirizziEmailArray[0] : "");
-        TextField tfEditEmail2 = new TextField(indirizziEmailArray[1] != null ? indirizziEmailArray[1] : "");
-        TextField tfEditEmail3 = new TextField(indirizziEmailArray[2] != null ? indirizziEmailArray[2] : "");
+        TextField tfEditEmail1 = new TextField(contatto.getIndirizziMail()[0] != null ? contatto.getIndirizziMail()[0] : "");
+        TextField tfEditEmail2 = new TextField(contatto.getIndirizziMail()[1] != null ? contatto.getIndirizziMail()[1] : "");
+        TextField tfEditEmail3 = new TextField(contatto.getIndirizziMail()[2] != null ? contatto.getIndirizziMail()[2] : "");
         v3.getChildren().addAll(new Label("Indirizzi email:"), tfEditEmail1, tfEditEmail2, tfEditEmail3);
         
         // Inserisco i pulsanti inerenti al salvataggio e l'annullamento delle modifiche
@@ -399,10 +398,10 @@ public class Controller implements Initializable {
         h3.setSpacing(10);
         Button saveEditBtn = new Button("Salva");
         saveEditBtn.setFont(new Font("Arial bold", 14));
-        saveEditBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
+        saveEditBtn.setStyle("-fx-background-color: #28B463; -fx-text-fill: white; -fx-cursor: hand;");
         Button cancelEditBtn = new Button("Annulla");
         cancelEditBtn.setFont(new Font("Arial bold", 14));
-        cancelEditBtn.setStyle("-fx-background-color: #28B463; -fx-text-fill: white;");
+        cancelEditBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-cursor: hand;");
         h3.getChildren().addAll(cancelEditBtn, saveEditBtn);
         
         // Collego il pulsante di salvataggio delle modifiche alla relativa azione
@@ -411,66 +410,80 @@ public class Controller implements Initializable {
             try {
                 contatto.setNome(tfEditNome.getText());
                 contatto.setCognome(tfEditCognome.getText());
+            
+                // Aggiorno i dati inerenti ai numero di telefono
+                try {
+                    if (!tfEditNumero1.getText().isEmpty())  {
+                        // se il nuovo numero aggiornato non è vuoto, questo va a sostituire il numero vecchio
+                        if (!tfEditNumero1.getText().equals(contatto.getNumeriTelefono()[0]))
+                            contatto.modificaNumero(tfEditNumero1.getText(), 0); 
+                    } else { 
+                        // se il nuovo numero è vuoto, allora si va semplicemente ad eliminare il numero vecchio
+                        contatto.rimuoviNumero(0); 
+                    }
+                    if (!tfEditNumero2.getText().isEmpty()) {
+                        // se il nuovo numero aggiornato non è vuoto, questo va a sostituire il numero vecchio 
+                        if (!tfEditNumero2.getText().equals(contatto.getNumeriTelefono()[1]))
+                            contatto.modificaNumero(tfEditNumero2.getText(), 1);
+                    } else {
+                        // se il nuovo numero è vuoto, allora si va semplicemente ad eliminare il numero vecchio
+                        contatto.rimuoviNumero(1);
+                    }
+                    if (!tfEditNumero3.getText().isEmpty()) {
+                        // se il nuovo numero aggiornato non è vuoto, questo va a sostituire il numero vecchio 
+                        if (!tfEditNumero3.getText().equals(contatto.getNumeriTelefono()[2]))
+                            contatto.modificaNumero(tfEditNumero3.getText(), 2);
+                    } else {
+                        // se il nuovo numero è vuoto, allora si va semplicemente ad eliminare il numero vecchio
+                        contatto.rimuoviNumero(2);
+                    }
+                      
+                    // Aggiorno i dati inerenti agli indirizzi email
+                    try {
+                        if (!tfEditEmail1.getText().isEmpty()) {
+                            // se la nuova mail aggiornata non è vuota, questa va a sostituire la mail vecchia
+                            if (!tfEditEmail1.getText().equals(contatto.getIndirizziMail()[0]))
+                                contatto.modificaMail(tfEditEmail1.getText(), 0);
+                        } else {
+                            // se la nuova mail è vuota, allora si va semplicemente ad eliminare la mail vecchia
+                            contatto.rimuoviMail(0);
+                        }
+                        if (!tfEditEmail2.getText().isEmpty()) {
+                            // se la nuova mail aggiornata non è vuota, questa va a sostituire la mail vecchia
+                            if (!tfEditEmail2.getText().equals(contatto.getIndirizziMail()[1]))
+                                contatto.modificaMail(tfEditEmail2.getText(), 1);
+                        } else {
+                            // se la nuova mail è vuota, allora si va semplicemente ad eliminare la mail vecchia
+                            contatto.rimuoviMail(1);
+                        }
+                        if (!tfEditEmail3.getText().isEmpty()) {
+                            // se la nuova mail aggiornata non è vuota, questa va a sostituire la mail vecchia
+                            if (!tfEditEmail3.getText().equals(contatto.getIndirizziMail()[2]))
+                                contatto.modificaMail(tfEditEmail3.getText(), 2);
+                        } else {
+                            // se la nuova mail è vuota, allora si va semplicemente ad eliminare la mail vecchia
+                            contatto.rimuoviMail(2);
+                        }
+                        
+                        // Aggiorno la view
+                        aggiornaContatti();
+                        
+                    } catch (MailNonCorrettaException ex) {
+                        mostraAlert("Le mail devono essere correttamente formattate");
+                    } catch (IllegalArgumentException ex) {
+                        mostraAlert("Hai inserito una mail già presente");
+                    }  
+                    
+                } catch (NumeroNonCorrettoException ex) {
+                    mostraAlert("I numeri devono essere correttamente formattati");
+                } catch (IllegalArgumentException ex) {
+                    mostraAlert("Hai inserito un numero di telefono già presente");
+                }
+            
             } catch(UtenteNonValidoException ex) {
                 mostraAlert("Inserire almeno un nome o un cognome");
             }
-            
-            // Aggiorno i dati inerenti ai numero di telefono
-            try {
-                if (!tfEditNumero1.getText().isEmpty())  {
-                    // se il nuovo numero aggiornato non è vuoto, questo va a sostituire il numero vecchio
-                    contatto.modificaNumero(tfEditNumero1.getText(), contatto.getNumeriTelefono().toArray(new String[3])[0]); 
-                } else { 
-                    // se il nuovo numero è vuoto, allora si va semplicemente ad eliminare il numero vecchio
-                    contatto.rimuoviNumero(contatto.getNumeriTelefono().toArray(new String[3])[0]); 
-                }
-                if (!tfEditNumero2.getText().isEmpty()) {
-                    // se il nuovo numero aggiornato non è vuoto, questo va a sostituire il numero vecchio 
-                    contatto.modificaNumero(tfEditNumero2.getText(), contatto.getNumeriTelefono().toArray(new String[3])[1]);
-                } else {
-                    // se il nuovo numero è vuoto, allora si va semplicemente ad eliminare il numero vecchio
-                    contatto.rimuoviNumero(contatto.getNumeriTelefono().toArray(new String[3])[1]);
-                }
-                if (!tfEditNumero3.getText().isEmpty()) {
-                    // se il nuovo numero aggiornato non è vuoto, questo va a sostituire il numero vecchio 
-                    contatto.modificaNumero(tfEditNumero3.getText(), contatto.getNumeriTelefono().toArray(new String[3])[2]);
-                } else {
-                    // se il nuovo numero è vuoto, allora si va semplicemente ad eliminare il numero vecchio
-                    contatto.rimuoviNumero(contatto.getNumeriTelefono().toArray(new String[3])[2]);
-                }
-            } catch (NumeroNonCorrettoException ex) {
-                mostraAlert("I numeri devono essere correttamente formattati");
-            }
-            
-            // Aggiorno i dati inerenti agli indirizzi email
-            try {
-                if (!tfEditEmail1.getText().isEmpty()) {
-                    // se la nuova mail aggiornata non è vuota, questa va a sostituire la mail vecchia
-                    contatto.modificaMail(tfEditEmail1.getText(), contatto.getIndirizziMail().toArray(new String[3])[0]);
-                } else {
-                    // se la nuova mail è vuota, allora si va semplicemente ad eliminare la mail vecchia
-                    contatto.rimuoviMail(contatto.getIndirizziMail().toArray(new String[3])[0]);
-                }
-                if (!tfEditEmail2.getText().isEmpty()) {
-                    // se la nuova mail aggiornata non è vuota, questa va a sostituire la mail vecchia
-                    contatto.modificaMail(tfEditEmail2.getText(), contatto.getIndirizziMail().toArray(new String[3])[1]);
-                } else {
-                    // se la nuova mail è vuota, allora si va semplicemente ad eliminare la mail vecchia
-                    contatto.rimuoviMail(contatto.getIndirizziMail().toArray(new String[3])[1]);
-                }
-                if (!tfEditEmail3.getText().isEmpty()) {
-                    // se la nuova mail aggiornata non è vuota, questa va a sostituire la mail vecchia
-                    contatto.modificaMail(tfEditEmail3.getText(), contatto.getIndirizziMail().toArray(new String[3])[2]);
-                } else {
-                    // se la nuova mail è vuota, allora si va semplicemente ad eliminare la mail vecchia
-                    contatto.rimuoviMail(contatto.getIndirizziMail().toArray(new String[3])[2]);
-                }
-            } catch (MailNonCorrettaException ex) {
-                mostraAlert("Le mail devono essere correttamente formattate");
-            }
-            
-            // Aggiorno la view
-            aggiornaContatti();
+          
         });
         
         // Collego il pulsante di annullamento delle modifiche alla relativa azione
@@ -484,8 +497,12 @@ public class Controller implements Initializable {
         
         // Rimuovo dalla view la scheda contatto precedentemente inserita e la sostituisco
         // con quella modificabile appena creata
-        contactContainer.getChildren().remove(mappaContatti.get(contatto));
-        contactContainer.getChildren().add(editCard);
+        int index = contactContainer.getChildren().indexOf(mappaContatti.get(contatto));
+        if (index != -1) {
+            contactContainer.getChildren().set(index, editCard);
+        }
+        //contactContainer.getChildren().remove(mappaContatti.get(contatto));
+        //contactContainer.getChildren().add(editCard);
     }
     
     
@@ -564,7 +581,7 @@ public class Controller implements Initializable {
             Timeline timeline = new Timeline(
                 new KeyFrame(
                     Duration.millis(500),
-                    new KeyValue(scrollPane.prefWidthProperty(), 523),
+                    new KeyValue(scrollPane.prefWidthProperty(), 517),
                     new KeyValue(scrollPane.layoutXProperty(), 283)
                 )
             );
@@ -612,12 +629,16 @@ public class Controller implements Initializable {
         
         // Creo e aggiungo alla view un pulsante da premere qualora si sia completata la ricerca
         Button okBtn = new Button("Ok");
+        okBtn.setFont(new Font("Arial bold", 14));
+        okBtn.setStyle("-fx-background-color:  #28B463; -fx-text-fill: white; -fx-cursor: hand;");
         contactContainer.getChildren().add(okBtn);
         
         // Associo al pulsante la relativa azione
         okBtn.setOnAction(e -> {
             // Aggiorno la view, tornando a mostrare tutti i contatti
             aggiornaContatti();
+            // Ripulisco il campo di ricerca
+            tfSearch.setText("");
         });
     }
 
@@ -741,3 +762,5 @@ public class Controller implements Initializable {
     }
     
 }
+
+// classe aggiornata
