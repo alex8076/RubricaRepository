@@ -155,32 +155,44 @@ public class Controller implements Initializable {
         
             // aggiungo nei dati del contatto gli eventuali numeri di telefono inseriti
             try {
-                nuovoContatto.aggiungiNumero(tfTelefono1.getText());
-                nuovoContatto.aggiungiNumero(tfTelefono2.getText());
-                nuovoContatto.aggiungiNumero(tfTelefono3.getText());
+                if (!tfTelefono1.getText().isEmpty())
+                    nuovoContatto.aggiungiNumero(tfTelefono1.getText());
+                if (!tfTelefono2.getText().isEmpty())
+                    nuovoContatto.aggiungiNumero(tfTelefono2.getText());
+                if (!tfTelefono3.getText().isEmpty())
+                    nuovoContatto.aggiungiNumero(tfTelefono3.getText());
             } catch (NumeroNonCorrettoException ex) {
+                // catturo l'eccezione nel caso in cui i numeri non siano correttamente formattati
                 mostraAlert("Controllare che i numeri inseriti siano validi");;
             } catch (IllegalArgumentException ex) {
+                // catturo l'eccezione nel caso in cui uno dei numeri sia già presente in rubrica
                 mostraAlert("Un numero di telefono è già presente");
             }
 
             // aggiungo nei dati del contatto gli eventuali indirizzi email inseriti
             try {
-                nuovoContatto.aggiungiMail(tfEmail1.getText());
-                nuovoContatto.aggiungiMail(tfEmail2.getText());
-                nuovoContatto.aggiungiMail(tfEmail3.getText());
+                if (!tfEmail1.getText().isEmpty())
+                    nuovoContatto.aggiungiMail(tfEmail1.getText());
+                if (!tfEmail2.getText().isEmpty())
+                    nuovoContatto.aggiungiMail(tfEmail2.getText());
+                if (!tfEmail3.getText().isEmpty())
+                    nuovoContatto.aggiungiMail(tfEmail3.getText());
             } catch (MailNonCorrettaException ex) {
+                // catturo l'eccezione nel caso in cui le mail non siano correttamente formattate
                 mostraAlert("Controllare che le mail inserite siano valide");
             } catch (IllegalArgumentException ex) {
+                // catturo l'eccezione nel caso in cui unq delle mail sia già presente in rubrica
                 mostraAlert("Una mail è già presente");
             }
 
+            // ??????????????? ATTENZIONE: SERVE DAVVERO ???????????????
             // aggiungo il contatto alla rubrica
             try {
                 rubrica.aggiungiContatto(nuovoContatto);
             } catch (ContattoDuplicatoException ex) {
                 mostraAlert("Un contatto con questi dati è già presente");
             }
+            
             //aggiorno la view dopo aver inserito il nuovo contatto
             aggiornaContatti();
             // ripulisco i campi di input
@@ -365,7 +377,7 @@ public class Controller implements Initializable {
         VBox v2 = new VBox();
         v2.setAlignment(Pos.CENTER);
         v2.setSpacing(10);
-        String[] numeriTelefonoArray = contatto.getNumeriTelefono().toArray(new String[0]);
+        String[] numeriTelefonoArray = contatto.getNumeriTelefono().toArray(new String[3]);
         TextField tfEditNumero1 = new TextField(numeriTelefonoArray[0] != null ? numeriTelefonoArray[0] : "");
         TextField tfEditNumero2 = new TextField(numeriTelefonoArray[1] != null ? numeriTelefonoArray[1] : "");
         TextField tfEditNumero3 = new TextField(numeriTelefonoArray[2] != null ? numeriTelefonoArray[2] : "");
