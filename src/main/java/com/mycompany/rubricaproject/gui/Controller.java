@@ -39,6 +39,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -111,16 +113,26 @@ public class Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        rubrica = new Rubrica();
-        fh = new CSVFileHandler(rubrica);
+        this.rubrica = new Rubrica();
+        this.fh = new CSVFileHandler(rubrica);
         this.mappaContatti = new HashMap<>();
+        
         // Nascondo il pannello di inserimento dalla view
         inputPane.setTranslateX(-283);
         scrollPane.setPrefWidth(800);
         scrollPane.setLayoutX(0);
+        
+        // Associo un'icona al tasto di ricerca
+        ImageView imageView = new ImageView(getClass().getResource("/loupe.png").toExternalForm());
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        if (imageView.getImage().isError())
+            System.out.println("Errore nel caricamento dell'immagine");
+        searchBtn.setText("");
+        searchBtn.setGraphic(imageView);
     }   
     
-    /**
+    /**🔎🔎
      * @brief Gestisce l'aggiunta di un nuovo contatto alla rubrica.
      * 
      * Questo metodo viene invocato quando l'utente preme il pulsante 'Aggiungi'
@@ -669,63 +681,63 @@ public class Controller implements Initializable {
      * @see CSVFileHandler
      */
    @FXML
-private void handleImport(ActionEvent event) {
-    // Mostro una finestra di dialogo per permettere all'utente di selezionare il file
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Seleziona un file CSV");
-    // Specifico che l'utente può selezionare unicamente file .csv
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("File CSV", "*.csv"));
+    private void handleImport(ActionEvent event) {
+        // Mostro una finestra di dialogo per permettere all'utente di selezionare il file
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleziona un file CSV");
+        // Specifico che l'utente può selezionare unicamente file .csv
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("File CSV", "*.csv"));
 
-    // Ottengo il file selezionato
-    Stage primaryStage = (Stage) importaBtn.getScene().getWindow();
-    File fileSelezionato = fileChooser.showOpenDialog(primaryStage);
+        // Ottengo il file selezionato
+        Stage primaryStage = (Stage) importaBtn.getScene().getWindow();
+        File fileSelezionato = fileChooser.showOpenDialog(primaryStage);
 
-    // Controllo che il file sia stato selezionato
-    if (fileSelezionato != null) {
-        // Ottengo il path del file
-        String filePath = fileSelezionato.getAbsolutePath();
-        try {
-            // Invoco la funzione di importazione da CSVFileHandler passando il path del file
-            Rubrica rubricaImportata = fh.importaRubrica(filePath); // `fh` è l'istanza di CSVFileHandler
+        // Controllo che il file sia stato selezionato
+        if (fileSelezionato != null) {
+            // Ottengo il path del file
+            String filePath = fileSelezionato.getAbsolutePath();
+            try {
+                // Invoco la funzione di importazione da CSVFileHandler passando il path del file
+                Rubrica rubricaImportata = fh.importaRubrica(filePath); // `fh` è l'istanza di CSVFileHandler
 
-            // Controllo se la rubrica importata contiene contatti
-            if (rubricaImportata != null && !rubricaImportata.getContatti().isEmpty()) {
-                // Aggiorno la rubrica principale con i contatti importati
-                rubrica.setContatti(rubricaImportata.getContatti());
+                // Controllo se la rubrica importata contiene contatti
+                if (rubricaImportata != null && !rubricaImportata.getContatti().isEmpty()) {
+                    // Aggiorno la rubrica principale con i contatti importati
+                    rubrica.setContatti(rubricaImportata.getContatti());
 
-                // Aggiorno la view
-                aggiornaContatti();
+                    // Aggiorno la view
+                    aggiornaContatti();
 
-                // Mostro una notifica di completamento
-                mostraAlert("Importazione completata con successo");
-            } else {
-                // La rubrica importata è vuota
-                mostraAlert("Il file selezionato non contiene contatti validi.");
+                    // Mostro una notifica di completamento
+                    mostraAlert("Importazione completata con successo");
+                } else {
+                    // La rubrica importata è vuota
+                    mostraAlert("Il file selezionato non contiene contatti validi.");
+                }
+            } catch (FileNonTrovatoException e) {
+                // Gestisco il caso in cui il file non venga trovato
+                System.err.println("File non trovato: " + e.getMessage());
+                mostraAlert("File non trovato.");
+            } catch (FormatoFileNonValidoException e) {
+                // Gestisco il caso in cui il file abbia un formato non valido
+                System.err.println("Formato del file non valido: " + e.getMessage());
+                mostraAlert("Formato del file non valido.");
+            } catch (IOException e) {
+                // Gestisco il caso in cui sorga un'eccezione durante la lettura
+                System.err.println("Errore durante l'importazione: " + e.getMessage());
+                mostraAlert("Errore durante l'importazione.");
+            } catch (Exception e) {
+                // Gestione di eventuali eccezioni non previste
+                System.err.println("Errore generico: " + e.getMessage());
+                e.printStackTrace();
+                mostraAlert("Errore imprevisto durante l'importazione.");
             }
-        } catch (FileNonTrovatoException e) {
-            // Gestisco il caso in cui il file non venga trovato
-            System.err.println("File non trovato: " + e.getMessage());
-            mostraAlert("File non trovato.");
-        } catch (FormatoFileNonValidoException e) {
-            // Gestisco il caso in cui il file abbia un formato non valido
-            System.err.println("Formato del file non valido: " + e.getMessage());
-            mostraAlert("Formato del file non valido.");
-        } catch (IOException e) {
-            // Gestisco il caso in cui sorga un'eccezione durante la lettura
-            System.err.println("Errore durante l'importazione: " + e.getMessage());
-            mostraAlert("Errore durante l'importazione.");
-        } catch (Exception e) {
-            // Gestione di eventuali eccezioni non previste
-            System.err.println("Errore generico: " + e.getMessage());
-            e.printStackTrace();
-            mostraAlert("Errore imprevisto durante l'importazione.");
+        } else {
+            // Gestisco il caso in cui non venga selezionato alcun file, annullando l'operazione
+            System.out.println("Nessun file selezionato");
+            mostraAlert("Importazione annullata.");
         }
-    } else {
-        // Gestisco il caso in cui non venga selezionato alcun file, annullando l'operazione
-        System.out.println("Nessun file selezionato");
-        mostraAlert("Importazione annullata.");
     }
-}
 
 
 

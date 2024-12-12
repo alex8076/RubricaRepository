@@ -13,8 +13,7 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Applicazione extends Application {
@@ -30,6 +29,7 @@ public class Applicazione extends Application {
         primaryStage.setTitle("Rubrica");
         
         primaryStage.setResizable(false);
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/icon.png")));
         
         primaryStage.setScene(scene);
         primaryStage.show();
