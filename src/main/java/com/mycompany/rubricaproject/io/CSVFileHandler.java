@@ -1,10 +1,10 @@
 /**
  * @file CSVFileHandler.java
- * @brief Classe per la gestione di operazione I/O su file esterno in formato CSV
+ * @brief Classe per la gestione di operazioni I/O su file esterni in formato CSV
  * @see FileHandler
  * 
  * Questa classe implementa i metodi definiti nell'interfaccia FileHandler appositamente
- * per la tipologia di file esterni CSV
+ * per la tipologia di file esterni CSV.
  * 
  * @author gae
  * @date 2024-12-7
@@ -18,22 +18,26 @@ import java.util.*;
 import com.mycompany.rubricaproject.eccezioni.*;
 
 public class CSVFileHandler implements FileHandler {
-    
+
     private Rubrica rubrica;
-    
-    public CSVFileHandler(Rubrica rubrica) {
-    this.rubrica = rubrica;
-}
+
     /**
+     * Costruttore della classe CSVFileHandler.
+     * @param rubrica La rubrica da gestire.
+     */
+    public CSVFileHandler(Rubrica rubrica) {
+        this.rubrica = rubrica;
+    }
+
+    /**
+     * Esporta i contatti della rubrica in un file CSV.
+     * @param fileName Il nome del file CSV in cui esportare i dati.
+     * @throws IOException Se si verifica un errore durante l'operazione di scrittura.
      * 
-     * @param fileName
-     * @throws java.io.IOException
-     * @brief implementazione della funzione di esportazione per file CSV
-     * 
-     * @post il file in cui sono esportati i dati deve essere in formato CSV
+     * @post Il file risultante conterrà i contatti formattati in righe CSV.
      */
     @Override
-    public void esportaRubrica(String fileName) throws IOException{
+    public void esportaRubrica(String fileName) throws IOException {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
             // Scrittura dell'intestazione
             pw.println("NOME; COGNOME; NUMERI DI TELEFONO; INDIRIZZI MAIL");
@@ -50,20 +54,17 @@ public class CSVFileHandler implements FileHandler {
             System.err.println("Errore durante l'esportazione: " + e.getMessage());
             throw e;
         }
-        
     }
-    
+
     /**
-     * @param fileName
-     * @throws java.io.IOException
-     * @brief implementazione della funzione di importazione per file CSV
-     * @param[in] fileName il nome del file da importare
-     * @return la rubrica contenente i dati letti dal file
+     * Importa i contatti da un file CSV in una nuova rubrica.
+     * @param fileName Il nome del file CSV da cui importare i dati.
+     * @return Una nuova rubrica contenente i dati importati.
+     * @throws FileNonTrovatoException Se il file non viene trovato.
+     * @throws FormatoFileNonValidoException Se il file non è in formato CSV valido.
+     * @throws IOException Se si verifica un errore durante l'operazione di lettura.
      * 
-     * @pre il file deve essere in formato CSV
-     * 
-     * @throws FileNonTrovatoException Se il file non viene trovato
-     * @throws FormatoFileNonValidoException Se il file non è in formato CSV
+     * @pre Il file deve avere un formato CSV valido con intestazioni corrette.
      */
     @Override
     public Rubrica importaRubrica(String fileName) throws FileNonTrovatoException, FormatoFileNonValidoException, IOException {
@@ -92,8 +93,14 @@ public class CSVFileHandler implements FileHandler {
                         ? new HashSet<>(Arrays.asList(fields[3].split(","))) : new HashSet<>();
 
                 Contatto contatto = new Contatto(nome, cognome);
-                numeriTelefono.forEach(contatto::aggiungiNumero);
-                indirizziMail.forEach(contatto::aggiungiMail);
+                int numeroIndex = 0;
+                for (String numero : numeriTelefono) {
+                    contatto.aggiungiNumero(numero, numeroIndex++);
+                }
+                int mailIndex = 0;
+                for (String mail : indirizziMail) {
+                    contatto.aggiungiMail(mail, mailIndex++);
+                }
 
                 rubr.aggiungiContatto(contatto);
             }
@@ -108,7 +115,3 @@ public class CSVFileHandler implements FileHandler {
         return rubr;
     }
 }
-               
-    
-    
-
