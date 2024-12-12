@@ -18,6 +18,8 @@ package com.mycompany.rubricaproject.core;
 import com.mycompany.rubricaproject.eccezioni.MailNonCorrettaException;
 import com.mycompany.rubricaproject.eccezioni.NumeroNonCorrettoException;
 import com.mycompany.rubricaproject.eccezioni.UtenteNonValidoException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -28,8 +30,8 @@ public class Contatto implements Comparable<Contatto> {
     
     private String nome;
     private String cognome;
-    private Set<String> numeriTelefono; //indecisione sul fatto di usare una list
-    private Set<String> indirizziMail;
+    private String[] numeriTelefono; //indecisione sul fatto di usare una list
+    private String[] indirizziMail;
     
     
     
@@ -52,8 +54,8 @@ public class Contatto implements Comparable<Contatto> {
         
         this.nome=nome;
         this.cognome=cognome;
-        this.numeriTelefono= new TreeSet<>();
-        this.indirizziMail= new TreeSet<>();
+        this.numeriTelefono= new String[3];
+        this.indirizziMail= new String[3];
     }
     
     
@@ -129,7 +131,7 @@ public class Contatto implements Comparable<Contatto> {
     * 
     * @return Un set contenente i numeri di telefono del contatto.
     */
-     public Set<String> getNumeriTelefono(){
+     public String[] getNumeriTelefono(){
         return numeriTelefono;
      }
      
@@ -147,13 +149,17 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @post Il contatto avrà un nuovo numero di telefono
      */
-     public void aggiungiNumero (String numero) {
+     public void aggiungiNumero (String numero, int index) {
        
-        if (numero == null || !isNumeroValido(numero)) 
+        if (!isNumeroValido(numero)) 
             throw new NumeroNonCorrettoException("Il numero di telefono non è valido.");
     
-        if (!numeriTelefono.add(numero))
-            throw new IllegalArgumentException("Il numero di telefono è già presente.");
+        for (String num: this.numeriTelefono) {
+            if (num != null && num.equals(numero))
+                throw new IllegalArgumentException("Il numero di telefono è già presente.");
+        }
+        
+        this.numeriTelefono[index] = numero;
      }
      
      
@@ -169,17 +175,18 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @post Il numero di telefono selezionato è stato aggiornato.
      */
-    public void modificaNumero (String numeroNuovo, String numeroVecchio){
+    public void modificaNumero (String numeroNuovo, int index){
         if (!isNumeroValido(numeroNuovo)) 
             throw new NumeroNonCorrettoException("Il numero di telefono non è valido");
         
-
-    
-        if (!numeriTelefono.contains(numeroVecchio))
-            throw new IllegalArgumentException("Il numero di telefono da sostituire non è stato trovato"); 
+        for (String num: this.numeriTelefono) {
+            if (num != null && num.equals(numeroNuovo)) {
+                System.out.println(num);
+                throw new IllegalArgumentException("Il numero di telefono da sostituire è già presente");
+            }
+        }
         
-        numeriTelefono.remove(numeroVecchio);
-        numeriTelefono.add(numeroNuovo);
+        this.numeriTelefono[index] = numeroNuovo;
     }
      
      
@@ -193,14 +200,9 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @post La lista dei numeri di telefono è aggiornata.
      */
-    public void rimuoviNumero (String numero){
-         
-        if (!numeriTelefono.contains(numero)) 
-            throw new IllegalArgumentException("Il numero da rimuovere non è presente."); 
-        
-        
-        numeriTelefono.remove(numero);
-     }
+    public void rimuoviNumero (int index){
+          this.numeriTelefono[index] = null;
+    }
      
     
      
@@ -213,8 +215,6 @@ public class Contatto implements Comparable<Contatto> {
      * @throws NumeroNonCorrettoException Se il numero passato non è correttamente formattato
      */
     private boolean isNumeroValido (String numero){
-        if (numero == null || numero.isEmpty()) 
-            throw new NumeroNonCorrettoException("Il numero non può essere nullo o vuoto.");
         
         
         for (int i = 0; i < numero.length(); i++) {
@@ -256,7 +256,7 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @return Un insieme di indirizzi email.
      */
-     public Set<String> getIndirizziMail (){
+     public String[] getIndirizziMail (){
         return indirizziMail;
      }
      
@@ -274,11 +274,15 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @post La lista degli indirizzi email è aggiornata.
      */
-     public void aggiungiMail (String mail){
+     public void aggiungiMail (String mail, int index){
         if (!isMailValida(mail))
             throw new MailNonCorrettaException("L'indirizzo email non è valido.");
-            
-        indirizziMail.add(mail);
+        
+        for (String m: this.indirizziMail)
+            if (m != null && m.equals(mail))
+                throw new IllegalArgumentException("La mail è già presente");
+        
+        this.indirizziMail[index] = mail;
      }
      
      
@@ -294,16 +298,15 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @post L'indirizzo email specificato è stato aggiornato.
      */
-     public void modificaMail(String mailVecchia, String mailNuova){
+     public void modificaMail(String mailNuova, int index){
         if (!isMailValida(mailNuova)) 
             throw new MailNonCorrettaException("La nuova email non è valida.");
         
-        if (!indirizziMail.contains(mailVecchia)) 
-            throw new IllegalArgumentException("La vecchia email non è presente.");
+        for (String m: this.indirizziMail)
+            if (m != null && m.equals(mailNuova))
+                throw new IllegalArgumentException("La mail inserita è già presente");
         
-        
-        indirizziMail.remove(mailVecchia);
-        indirizziMail.add(mailNuova);
+        this.indirizziMail[index] = mailNuova;
      }
      
      
@@ -318,11 +321,8 @@ public class Contatto implements Comparable<Contatto> {
      * @post La lista degli indirizzi email è aggiornata.
      */
      
-     public void rimuoviMail (String mail){
-        if (!indirizziMail.contains(mail)) 
-            throw new IllegalArgumentException("L'indirizzo email non è presente.");
-       
-        indirizziMail.remove(mail);
+     public void rimuoviMail (int index){
+        this.indirizziMail[index] = null;
      }
      
      
@@ -392,15 +392,20 @@ public class Contatto implements Comparable<Contatto> {
          if(obj==null) return false;
          if(this==obj) return true;
          if(this.getClass()!=obj.getClass()) return false;
+         
          Contatto c = (Contatto) obj;
         
-         for(String numero : this.numeriTelefono)
-             if(c.numeriTelefono.contains(numero))
-                 return true;
+         for(String numero1 : this.numeriTelefono)
+             for (String numero2 : c.getNumeriTelefono())
+                if (numero1 != null && numero2 != null)
+                    if (numero1.equals(numero2))
+                        return true;
          
-         for(String mail : this.indirizziMail)
-             if(c.indirizziMail.contains(mail))
-                 return true;
+         for(String mail1 : this.indirizziMail)
+             for (String mail2: c.getIndirizziMail())
+                if (mail1 != null && mail2 != null)
+                    if(mail1.equals(mail2))
+                        return true;
      
          return false;
 
