@@ -111,6 +111,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         rubrica = new Rubrica();
+        fh = new CSVFileHandler(rubrica);
         this.mappaContatti = new HashMap<>();
         // Nascondo il pannello di inserimento dalla view
         inputPane.setTranslateX(-283);
