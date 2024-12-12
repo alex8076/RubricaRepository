@@ -116,7 +116,6 @@ public class Controller implements Initializable {
         this.mappaContatti = new HashMap<>();
         // Nascondo il pannello di inserimento dalla view
         inputPane.setTranslateX(-283);
-        
         scrollPane.setPrefWidth(800);
         scrollPane.setLayoutX(0);
     }   
@@ -618,30 +617,41 @@ public class Controller implements Initializable {
      */
     @FXML
     private void handleSearch(ActionEvent event) {
-        // Ripulisco la view
-        contactContainer.getChildren().clear();
-        for (Contatto contatto: rubrica.getContatti()) {
-            if (contatto.getNome().contains(tfSearch.getText()) || contatto.getCognome().contains(tfSearch.getText())) {
+        // Controllo che l'utente abbia inserito una qualche stringa nella barra di ricerca
+        if (tfSearch.getText().isEmpty()) {
+            mostraAlert("Non hai inserito nulla");
+        } else {
+            // Ripulisco la view
+            contactContainer.getChildren().clear();
+            
+            for (Contatto contatto: rubrica.CercaContatti(tfSearch.getText())) {
                 // Creo una card per ogni contatto che rispetti i criteri di ricerca
                 VBox card = creaSchedaContatto(contatto);
                 // Mostro nella view ogni nuova card creata
                 contactContainer.getChildren().add(card);
             }
+
+            // Mostro un messaggio nel caso in cui la ricerca non abbia prodotto alcun risultato
+            if (contactContainer.getChildren().isEmpty()) {
+                Label noResLbl = new Label("Non sono stati trovati contatti corrispondenti");
+                noResLbl.setFont(new Font("Arial", 14));
+                contactContainer.getChildren().add(noResLbl);
+            }
+
+            // Creo e aggiungo alla view un pulsante da premere qualora si sia completata la ricerca
+            Button okBtn = new Button("Ok");
+            okBtn.setFont(new Font("Arial bold", 14));
+            okBtn.setStyle("-fx-background-color:  #28B463; -fx-text-fill: white; -fx-cursor: hand;");
+            contactContainer.getChildren().add(okBtn);
+
+            // Associo al pulsante la relativa azione
+            okBtn.setOnAction(e -> {
+                // Aggiorno la view, tornando a mostrare tutti i contatti
+                aggiornaContatti();
+                // Ripulisco il campo di ricerca
+                tfSearch.setText("");
+            });
         }
-        
-        // Creo e aggiungo alla view un pulsante da premere qualora si sia completata la ricerca
-        Button okBtn = new Button("Ok");
-        okBtn.setFont(new Font("Arial bold", 14));
-        okBtn.setStyle("-fx-background-color:  #28B463; -fx-text-fill: white; -fx-cursor: hand;");
-        contactContainer.getChildren().add(okBtn);
-        
-        // Associo al pulsante la relativa azione
-        okBtn.setOnAction(e -> {
-            // Aggiorno la view, tornando a mostrare tutti i contatti
-            aggiornaContatti();
-            // Ripulisco il campo di ricerca
-            tfSearch.setText("");
-        });
     }
 
     /**
@@ -788,5 +798,3 @@ private void handleImport(ActionEvent event) {
     }
     
 }
-
-// classe aggiornata
