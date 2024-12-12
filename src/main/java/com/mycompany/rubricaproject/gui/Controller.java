@@ -39,6 +39,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -95,6 +96,8 @@ public class Controller implements Initializable {
     private Button importaBtn;
     @FXML
     private Button esportaBtn;
+    @FXML
+    private ScrollPane scrollPane;
     
     /**
      * @brief Inizializza il controller.
@@ -117,8 +120,8 @@ public class Controller implements Initializable {
         // Nascondo il pannello di inserimento dalla view
         inputPane.setTranslateX(-283);
         
-        contactContainer.setPrefWidth(800);
-        contactContainer.setLayoutX(0);
+        scrollPane.setPrefWidth(800);
+        scrollPane.setLayoutX(0);
     }   
     
     /**
@@ -190,8 +193,8 @@ public class Controller implements Initializable {
             Timeline timeline = new Timeline(
                 new KeyFrame(
                     Duration.millis(500),
-                    new KeyValue(contactContainer.prefWidthProperty(), 800),
-                    new KeyValue(contactContainer.layoutXProperty(), 0)
+                    new KeyValue(scrollPane.prefWidthProperty(), 800),
+                    new KeyValue(scrollPane.layoutXProperty(), 0)
                 )
             );
             timeline.play();
@@ -520,8 +523,8 @@ public class Controller implements Initializable {
         Timeline timeline = new Timeline(
             new KeyFrame(
                 Duration.millis(500),
-                new KeyValue(contactContainer.prefWidthProperty(), 800),
-                new KeyValue(contactContainer.layoutXProperty(), 0)
+                new KeyValue(scrollPane.prefWidthProperty(), 800),
+                new KeyValue(scrollPane.layoutXProperty(), 0)
             )
         );
         timeline.play();
@@ -546,13 +549,11 @@ public class Controller implements Initializable {
             transition.setFromX(-283);
             transition.setToX(0);
             transition.play();
-            //contactContainer.setPrefWidth(523);
-            //contactContainer.setLayoutX(283);
             Timeline timeline = new Timeline(
                 new KeyFrame(
                     Duration.millis(500),
-                    new KeyValue(contactContainer.prefWidthProperty(), 523),
-                    new KeyValue(contactContainer.layoutXProperty(), 283)
+                    new KeyValue(scrollPane.prefWidthProperty(), 523),
+                    new KeyValue(scrollPane.layoutXProperty(), 283)
                 )
             );
             timeline.play();
@@ -564,8 +565,8 @@ public class Controller implements Initializable {
             Timeline timeline = new Timeline(
                 new KeyFrame(
                     Duration.millis(500),
-                    new KeyValue(contactContainer.prefWidthProperty(), 800),
-                    new KeyValue(contactContainer.layoutXProperty(), 0)
+                    new KeyValue(scrollPane.prefWidthProperty(), 800),
+                    new KeyValue(scrollPane.layoutXProperty(), 0)
                 )
             );
             timeline.play();
