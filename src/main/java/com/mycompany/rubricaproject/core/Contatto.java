@@ -4,25 +4,17 @@
  * @brief Rappresenta un contatto con informazioni personali e metodi di gestione.
  * 
  * Classe progettata per gestire informazioni personali di un contatto come nome, cognome,
- * numeri di telefono e indirizzi email. Implementa metodi per la verifica della validità,
- * aggiunta, modifica e rimozione di dati.
+ * numeri di telefono e indirizzi email. Implementa metodi di aggiunta, modifica e rimozione di dati.
  * 
  * @author alessandro
  * @version 1.0
  * @date 2024-12-07
  */
-
+//
 
 package com.mycompany.rubricaproject.core;
 
-import com.mycompany.rubricaproject.eccezioni.MailNonCorrettaException;
-import com.mycompany.rubricaproject.eccezioni.NumeroNonCorrettoException;
-import com.mycompany.rubricaproject.eccezioni.UtenteNonValidoException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
 
 
 
@@ -30,7 +22,7 @@ public class Contatto implements Comparable<Contatto> {
     
     private String nome;
     private String cognome;
-    private String[] numeriTelefono; //indecisione sul fatto di usare una list
+    private String[] numeriTelefono; 
     private String[] indirizziMail;
     
     
@@ -41,17 +33,15 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * 
      * @post Un'istanza valida della classe Contatto è creata, se i dati passati sono validi.
-     * @see isValido()
+     * @see ValidatoreDati
      * 
      * @param[in] nome Nome del contatto.
      * @param[in] cognome Cognome del contatto.
      * 
      */
     public Contatto(String nome, String cognome){
-       if (!isValido(nome, cognome)) 
-            throw new UtenteNonValidoException("Deve essere presente almeno un nome o un cognome");
-        
-        
+       ValidatoreDati.isValido(nome, cognome);
+          
         this.nome=nome;
         this.cognome=cognome;
         this.numeriTelefono= new String[3];
@@ -77,15 +67,15 @@ public class Contatto implements Comparable<Contatto> {
      * @brief Imposta il nome del contatto.
      * 
      * @param[in] nome Nuovo nome del contatto, ammesso che l'utente aggiornato risulti valido.
-     * @see isValido()
+     * @see ValidatoreDati
      * 
      * 
      * @post Il nome del contatto è aggiornato.
      * 
      */
     public void setNome(String nome){
-        if (!isValido(nome, this.cognome)) 
-            throw new UtenteNonValidoException("Se il nome è vuoto, il cognome deve essere presente");
+        ValidatoreDati.isValido(nome, this.cognome); 
+           
         
         this.nome=nome;
     }
@@ -112,14 +102,13 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * 
      * @post Il cognome del contatto è aggiornato, ammesso che l'utente aggiornato risulti valido.
-     * @see isValido()
+     * @see VAlidatoreDati
      * 
-     * @throws UtenteNonValidoException se nome è nullo e si setta cognome nullo
+     *
      */
      public void setCognome(String cognome){
-        if (!isValido(this.nome, cognome)) 
-            throw new UtenteNonValidoException("Se il cognome è vuoto, il nome deve essere presente");
-        
+        ValidatoreDati.isValido(this.nome, cognome);
+            
         this.cognome=cognome;
     }
     
@@ -142,17 +131,17 @@ public class Contatto implements Comparable<Contatto> {
      * @brief Aggiunge un numero di telefono al contatto.
      * 
      * Consente di aggiungere un nuovo numero di telefono alla lista esistente,
-     *          rispettando il limite massimo di tre numeri.
+     * rispettando il limite massimo di tre numeri.
      * 
      * @param[in] numero Numero di telefono da aggiungere.
-     * 
+     * @param[in] index Indice che corrisponde alla posizione del numero nell'array.
      * 
      * @post Il contatto avrà un nuovo numero di telefono
      */
      public void aggiungiNumero (String numero, int index) {
        
-        if (!isNumeroValido(numero)) 
-            throw new NumeroNonCorrettoException("Il numero di telefono non è valido.");
+        ValidatoreDati.isNumeroValido(numero); 
+
     
         for (String num: this.numeriTelefono) {
             if (num != null && num.equals(numero))
@@ -170,14 +159,15 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * Sostituisce un numero esistente con uno nuovo.
      * 
-     * @param[in] numero Nuovo numero di telefono.
-     * 
+     * @param[in] numeroNuovo Nuovo numero di telefono.
+     * @param[in] index Indice che corrisponde alla posizione del numero nell'array.
      * 
      * @post Il numero di telefono selezionato è stato aggiornato.
      */
     public void modificaNumero (String numeroNuovo, int index){
-        if (!isNumeroValido(numeroNuovo)) 
-            throw new NumeroNonCorrettoException("Il numero di telefono non è valido");
+        
+        ValidatoreDati.isNumeroValido(numeroNuovo);
+            
         
         for (String num: this.numeriTelefono) {
             if (num != null && num.equals(numeroNuovo)) {
@@ -195,7 +185,7 @@ public class Contatto implements Comparable<Contatto> {
       /**
      * @brief Rimuove un numero di telefono dal contatto.
      * 
-     * @param[in] numero Numero di telefono da rimuovere.
+     * @param[in] index Indice che corrisponde alla posizione del numero nell'array.
      * 
      * 
      * @post La lista dei numeri di telefono è aggiornata.
@@ -205,50 +195,8 @@ public class Contatto implements Comparable<Contatto> {
     }
      
     
-     
+ 
     
-     /**
-     * @brief Verifica se un numero di telefono è valido.
-     * 
-     * @param[in] numero Numero di telefono da verificare.
-     * @return `true` se il numero è valido, altrimenti `false`.
-     * @throws NumeroNonCorrettoException Se il numero passato non è correttamente formattato
-     */
-    private boolean isNumeroValido (String numero){
-        
-        
-        for (int i = 0; i < numero.length(); i++) {
-            if (!Character.isDigit(numero.charAt(i))) 
-                throw new NumeroNonCorrettoException("Il numero deve contenere solo cifre.");
-        }
-
-        
-        if (numero.length() != 10) 
-            throw new NumeroNonCorrettoException("Il numero deve contenere esattamente 10 cifre.");
-        
-
-        return true; 
-    }
-     
-     
-      
-    
-     /**
-     * @brief Verifica se il contatto è valido.
-     * 
-     * Un contatto è considerato valido se ha almeno un nome o un cognome.
-     * 
-     * @return `true` se il contatto è valido, altrimenti `false`.
-     * 
-     * @throws UtenteNonValidoException Se l'utente ha nulli contemporaneamente sia nome che cognome
-     */
-     private boolean isValido(String nome, String cognome){
-         return (nome != null && !nome.isEmpty()) || (cognome != null && !cognome.isEmpty());
-     }
-     
-     
-     
-     
       /**
      * @brief Restituisce l'insieme degli indirizzi email associati al contatto.
      * 
@@ -270,13 +218,12 @@ public class Contatto implements Comparable<Contatto> {
      *          rispettando il limite massimo di tre indirizzi.
      * 
      * @param[in] mail Indirizzo email da aggiungere.
-     * 
+     * @param[in] index Indice che corrisponde alla posizione della mail nell'array.
      * 
      * @post La lista degli indirizzi email è aggiornata.
      */
      public void aggiungiMail (String mail, int index){
-        if (!isMailValida(mail))
-            throw new MailNonCorrettaException("L'indirizzo email non è valido.");
+        ValidatoreDati.isMailValida(mail);
         
         for (String m: this.indirizziMail)
             if (m != null && m.equals(mail))
@@ -294,13 +241,13 @@ public class Contatto implements Comparable<Contatto> {
      * Sostituisce un indirizzo esistente con uno nuovo.
      * 
      * @param[in] mail Nuovo indirizzo email.
-     * 
+     * @param[in] index Indice che corrisponde alla posizione della mail nell'array.
      * 
      * @post L'indirizzo email specificato è stato aggiornato.
      */
      public void modificaMail(String mailNuova, int index){
-        if (!isMailValida(mailNuova)) 
-            throw new MailNonCorrettaException("La nuova email non è valida.");
+        ValidatoreDati.isMailValida(mailNuova);
+            
         
         for (String m: this.indirizziMail)
             if (m != null && m.equals(mailNuova))
@@ -315,7 +262,7 @@ public class Contatto implements Comparable<Contatto> {
      /**
      * @brief Rimuove un indirizzo email dal contatto.
      * 
-     * @param[in] mail Indirizzo email da rimuovere.
+     * @param[in] index Indice che corrisponde alla posizione della mail nell'array.
      * 
      * 
      * @post La lista degli indirizzi email è aggiornata.
@@ -328,20 +275,6 @@ public class Contatto implements Comparable<Contatto> {
      
      
      
-      /**
-     * @brief Verifica se un indirizzo email è valido.
-     * 
-     * @param[in] mail Indirizzo email da verificare.
-     * @return `true` se l'indirizzo è valido, altrimenti `false`.
-     * @throws MailNonCorrettaException Se il la mail passata non è correttamente formattata
-     */
-     private boolean isMailValida(String mail){
-          return mail != null && mail.contains("@") && mail.contains(".");
-     }
-     
-     
-     
-     
      /**
      * @brief Genera il codice hash del contatto.
      * 
@@ -349,11 +282,6 @@ public class Contatto implements Comparable<Contatto> {
      */
      @Override
     public int hashCode(){
-        /*int code = cognome == null ? 0 : cognome.hashCode();
-        code = 31 * code + (nome == null ? 0 : nome.hashCode());
-        code = 31 * code + numeriTelefono.hashCode();
-        code = 31 * code + indirizziMail.hashCode();
-        return code; */
         return Objects.hash(numeriTelefono, indirizziMail);
      }
     
