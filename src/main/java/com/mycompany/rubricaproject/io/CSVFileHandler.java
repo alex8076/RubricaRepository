@@ -54,15 +54,15 @@ public class CSVFileHandler implements FileHandler {
                 String[] numeriTelefono = contatto.getNumeriTelefono();
                 String[] indirizziMail = contatto.getIndirizziMail();
 
-                // Scrittura dei dati del contatto
+                // Scrittura dei dati del contatto, evitando "null"
                 pw.println(String.join(";",
                         nome, cognome,
-                        numeriTelefono.length > 0 ? numeriTelefono[0] : "",
-                        numeriTelefono.length > 1 ? numeriTelefono[1] : "",
-                        numeriTelefono.length > 2 ? numeriTelefono[2] : "",
-                        indirizziMail.length > 0 ? indirizziMail[0] : "",
-                        indirizziMail.length > 1 ? indirizziMail[1] : "",
-                        indirizziMail.length > 2 ? indirizziMail[2] : ""));
+                        numeriTelefono.length > 0 && numeriTelefono[0] != null ? numeriTelefono[0] : "",
+                        numeriTelefono.length > 1 && numeriTelefono[1] != null ? numeriTelefono[1] : "",
+                        numeriTelefono.length > 2 && numeriTelefono[2] != null ? numeriTelefono[2] : "",
+                        indirizziMail.length > 0 && indirizziMail[0] != null ? indirizziMail[0] : "",
+                        indirizziMail.length > 1 && indirizziMail[1] != null ? indirizziMail[1] : "",
+                        indirizziMail.length > 2 && indirizziMail[2] != null ? indirizziMail[2] : ""));
             }
         }
     }
