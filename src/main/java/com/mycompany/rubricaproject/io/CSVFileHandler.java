@@ -145,8 +145,6 @@ public class CSVFileHandler implements FileHandler {
         } catch (IOException e) {
             throw e;
         }
-
-        //return rubr;
     }
 
     /**
