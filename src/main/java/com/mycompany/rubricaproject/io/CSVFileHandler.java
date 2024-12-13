@@ -38,37 +38,46 @@ public class CSVFileHandler implements FileHandler {
      * @post Il file risultante conterrà i contatti formattati in righe CSV.
      */
    @Override
-public void esportaRubrica(String fileName) throws IOException {
-    try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
+        public void esportaRubrica(String fileName) throws IOException {
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
         // Scrittura dell'intestazione
-        pw.println("NOME;COGNOME;NUMERI DI TELEFONO;INDIRIZZI MAIL");
+        pw.println("NOME;COGNOME;TELEFONO_1;TELEFONO_2;TELEFONO_3;EMAIL_1;EMAIL_2;EMAIL_3");
 
         // Iterazione sui contatti della rubrica
         for (Contatto contatto : rubrica.getContatti()) {
+            // Ottieni nome e cognome
             String nome = contatto.getNome() != null ? contatto.getNome() : "";
             String cognome = contatto.getCognome() != null ? contatto.getCognome() : "";
 
-            String numeriTelefono = contatto.getNumeriTelefono() != null
-                    ? Arrays.stream(contatto.getNumeriTelefono())
-                        .filter(numero -> numero != null && !numero.equals("null"))
-                        .collect(Collectors.joining(","))
-                    : "";
+            // Gestione dei numeri di telefono
+            String[] numeriTelefono = {"", "", ""};
+            int i = 0;
+            for (String numero : contatto.getNumeriTelefono()) {
+                if (i < 3) {
+                    numeriTelefono[i] = numero != null ? numero : "";
+                    i++;
+                } else {
+                    break; // Esci dal ciclo se ci sono più di 3 numeri
+                }
+            }
 
-            String indirizziMail = contatto.getIndirizziMail() != null
-                    ? Arrays.stream(contatto.getIndirizziMail())
-                        .filter(mail -> mail != null && !mail.equals("null"))
-                        .collect(Collectors.joining(","))
-                    : "";
+            // Gestione degli indirizzi email
+            String[] indirizziMail = {"", "", ""};
+            i = 0;
+            for (String mail : contatto.getIndirizziMail()) {
+                if (i < 3) {
+                    indirizziMail[i] = mail != null ? mail : "";
+                    i++;
+                } else {
+                    break; // Esci dal ciclo se ci sono più di 3 email
+                }
+            }
 
-            pw.print(nome + ";");
-            pw.print(cognome + ";");
-            pw.print(numeriTelefono + ";");
-            pw.println(indirizziMail);
+            // Scrivi i dati del contatto nel file
+            pw.println(String.join(";", nome, cognome,
+                    numeriTelefono[0], numeriTelefono[1], numeriTelefono[2],
+                    indirizziMail[0], indirizziMail[1], indirizziMail[2]));
         }
-        System.out.println("Rubrica esportata correttamente in formato CSV: " + fileName);
-    } catch (IOException e) {
-        System.err.println("Errore durante l'esportazione: " + e.getMessage());
-        throw e;
     }
 }
 
