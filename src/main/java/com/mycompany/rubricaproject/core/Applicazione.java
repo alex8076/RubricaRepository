@@ -32,6 +32,7 @@ public class Applicazione extends Application {
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/icon.png")));
         
         primaryStage.setScene(scene);
+        
         primaryStage.show();
         
     }
