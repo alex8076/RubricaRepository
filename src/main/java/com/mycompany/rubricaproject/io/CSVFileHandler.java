@@ -86,10 +86,18 @@ public class CSVFileHandler implements FileHandler {
                 throw new FormatoFileNonValidoException("Formato CSV non valido: intestazione non corretta.");
             }
 
+            // Determina il delimitatore (virgola o punto e virgola)
+            String delimitatore = header.contains(",") ? "," : ";";
+
             // Lettura delle righe del file
             String line;
             while ((line = br.readLine()) != null) {
-                String[] fields = line.split(";");
+                String[] fields = line.split(delimitatore);
+
+                // Rimuove eventuali virgolette dai campi
+                for (int i = 0; i < fields.length; i++) {
+                    fields[i] = fields[i].replaceAll("^\"|\"$", "").trim();
+                }
 
                 String nome = fields.length > 0 ? fields[0].trim() : "";
                 String cognome = fields.length > 1 ? fields[1].trim() : "";
