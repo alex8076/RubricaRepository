@@ -14,6 +14,7 @@
 
 package com.mycompany.rubricaproject.core;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -281,9 +282,29 @@ public class Contatto implements Comparable<Contatto> {
      * @return Codice hash calcolato.
      */
      @Override
-    public int hashCode(){
-        return Objects.hash(numeriTelefono, indirizziMail);
-     }
+     public int hashCode(){
+        int result = 1;
+
+        // Aggiungi hash per numeri di telefono (ignora null)
+        if (numeriTelefono != null) {
+            for (String numero : numeriTelefono) {
+                if (numero != null) {
+                    result = 31 * result + numero.hashCode();
+                }
+            }
+        }
+
+        // Aggiungi hash per indirizzi email (ignora null)
+        if (indirizziMail != null) {
+            for (String mail : indirizziMail) {
+                if (mail != null) {
+                    result = 31 * result + mail.hashCode();
+                }
+            }
+        }
+
+        return result;
+      }
     
      
      
