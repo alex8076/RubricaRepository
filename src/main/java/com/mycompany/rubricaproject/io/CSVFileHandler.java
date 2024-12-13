@@ -76,8 +76,8 @@ public class CSVFileHandler implements FileHandler {
      * @throws IOException Se si verifica un errore durante l'operazione di lettura.
      */
     @Override
-    public Rubrica importaRubrica(String fileName) throws FileNonTrovatoException, FormatoFileNonValidoException, IOException {
-        Rubrica rubr = new Rubrica();
+    public void importaRubrica(String fileName, Rubrica rubr) throws FileNonTrovatoException, FormatoFileNonValidoException, IOException {
+        //Rubrica rubr = new Rubrica();
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             // Lettura dell'intestazione del file
@@ -132,8 +132,13 @@ public class CSVFileHandler implements FileHandler {
                         }
                     }
                 }
-
-                rubr.aggiungiContatto(contatto);
+                
+                if (!rubr.getContatti().contains(contatto))
+                    rubr.aggiungiContatto(contatto);
+                else {
+                    rubr.modificaContatto(contatto);
+                }
+                            
             }
         } catch (FileNotFoundException e) {
             throw new FileNonTrovatoException("File non trovato: " + fileName);
@@ -141,7 +146,7 @@ public class CSVFileHandler implements FileHandler {
             throw e;
         }
 
-        return rubr;
+        //return rubr;
     }
 
     /**

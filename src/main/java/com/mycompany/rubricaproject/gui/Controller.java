@@ -698,12 +698,12 @@ public class Controller implements Initializable {
             String filePath = fileSelezionato.getAbsolutePath();
             try {
                 // Invoco la funzione di importazione da CSVFileHandler passando il path del file
-                Rubrica rubricaImportata = fh.importaRubrica(filePath); // `fh` è l'istanza di CSVFileHandler
+                fh.importaRubrica(filePath, rubrica); // `fh` è l'istanza di CSVFileHandler
 
                 // Controllo se la rubrica importata contiene contatti
-                if (rubricaImportata != null && !rubricaImportata.getContatti().isEmpty()) {
+                if (rubrica != null && !rubrica.getContatti().isEmpty()) {
                     // Aggiorno la rubrica principale con i contatti importati
-                    rubrica.setContatti(rubricaImportata.getContatti());
+                    rubrica.setContatti(rubrica.getContatti());
 
                     // Aggiorno la view
                     aggiornaContatti();

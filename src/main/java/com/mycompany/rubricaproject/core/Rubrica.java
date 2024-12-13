@@ -114,4 +114,11 @@ public class Rubrica {
         return risultati;
     }
     
+    public void modificaContatto(Contatto c) {
+        if (contatti.contains(c)) {
+            contatti.remove(c);
+            contatti.add(c);
+        }
+    }
+    
 }

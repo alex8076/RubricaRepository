@@ -41,5 +41,5 @@ public interface FileHandler {
      * 
      * @throws FileNonTrovatoException Se il file non viene trovato
      */
-    Rubrica importaRubrica(String fileName) throws FileNonTrovatoException, FormatoFileNonValidoException, IOException;
+    void importaRubrica(String fileName, Rubrica rbr) throws FileNonTrovatoException, FormatoFileNonValidoException, IOException;
 }
