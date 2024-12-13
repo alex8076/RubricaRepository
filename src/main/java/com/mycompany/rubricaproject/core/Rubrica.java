@@ -104,7 +104,7 @@ public class Rubrica {
      * @post Viene mostrata la lista di contatti corrispondente alla sottostringa inserita.
      * @invariant contatti.
      */
-    public Set<Contatto> CercaContatti(String ricercaStr){
+    public Set<Contatto> cercaContatti(String ricercaStr){
         Set<Contatto> risultati= new TreeSet<>();
         for (Contatto c: contatti){
             if(c.getNome().contains(ricercaStr)|| c.getCognome().contains(ricercaStr)){

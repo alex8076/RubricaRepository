@@ -34,7 +34,7 @@ public interface FileHandler {
      * @param fileName
      * @throws java.io.IOException
      * @brief Importa i dati da un file esterno su una rubrica
-     * @return Una rubrica contenente i dati letti dal file esterno
+     * 
      * 
      * @pre l'utente ha a diposizione un file da importare
      * @post l'utente riceve una notifica di completamento dell'operazione

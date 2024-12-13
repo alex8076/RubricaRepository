@@ -100,7 +100,7 @@ public class RubricaTest {
         String ricercaStr = "";
         Rubrica instance = new Rubrica();
         Set<Contatto> expResult = null;
-        Set<Contatto> result = instance.CercaContatti(ricercaStr);
+        Set<Contatto> result = instance.cercaContatti(ricercaStr);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

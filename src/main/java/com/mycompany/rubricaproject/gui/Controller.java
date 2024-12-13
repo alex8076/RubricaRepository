@@ -636,7 +636,7 @@ public class Controller implements Initializable {
             // Ripulisco la view
             contactContainer.getChildren().clear();
             
-            for (Contatto contatto: rubrica.CercaContatti(tfSearch.getText())) {
+            for (Contatto contatto: rubrica.cercaContatti(tfSearch.getText())) {
                 // Creo una card per ogni contatto che rispetti i criteri di ricerca
                 VBox card = creaSchedaContatto(contatto);
                 // Mostro nella view ogni nuova card creata
