@@ -114,6 +114,25 @@ public class Rubrica {
         return risultati;
     }
     
+    
+    
+    
+    /**
+     * @brief Modifica un contatto esistente nella rubrica
+     * @see Contatto
+     * 
+     * Questo metodo cerca un contatto nella rubrica che corrisponde al contatto passato come parametro.
+     * Se il contatto è presente nella rubrica, viene prima rimosso e poi riaggiunto, 
+     * permettendo di aggiornare i suoi dati
+     * 
+     * @param[i] c Il contatto da modificare. 
+     * 
+     * 
+     * @pre Il contatto passato come parametro deve esistere nella rubrica.
+     * @post Se il contatto è presente nella rubrica, i suoi dettagli vengono aggiornati.
+     * 
+     * 
+     */
     public void modificaContatto(Contatto c) {
         if (contatti.contains(c)) {
             contatti.remove(c);

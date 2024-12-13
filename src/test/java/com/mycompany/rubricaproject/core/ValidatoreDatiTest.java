@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
- * @author giovannicaldarelli
+ * @author Giovanni Caldarelli
  */
 public class ValidatoreDatiTest {
     
