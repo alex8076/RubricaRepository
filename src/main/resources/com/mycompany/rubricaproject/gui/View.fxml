@@ -82,12 +82,12 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
-                  <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand;" text="Annulla">
+                  <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: #DE5546; -fx-text-fill: white; -fx-cursor: hand;" text="Annulla">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="addBtn" mnemonicParsing="false" onAction="#handleAdd" style="-fx-background-color: #28b463; -fx-text-fill: white; -fx-cursor: hand;" text="Aggiungi">
+                  <Button fx:id="addBtn" mnemonicParsing="false" onAction="#handleAdd" style="-fx-background-color: #8aafaf; -fx-text-fill: white; -fx-cursor: hand;" text="Aggiungi">
                      <font>
                         <Font name="Arial Bold" size="14.0" />
                      </font>
@@ -103,7 +103,7 @@
          <content>
             <VBox fx:id="contactContainer" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="517.0" spacing="20.0">
                <padding>
-                  <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+                  <Insets bottom="130.0" left="40.0" right="40.0" top="40.0" />
                </padding>
             </VBox>
          </content>

@@ -327,7 +327,7 @@ public class Controller implements Initializable {
         editBtn.setStyle("-fx-background-color: white; -fx-cursor: hand;");
         Button removeBtn = new Button("Elimina");
         removeBtn.setFont(new Font("Arial bold", 14));
-        removeBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-cursor: hand;");
+        removeBtn.setStyle("-fx-background-color: #DE5546; -fx-text-fill: white; -fx-cursor: hand;");
         h1.getChildren().addAll(removeBtn, editBtn);
         
         // Collego al pulsante di modifica la relativa azione
@@ -411,10 +411,10 @@ public class Controller implements Initializable {
         h3.setSpacing(10);
         Button saveEditBtn = new Button("Salva");
         saveEditBtn.setFont(new Font("Arial bold", 14));
-        saveEditBtn.setStyle("-fx-background-color: #28B463; -fx-text-fill: white; -fx-cursor: hand;");
+        saveEditBtn.setStyle("-fx-background-color: #8aafaf; -fx-text-fill: white; -fx-cursor: hand;");
         Button cancelEditBtn = new Button("Annulla");
         cancelEditBtn.setFont(new Font("Arial bold", 14));
-        cancelEditBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-cursor: hand;");
+        cancelEditBtn.setStyle("-fx-background-color: #DE5546; -fx-text-fill: white; -fx-cursor: hand;");
         h3.getChildren().addAll(cancelEditBtn, saveEditBtn);
         
         // Collego il pulsante di salvataggio delle modifiche alla relativa azione
