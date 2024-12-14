@@ -29,7 +29,7 @@ public class ValidatoreDati {
      * 
      * Un contatto è considerato valido se ha almeno un nome o un cognome.
      * 
-     * @param[in] nome Nomed da verificare se presente.
+     * @param[in] nome Nome da verificare se presente.
      * @param[in] cognome Cognome da verificare se presente.
      * 
      *   
@@ -46,6 +46,7 @@ public class ValidatoreDati {
      
      /**
      * @brief Verifica se un indirizzo email è valido.
+     * L'indirizzo email è considerato valido se contiene il simbolo "@" e il punto "."
      * 
      * @param[in] mail Indirizzo email da verificare.
      * 
@@ -62,6 +63,8 @@ public class ValidatoreDati {
      
      /**
      * @brief Verifica se un numero di telefono è valido.
+     * Un numero di telefono è considerato valido se contiene esattamente 10 cifre e 
+     * non include caratteri non numerici
      * 
      * @param[in] numero Numero di telefono da verificare.
      * 

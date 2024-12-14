@@ -3,12 +3,12 @@
  * @brief Classe per la gestione di operazioni I/O su file esterni in formato CSV
  * @see FileHandler
  * 
- * Questa classe implementa i metodi definiti nell'interfaccia FileHandler appositamente
- * per la tipologia di file esterni CSV.
+ * Questa classe implementa l'interfaccia FileHandler e fornisce metodi specifici 
+ * per esportare i contatti in formato CSV e importare contatti da file CSV.
  * 
  * @version 1.0
  * @date 2024-12-13
- * @author Giovanni Caldarelli
+ * @author Alessandro Auricchio
  */
 package com.mycompany.rubricaproject.io;
 
@@ -19,27 +19,21 @@ import com.mycompany.rubricaproject.eccezioni.FormatoFileNonValidoException;
 import java.io.*;
 import java.util.*;
 
-/**
- * Classe CSVFileHandler.
- * Implementa metodi per esportare e importare contatti da file CSV
- */
+
 public class CSVFileHandler implements FileHandler {
 
     private Rubrica rubrica;
 
     /**
-     * Costruttore della classe CSVFileHandler.
+     * @brief Costruttore della classe CSVFileHandler.
+     * @see rubrica
      * @param rubrica La rubrica da gestire.
      */
     public CSVFileHandler(Rubrica rubrica) {
         this.rubrica = rubrica;
     }
 
-    /**
-     * Esporta i contatti della rubrica in un file CSV.
-     * @param fileName Il nome del file CSV in cui esportare i dati.
-     * @throws IOException Se si verifica un errore durante l'operazione di scrittura.
-     */
+    
     @Override
     public void esportaRubrica(String fileName) throws IOException {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
@@ -67,14 +61,9 @@ public class CSVFileHandler implements FileHandler {
         }
     }
 
-    /**
-     * Importa i contatti da un file CSV in una nuova rubrica.
-     * @param fileName Il nome del file CSV da cui importare i dati.
-     * @return Una nuova rubrica contenente i dati importati.
-     * @throws FileNonTrovatoException Se il file non viene trovato.
-     * @throws FormatoFileNonValidoException Se il file non è in formato CSV valido.
-     * @throws IOException Se si verifica un errore durante l'operazione di lettura.
-     */
+    
+    
+     
     @Override
     public void importaRubrica(String fileName, Rubrica rubr) throws FileNonTrovatoException, FormatoFileNonValidoException, IOException {
         //Rubrica rubr = new Rubrica();
@@ -148,8 +137,11 @@ public class CSVFileHandler implements FileHandler {
     }
 
     /**
-     * Valida l'intestazione del file CSV.
-     * @param header Intestazione trovata nel file CSV.
+     * @brief Valida l'intestazione del file CSV.
+     * 
+     * Controlla che l'intestazione del file CSV contenga i campi obbligatori richiesti.
+     * 
+     * @param[in] header L'intestazione trovata nel file CSV.
      * @return true se valida, false altrimenti.
      */
     private boolean isHeaderValid(String header) {

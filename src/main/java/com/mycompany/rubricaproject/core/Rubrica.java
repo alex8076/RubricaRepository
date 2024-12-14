@@ -58,7 +58,7 @@ public class Rubrica {
     }
      
     /**
-     * @brief Aggiunge un contatto alla rubrica.
+     * @brief Aggiunge un contatto alla rubrica, se non è già presente
      * @see Contatto
      * 
      * @param[in] c il contatto da aggiungere. 
@@ -76,10 +76,11 @@ public class Rubrica {
      }
     
     /**
-     * @brief Rimuove un contatto dalla rubrica.
+     * @brief Rimuove un contatto dalla rubrica, se presente
      * @see Contatto
      * 
      * @param[in] c il contatto da rimuovere.
+     * @throws IllegalArgumentException se il contatto non è presente nella rubrica
      * @post Se il contatto era presente, viene rimosso dalla rubrica.
      */
     public void rimuoviContatto(Contatto c) {
