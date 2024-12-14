@@ -39,7 +39,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -104,15 +103,17 @@ public class Controller implements Initializable {
      * del caricamento del file FXML. Può essere utilizzato per
      * eseguire operazioni di preparazione necessarie.
      * 
-     * @param[in] url L'URL del file FXML caricato .
+     * @param[in] url L'URL del file FXML caricato.
      * @param[in] rb Il bundle delle risorse associato.
-     * @pre Il file FXML e le risorse devono essere caricati correttamente.
+     * @pre Il file FXML e le risorse sono caricate correttamente.
      * @post I componenti dell'interfaccia grafica sono pronti per l'uso.
      * 
      * @see Rubrica
+     * @see CSVFileHandler
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // inizializzo le variabili globali
         this.rubrica = new Rubrica();
         this.fh = new CSVFileHandler(rubrica);
         this.mappaContatti = new HashMap<>();
@@ -148,9 +149,9 @@ public class Controller implements Initializable {
      * @post i campi di input vengono ripuliti
      * @post Il pannello per l'inserimento di un nuovo utente viene nascosto
      * 
-     * @see ripulisciCampi()
-     * @see aggiornaContatti()
-     * @see mostraAlert()
+     * @see #ripulisciCampi
+     * @see #aggiornaContatti
+     * @see #mostraAlert(String)
      * @see Contatto
      * @see Rubrica
      * 
@@ -170,7 +171,7 @@ public class Controller implements Initializable {
                 if (!tfTelefono3.getText().isEmpty())
                     nuovoContatto.aggiungiNumero(tfTelefono3.getText(), 2);
             
-                 // aggiungo nei dati del contatto gli eventuali indirizzi email inseriti
+                // aggiungo nei dati del contatto gli eventuali indirizzi email inseriti
                 try {
                      if (!tfEmail1.getText().isEmpty())
                          nuovoContatto.aggiungiMail(tfEmail1.getText(), 0);
@@ -179,7 +180,7 @@ public class Controller implements Initializable {
                      if (!tfEmail3.getText().isEmpty())
                          nuovoContatto.aggiungiMail(tfEmail3.getText(), 2);  
                      
-                     // aggiungo il contatto alla rubrica
+                    // aggiungo il contatto alla rubrica
                     try {
                         rubrica.aggiungiContatto(nuovoContatto);
 
@@ -214,15 +215,14 @@ public class Controller implements Initializable {
             
             } catch (NumeroNonCorrettoException ex) {
                 // catturo l'eccezione nel caso in cui i numeri non siano correttamente formattati
-                mostraAlert("Controllare che i numeri inseriti siano validi");;
+                mostraAlert("Controllare che i numeri inseriti siano validi");
             } catch (IllegalArgumentException ex) {
                 // catturo l'eccezione nel caso in cui uno dei numeri sia già presente in rubrica
                 mostraAlert("Hai inserito più volte uno stesso numero di telefono");
             }
     
         } catch (UtenteNonValidoException ex) {
-            // Gestisco il caso in cui i dati inseriti non siano validi
-            // mostrando un messaggio di errore all'utente
+            // Gestisco il caso in cui i dati inseriti non siano validi mostrando un messaggio di errore all'utente
             mostraAlert("Inserire almeno un nome o un cognome");
         }
                 
@@ -232,13 +232,14 @@ public class Controller implements Initializable {
     /**
      * @brief Aggiorna la lista dei contatti visualizzata nell'interfaccia.
      * 
-     * Questo metodo sincronizza l'elenco grafico dei contatti con i dati attualmente
+     * Questo metodo sincronizza l'elenco delle schede contatto con i dati attualmente
      * presenti nella rubrica.
      *   
-     * @pre La rubrica deve contenere almeno un contatto.
-     * @post L'elenco grafico dei contatti corrisponde alla rubrica aggiornata.
+     * @pre La rubrica contiene almeno un contatto.
+     * @post L'elenco delle schede contatto corrisponde alla rubrica aggiornata.
      * 
      * @see Rubrica
+     * @see #creaSchedaContatto(Contatto)
      */
     private void aggiornaContatti() {
         // ripulisco la view dalle schede contatto precedenti
@@ -258,19 +259,17 @@ public class Controller implements Initializable {
     
     
     /**
-     * @brief Crea una Card per un singolo contatto.
+     * @brief Crea una Card (ossia una scheda) per un singolo contatto.
      * 
      * Questo metodo genera una rappresentazione grafica di un contatto
-     * con i dettagli del contatto e pulsanti per
-     * modificarlo o eliminarlo.
+     * con i dettagli del contatto e due pulsanti per modificarlo o eliminarlo.
      * 
      * @param[in] contatto Il contatto da rappresentare graficamente.
-     * @return Un oggetto HBox che rappresenta graficamente il contatto.
+     * @return Un oggetto HBox (la Card) che rappresenta graficamente il contatto.
      * 
-     * @pre Il contatto contiene dati validi
-     * (?) @post Un HBox viene restituito, pronto per essere aggiunto all'interfaccia.
+     * @pre Il contatto contiene dati validi (la validità è gestita dai metodi della classe Contatto)
      * 
-     * @see AggiornaContatti
+     * @see #aggiornaContatti
      * @see Contatto
      */
     private VBox creaSchedaContatto(Contatto contatto) {
@@ -357,12 +356,12 @@ public class Controller implements Initializable {
       * per riflettere i cambiamenti.
       * 
       * @param[in] contatto Il contatto da modificare.
-      * @pre Il contatto deve esistere nella rubrica.
-      * @pre I dati inseriti sono validi
-      * @post Il contatto è stato aggiornato con i nuovi dati.
+      * @pre Il contatto esiste nella rubrica.
+      * @pre I dati inseriti sono validi (la validità è garantita dai metodi interni alla classe Contatto).
+      * @post Il contatto viene aggiornato con i nuovi dati.
       * 
-      * @see aggiornaContatti()
-      * @see mostraAlert()
+      * @see #aggiornaContatti
+      * @see #mostraAlert(String)
       * @see Contatto
       */
     private void modificaContatto(Contatto contatto) {
@@ -508,14 +507,12 @@ public class Controller implements Initializable {
         // Aggiungo gli elementi creati alla scheda contatto modificabile
         editCard.getChildren().addAll(v1, v2, v3, h3);
         
-        // Rimuovo dalla view la scheda contatto precedentemente inserita e la sostituisco
-        // con quella modificabile appena creata
+        /* Rimuovo dalla view la scheda contatto precedentemente inserita e la sostituisco
+           con quella modificabile appena creata */
         int index = contactContainer.getChildren().indexOf(mappaContatti.get(contatto));
         if (index != -1) {
             contactContainer.getChildren().set(index, editCard);
         }
-        //contactContainer.getChildren().remove(mappaContatti.get(contatto));
-        //contactContainer.getChildren().add(editCard);
     }
     
     
@@ -524,8 +521,7 @@ public class Controller implements Initializable {
       * 
       * Questo metodo svuota i campi di input per consentire l'inserimento di nuovi dati.
       * 
-      * @pre I campi devono essere pieni.
-      * @post Tutti i campi di input sono stati svuotati.
+      * @post Tutti i campi di input sono svuotati, a prescindere che fossero o meno pieni.
       */
     private void ripulisciCampi() {
         // ripulisco i campi Nome e Cognome
@@ -551,7 +547,7 @@ public class Controller implements Initializable {
      * @post I campi di input vengono ripuliti
      * @post Il pannello per l'inserimento di un nuovo utente viene nascosto
      * 
-     * @see ripulisciCampi()
+     * @see #ripulisciCampi
      */
     @FXML
     private void handleCancel(ActionEvent event) {
@@ -573,10 +569,10 @@ public class Controller implements Initializable {
     }
 
     /**
-     * @brief Mostra il pannello contenente i campi di input per l'aggiunta di un nuovo contatto qualora venisse premuto l'apposito tasto nella dashboard
+     * @brief Mostra il pannello contenente i campi di input per l'aggiunta di un nuovo contatto qualora venisse premuto l'apposito tasto '+' nella dashboard
      * 
-     * Se il pulsante viene premuto e il pannello di aggiunta utente è nascosto, quest'ultimo viene mostrato.
-     * Se invece il pulsante viene premuto e il pannello è già visibile, questo viene nascoto.
+     * Se il pulsante '+' viene premuto e il pannello di aggiunta utente è nascosto, quest'ultimo viene mostrato.
+     * Se invece il pulsante '+' viene premuto e il pannello è già visibile, questo viene nascoto.
      * 
      * @param[in] event L'evento associato al click del pulsante
      * 
@@ -620,11 +616,12 @@ public class Controller implements Initializable {
      * 
      * @param[in] event L'evento associato al click del pulsante
      * 
-     * @pre è stata fornita una stringa come parametro di ricerca
-     * @post sono mostrate solo le card dei contatti corrispondenti alla ricerca
+     * @pre è stata fornita una stringa come parametro di ricerca.
+     * @post sono mostrate solo le card dei contatti corrispondenti alla ricerca.
      * 
      * @see Contatto
      * @see Rubrica
+     * @see #aggiornaContatti
      * 
      */
     @FXML
@@ -673,11 +670,12 @@ public class Controller implements Initializable {
      * 
      * @param[in] event L'evento associato al click del pulsante
      * 
-     * (?) @pre Il file da importare esiste ed è correttamente formattato
-     * @post Il contenuto del file viene caricato in rubrica
-     * @post Viene mostrata una notifica alla fine dell'operazione
+     * @pre Il file da importare esiste ed è correttamente formattato, ma non è garantito che contenga dati validi.
+     * @post Il contenuto del file viene caricato in rubrica.
+     * @post Viene mostrata una notifica alla fine dell'operazione.
      * 
-     * @see mostraAlert()
+     * @see #mostraAlert(String)
+     * @see #aggiornaContatti
      * @see CSVFileHandler
      */
    @FXML
@@ -752,7 +750,7 @@ public class Controller implements Initializable {
      * @post I dati presenti in ribrica vengono salavti su file CSV prensente nella directory specificata
      * @post Viene mostrata una notifica alla fine dell'operazione
      * 
-     * @see mostraAlert()
+     * @see #mostraAlert(String)
      * @see CSVFileHandler
      */
     @FXML
@@ -789,8 +787,8 @@ public class Controller implements Initializable {
         } else {
             // Gestisco il caso in cui l'esportazione fallisca, annullando l'operazione
             System.out.println("Esportazione annullata");
-            // Mostro una notifica di fallimento
-            mostraAlert("Esportazione fallita");
+            // Mostro una notifica di annullamento
+            mostraAlert("Esportazione annullata");
         }
     }
     
