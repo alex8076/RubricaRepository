@@ -133,8 +133,9 @@ public class Controller implements Initializable {
         searchBtn.setGraphic(imageView);
     }   
     
-    /**🔎🔎
-     * @brief Gestisce l'aggiunta di un nuovo contatto alla rubrica.
+    /**
+     * @internal
+     * @brief Gestisce l'interfaccia per l'aggiunta di un nuovo contatto alla rubrica.
      * 
      * Questo metodo viene invocato quando l'utente preme il pulsante 'Aggiungi'
      * per aggiungere un nuovo contatto. I dati vengono prelevati dai campi
@@ -230,6 +231,7 @@ public class Controller implements Initializable {
     
     
     /**
+     * @internal
      * @brief Aggiorna la lista dei contatti visualizzata nell'interfaccia.
      * 
      * Questo metodo sincronizza l'elenco delle schede contatto con i dati attualmente
@@ -259,6 +261,7 @@ public class Controller implements Initializable {
     
     
     /**
+     * @internal
      * @brief Crea una Card (ossia una scheda) per un singolo contatto.
      * 
      * Questo metodo genera una rappresentazione grafica di un contatto
@@ -349,7 +352,8 @@ public class Controller implements Initializable {
     
     
     /**
-      * @brief Modifica un contatto esistente nella rubrica.
+     *  @internal
+      * @brief Permette di gestire l'interfaccia per modificare un contatto esistente nella rubrica.
       * 
       * Questo metodo consente di aggiornare i dati di un contatto già presente
       * nella rubrica. Dopo la modifica, l'elenco dei contatti viene aggiornato
@@ -540,7 +544,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * @brief Gestisce il caso in cui l'utente scelga di annullare l'aggiunta di un nuovo vontatto
+     * @brief Gestisce il caso in cui l'utente scelga di annullare l'aggiunta di un nuovo contatto
      * 
      * @param[in] event L'evento associato al click del pulsante
      * 
@@ -612,6 +616,7 @@ public class Controller implements Initializable {
     }
 
     /**
+     * @internal
      * @brief Mostra nella view unicamente i contatti il cui nome/cognome contiene la stringa inserita nel campo di ricerca
      * 
      * @param[in] event L'evento associato al click del pulsante
@@ -664,7 +669,8 @@ public class Controller implements Initializable {
     }
 
     /**
-     * @brief Permette di importare in rubrica i contenuti di un file esterno
+     * @internal
+     * @brief Permette di gestire l'interfaccia per importare in rubrica i contenuti di un file esterno
      * 
      * Viene mostrata una finestra di dialogo che consenta di caricare un file prelevandolo dalla propria directory
      * 
@@ -740,7 +746,8 @@ public class Controller implements Initializable {
 
 
     /**
-     * @brief Permette di esportare i dati presenti in rubrica su un file CSV esterno
+     * @internal
+     * @brief Permette di gestire l'interfaccia per esportare i dati presenti in rubrica su un file CSV esterno
      * 
      * Viene mostrata una finestra di dialogo che consente di selezionare la directory/file in cui salvare i dati
      * 
