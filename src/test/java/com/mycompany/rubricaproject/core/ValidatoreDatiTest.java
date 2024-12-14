@@ -3,7 +3,7 @@
  * 
  * questa classe testa tutti i metodi pulic definiti nella classe ValidatoreDati
  * 
- * @see Rubrica
+ * @see ValidatoreDati
  * 
  * @author Giovanni Caldarelli
  * @date 2024-12-14
