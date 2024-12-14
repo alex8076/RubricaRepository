@@ -26,23 +26,14 @@ public class CSVFileHandler implements FileHandler {
 
     /**
      * @brief Costruttore della classe CSVFileHandler.
+     * @see rubrica
      * @param rubrica La rubrica da gestire.
      */
     public CSVFileHandler(Rubrica rubrica) {
         this.rubrica = rubrica;
     }
 
-    /**
-     * @brief Esporta i contatti della rubrica in un file CSV.
-     * 
-     * Il file CSV include una riga di intestazione e una riga per ciascun contatto, 
-     * con i 3 campi dei numeri di telefono e i 3 campi degli indirizzi email.
-     * 
-     * @param[in] fileName Il nome del file CSV in cui esportare i dati.
-     * @throws IOException Se si verifica un errore durante l'operazione di scrittura.
-     * 
-     * @post Il file conterrà tutti i contatti della rubrica in formato CSV.
-     */
+    
     @Override
     public void esportaRubrica(String fileName) throws IOException {
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
@@ -71,27 +62,8 @@ public class CSVFileHandler implements FileHandler {
     }
 
     
-    /**
-     * @brief Importa la rubrica da un file CSV.
-     * 
-     * @briefLegge un file CSV contenente contatti e li aggiunge a una rubrica.
-     * Gestisce eventuali eccezioni legate a formati non validi o file mancanti.
-     * 
-     * I contatti del file vengono aggiunti a quelli già presenti nell'applicazione, senza importare i duplicati.
-     * Inoltre verranno aggiunti i campi mancanti all'interno della rubrica se vi sono campi aggiuntivi nel file.
-     * 
-     * 
-     * 
-     * @param[in] fileName Il nome del file CSV da cui importare i dati.
-     * @param[out] rubr La rubrica a cui aggiungere i contatti importati.
-     * @return Una rubrica contenente i contatti importati.
-     * @throws FileNonTrovatoException Se il file non viene trovato.
-     * @throws FormatoFileNonValidoException Se il file non è in formato CSV.
-     * @throws IOException Se si verifica un errore durante l'operazione di lettura.
-     * 
-     * @post La rubrica conterrà i contatti importati dal file.
-     */
     
+     
     @Override
     public void importaRubrica(String fileName, Rubrica rubr) throws FileNonTrovatoException, FormatoFileNonValidoException, IOException {
         //Rubrica rubr = new Rubrica();
