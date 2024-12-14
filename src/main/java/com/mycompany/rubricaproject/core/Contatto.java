@@ -32,13 +32,16 @@ public class Contatto implements Comparable<Contatto> {
     /**
      * @brief Costruttore della classe Contatto.
      * 
-     * 
-     * @post Un'istanza valida della classe Contatto è creata, se i dati passati sono validi.
-     * @see ValidatoreDati
+     * Inizializza un oggetto Contatto con nome e cognome specificati e crea
+     * array vuoti per numeri di telefono e indirizzi email.
      * 
      * @param[in] nome Nome del contatto.
      * @param[in] cognome Cognome del contatto.
      * 
+     * 
+     * @post Un'istanza valida della classe Contatto è creata, se i dati passati sono validi.
+     * @see ValidatoreDati
+     *
      */
     public Contatto(String nome, String cognome){
        ValidatoreDati.isValido(nome, cognome);
@@ -103,7 +106,7 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * 
      * @post Il cognome del contatto è aggiornato, ammesso che l'utente aggiornato risulti valido.
-     * @see VAlidatoreDati
+     * @see ValidatoreDati
      * 
      *
      */
@@ -119,7 +122,7 @@ public class Contatto implements Comparable<Contatto> {
     /**
     * @brief Restituisce i numeri di telefono associati al contatto.
     * 
-    * @return Un set contenente i numeri di telefono del contatto.
+    * @return Un array contenente i numeri di telefono del contatto.
     */
      public String[] getNumeriTelefono(){
         return numeriTelefono;
@@ -137,7 +140,8 @@ public class Contatto implements Comparable<Contatto> {
      * @param[in] numero Numero di telefono da aggiungere.
      * @param[in] index Indice che corrisponde alla posizione del numero nell'array.
      * 
-     * @post Il contatto avrà un nuovo numero di telefono
+     * @see ValidatoreDati
+     * @post Il numero di telefono è aggiunto, se valido e non duplicato.
      */
      public void aggiungiNumero (String numero, int index) {
        
@@ -163,6 +167,7 @@ public class Contatto implements Comparable<Contatto> {
      * @param[in] numeroNuovo Nuovo numero di telefono.
      * @param[in] index Indice che corrisponde alla posizione del numero nell'array.
      * 
+     * @see ValidatoreDati
      * @post Il numero di telefono selezionato è stato aggiornato.
      */
     public void modificaNumero (String numeroNuovo, int index){
@@ -186,10 +191,10 @@ public class Contatto implements Comparable<Contatto> {
       /**
      * @brief Rimuove un numero di telefono dal contatto.
      * 
-     * @param[in] index Indice che corrisponde alla posizione del numero nell'array.
+     * @param[in] index Indice della posizione nell'array.
      * 
      * 
-     * @post La lista dei numeri di telefono è aggiornata.
+     * @post Il numero di telefono specificato è rimosso.
      */
     public void rimuoviNumero (int index){
           this.numeriTelefono[index] = null;
@@ -203,7 +208,7 @@ public class Contatto implements Comparable<Contatto> {
      * 
      * @invariant Il set restituito non contiene più di 3 indirizzi email.
      * 
-     * @return Un insieme di indirizzi email.
+     * @return  Un array contenente gli indirizzi email del contatto.
      */
      public String[] getIndirizziMail (){
         return indirizziMail;
@@ -221,6 +226,7 @@ public class Contatto implements Comparable<Contatto> {
      * @param[in] mail Indirizzo email da aggiungere.
      * @param[in] index Indice che corrisponde alla posizione della mail nell'array.
      * 
+     * @see ValidatoreDati
      * @post La lista degli indirizzi email è aggiornata.
      */
      public void aggiungiMail (String mail, int index){
@@ -244,6 +250,7 @@ public class Contatto implements Comparable<Contatto> {
      * @param[in] mail Nuovo indirizzo email.
      * @param[in] index Indice che corrisponde alla posizione della mail nell'array.
      * 
+     * @see ValidatoreDati
      * @post L'indirizzo email specificato è stato aggiornato.
      */
      public void modificaMail(String mailNuova, int index){
