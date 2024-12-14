@@ -360,3 +360,4 @@ public class Contatto implements Comparable<Contatto> {
 
      }         
 }
+

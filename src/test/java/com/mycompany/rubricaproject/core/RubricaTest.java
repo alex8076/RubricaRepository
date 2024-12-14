@@ -41,9 +41,6 @@ public class RubricaTest {
     
     @AfterEach
     public void tearDown() {
-        rubrica = null;
-        contatto1= null;
-        contatto2= null;
     }
 
     
@@ -55,17 +52,14 @@ public class RubricaTest {
     public void testGetContatti() {
         System.out.println("getContatti");
         
-        rubrica.aggiungiContatto(contatto1);
-        rubrica.aggiungiContatto(contatto2);
-        
+        assertTrue(rubrica.getContatti().isEmpty());
+
+        Contatto contatto = new Contatto("Mario", "Rossi");
+        rubrica.aggiungiContatto(contatto);
+
         Set<Contatto> contatti = rubrica.getContatti();
-        
-        assertNotNull(contatti);
-        assertEquals(2, contatti.size());
-    
-    
-        assertTrue(contatti.contains(contatto1));
-        assertTrue(contatti.contains(contatto2));
+        assertEquals(1, contatti.size());
+        assertTrue(contatti.contains(contatto));
     
     }
 
@@ -77,18 +71,18 @@ public class RubricaTest {
      */
     @Test
     public void testSetContatti() {
-        System.out.println("setContatto");
+        System.out.println("setContatti");
         
-        Set<Contatto> nuoviContatti = new TreeSet();
+        Set<Contatto> nuoviContatti = new TreeSet<>();
+       
+
         nuoviContatti.add(contatto1);
         nuoviContatti.add(contatto2);
-        
+
         rubrica.setContatti(nuoviContatti);
-        
-        Set<Contatto> contatti = rubrica.getContatti();
-        
-        assertTrue(contatti.contains(contatto1));
-        assertTrue(contatti.contains(contatto2));
+
+        assertTrue(rubrica.getContatti().contains(contatto1));
+        assertTrue(rubrica.getContatti().contains(contatto2));
     }
 
     
@@ -101,14 +95,25 @@ public class RubricaTest {
     public void testAggiungiContatto() {
         System.out.println("aggiungiContatto");
         
-         rubrica.aggiungiContatto(contatto1);
-        
-        Set<Contatto> contatti = rubrica.getContatti();
-        
-        assertEquals(1, contatti.size());
-        assertTrue(contatti.contains(contatto1));
+        Contatto contatto = new Contatto("Giovanni", "Rossi");
+
+        rubrica.aggiungiContatto(contatto);
+        assertTrue(rubrica.getContatti().contains(contatto));
     }
     
+    
+    @Test
+    public void testAggiungiContatto2() {
+        System.out.println("aggiungiContatto");
+
+        rubrica.aggiungiContatto(contatto1);
+        rubrica.aggiungiContatto(contatto2);
+        
+        assertTrue(rubrica.getContatti().contains(contatto1));
+        assertTrue(rubrica.getContatti().contains(contatto2));
+        
+        assertEquals(2, rubrica.getContatti().size());
+    }
     
     
     
@@ -119,12 +124,11 @@ public class RubricaTest {
     public void testRimuoviContatto() {
         System.out.println("rimuoviContatto");
         
-        rubrica.aggiungiContatto(contatto1);
-        rubrica.rimuoviContatto(contatto1);
-        
-        Set<Contatto> contatti = rubrica.getContatti();
-        
-        assertEquals(0, contatti.size());
+        Contatto contatto = new Contatto("Giovanni", "Rossi");
+
+        rubrica.aggiungiContatto(contatto);
+        rubrica.rimuoviContatto(contatto);
+        assertFalse(rubrica.getContatti().contains(contatto));
     }
 
     
@@ -135,7 +139,7 @@ public class RubricaTest {
      */
     @Test
     public void testCercaContatti() {
-        System.out.println("rimuoviContatto");
+        System.out.println("cercaContatti");
         
         rubrica.aggiungiContatto(contatto1);
         rubrica.aggiungiContatto(contatto2);
@@ -145,21 +149,62 @@ public class RubricaTest {
         assertEquals(1, risultati.size());
         assertTrue(risultati.contains(contatto1));
     }
+    
+     @Test
+    public void testCercaContatti2() {
+        System.out.println("cercaContatti");
+        
+        rubrica.aggiungiContatto(contatto1);
+        
+        Set<Contatto> risultati = rubrica.cercaContatti("Gio");
+        
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(contatto1));
+    }
+    
+     @Test
+    public void testCercaContatti3() {
+        System.out.println("cercaContatti");
+        
+        rubrica.aggiungiContatto(contatto1);
+        
+        Set<Contatto> risultati = rubrica.cercaContatti("francesco");
+        
+        assertEquals(0, risultati.size());
+        assertFalse(risultati.contains(contatto1));
+    }
+    
+     @Test
+    public void testCercaContatti4() {
+        System.out.println("cercaContatti");
+        
+        rubrica.aggiungiContatto(contatto1);
+        
+        Set<Contatto> risultati = rubrica.cercaContatti("Caldarelli");
+        
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(contatto1));
+    }
 
+
+
+    
+    
+    
     /**
      * Test of modificaContatto method, of class Rubrica.
      */
     @Test
     public void testModificaContatto() {
-        System.out.println("rimuoviContatto");
-        
+        System.out.println("modificaContatto");
+
         rubrica.aggiungiContatto(contatto1);
-        Contatto contattoModificato = new Contatto("Giovanni", "Bianchi");
         rubrica.modificaContatto(contatto1);
-        
-        Set<Contatto> contatti = rubrica.getContatti();
-        
-        assertTrue(contatti.contains(contattoModificato));
+
+        assertTrue(rubrica.getContatti().contains(contatto1));
     }
     
 }
+
+
+

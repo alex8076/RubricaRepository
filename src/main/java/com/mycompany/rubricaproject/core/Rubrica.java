@@ -69,14 +69,10 @@ public class Rubrica {
      * @throws ContattoDuplicatoException Se si prova ad aggiungere un contatto già presente
      */
      public void aggiungiContatto(Contatto contatto) {
-         boolean trovato = false;
-         for (Contatto c: contatti) {
-             if (c.equals(contatto))
-                 trovato = true;
-         }
-         if (trovato)
-             throw new ContattoDuplicatoException("Il contatto è già presente");
-         contatti.add(contatto);
+        if (contatti.contains(contatto)) 
+              throw new ContattoDuplicatoException("Il contatto è già presente");
+        
+        contatti.add(contatto);
      }
     
     /**
@@ -141,3 +137,5 @@ public class Rubrica {
     }
     
 }
+
+
