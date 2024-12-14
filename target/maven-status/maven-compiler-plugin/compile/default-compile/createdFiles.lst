@@ -3,6 +3,7 @@ com/mycompany/rubricaproject/eccezioni/FileNonTrovatoException.class
 com/mycompany/rubricaproject/core/Rubrica.class
 com/mycompany/rubricaproject/eccezioni/MailNonCorrettaException.class
 com/mycompany/rubricaproject/io/FileHandler.class
+com/mycompany/rubricaproject/core/ValidatoreDati.class
 com/mycompany/rubricaproject/eccezioni/UtenteNonValidoException.class
 com/mycompany/rubricaproject/eccezioni/NumeroNonCorrettoException.class
 com/mycompany/rubricaproject/core/Applicazione.class
