@@ -20,7 +20,7 @@ import java.io.IOException;
 public interface FileHandler {
     
     /**
-     * @param fileName
+     * @param[in] fileName La directory del file su cui esportare i dati
      * @throws java.io.IOException
      * @brief Esporta i dati di una ribrica su un file esterno
      * 
@@ -31,10 +31,14 @@ public interface FileHandler {
     void esportaRubrica(String fileName) throws IOException;
     
     /**
-     * @param fileName
+     * @param[in] fileName La directory del file da cui importare i dati
+     * @param[inout] rbr La rubrica su cui importare i dati
      * @throws java.io.IOException
      * @brief Importa i dati da un file esterno su una rubrica
      * 
+     * I dati vengono letti da file e importati su rubrica,
+     * se dei dati presenti nel file sono già presenti in rubrica (duplicati),
+     * allora i dati già presenti vengono sovrascitti da quelli letti dal file
      * 
      * @pre l'utente ha a diposizione un file da importare
      * @post l'utente riceve una notifica di completamento dell'operazione
