@@ -655,7 +655,7 @@ public class Controller implements Initializable {
             // Creo e aggiungo alla view un pulsante da premere qualora si sia completata la ricerca
             Button okBtn = new Button("Ok");
             okBtn.setFont(new Font("Arial bold", 14));
-            okBtn.setStyle("-fx-background-color:  #28B463; -fx-text-fill: white; -fx-cursor: hand;");
+            okBtn.setStyle("-fx-background-color:  #8AAFAF; -fx-text-fill: white; -fx-cursor: hand;");
             contactContainer.getChildren().add(okBtn);
 
             // Associo al pulsante la relativa azione
